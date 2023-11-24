@@ -53,14 +53,13 @@ export const MintInsc20 = () => {
 
     try {
       const signer = await getAssertedChainSigner(onboard, chain?.chainId)
-      const nonce = await signer.getTransactionCount('latest')
 
       const txData = {
         p: `${chain.inscriptionPrefix}-20`,
         op: 'mint',
         tick: data[FormField.tick],
         amt: data[FormField.amount],
-        nonce: nonce,
+        nonce: (+new Date()).toString(),
       }
       console.log({ txData })
       const dataHex = toHex('data:application/json,' + JSON.stringify(txData))

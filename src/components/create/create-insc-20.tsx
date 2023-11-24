@@ -60,7 +60,6 @@ export const CreateInsc20 = () => {
     }
     try {
       const signer = await getAssertedChainSigner(onboard, chain?.chainId)
-      const nonce = await signer.getTransactionCount('latest')
 
       const txData = {
         p: `${chain.inscriptionPrefix}-20`,
@@ -70,7 +69,7 @@ export const CreateInsc20 = () => {
         lim: data[FormField.limitPerMint],
         wlim: data[FormField.limitPerAddress],
         dec: '8',
-        nonce: nonce,
+        nonce: (+new Date()).toString(),
       }
       console.log({ txData })
       const dataHex = toHex('data:application/json,' + JSON.stringify(txData))
