@@ -6,6 +6,7 @@ export const getChainsConfig = (): { results: ChainInfo[] } => ({
       chainId: '4689',
       chainName: 'IoTeX',
       shortName: 'iotx',
+      inscriptionPrefix: 'io',
       description: 'IoTeX Mainnet',
       rpcUri: {
         value: 'https://babel-api.mainnet.iotex.io',
@@ -34,6 +35,7 @@ export const getChainsConfig = (): { results: ChainInfo[] } => ({
       chainId: '4690',
       chainName: 'IoTeX Testnet',
       shortName: 'iotxtest',
+      inscriptionPrefix: 'iott',
       description: 'IoTeX Testnet',
       rpcUri: {
         value: 'https://babel-api.testnet.iotex.io',

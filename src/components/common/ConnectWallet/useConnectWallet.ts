@@ -5,7 +5,6 @@ const useConnectWallet = () => {
   const onboard = useOnboard()
 
   return useCallback(() => {
-    console.log('Connecting to', onboard)
     if (!onboard) {
       return Promise.resolve(undefined)
     }

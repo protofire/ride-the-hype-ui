@@ -22,6 +22,7 @@ export declare type ChainInfo = {
   chainId: string
   chainName: string
   shortName: string
+  inscriptionPrefix: string
   description: string
   rpcUri: RpcUri
   publicRpcUri?: RpcUri

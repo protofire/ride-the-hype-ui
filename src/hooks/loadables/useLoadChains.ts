@@ -6,7 +6,6 @@ import { getChainsConfig } from '~/utils/getChainsConfig'
 
 const getConfigs = async (): Promise<ChainInfo[]> => {
   const data = getChainsConfig()
-  console.log(data)
   return data.results || []
 }
 

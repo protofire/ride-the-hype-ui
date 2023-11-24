@@ -3,6 +3,8 @@ import { WALLET_KEYS } from '~/hooks/wallets/consts'
 import type { OnboardAPI } from '@web3-onboard/core'
 import { connectWallet, getConnectedWallet } from '~/hooks/wallets/useOnboard'
 import { hexValue } from 'ethers/lib/utils'
+import type { JsonRpcSigner } from '@ethersproject/providers'
+import { createWeb3 } from '~/hooks/wallets/web3'
 
 export const isHardwareWallet = (wallet: ConnectedWallet): boolean => {
   return [WALLET_KEYS.LEDGER, WALLET_KEYS.TREZOR, WALLET_KEYS.KEYSTONE].includes(
@@ -41,4 +43,34 @@ export const switchWalletChain = async (onboard: OnboardAPI, chainId: string): P
       }
     })
   })
+}
+
+export const assertWalletChain = async (onboard: OnboardAPI, chainId: string): Promise<ConnectedWallet> => {
+  const wallet = getConnectedWallet(onboard.state.get().wallets)
+
+  if (!wallet) {
+    throw new Error('No wallet connected.')
+  }
+
+  if (wallet.chainId === chainId) {
+    return wallet
+  }
+
+  const newWallet = await switchWalletChain(onboard, chainId)
+
+  if (!newWallet) {
+    throw new Error('No wallet connected.')
+  }
+
+  if (newWallet.chainId !== chainId) {
+    throw new Error('Wallet connected to wrong chain.')
+  }
+
+  return newWallet
+}
+
+export const getAssertedChainSigner = async (onboard: OnboardAPI, chainId: string): Promise<JsonRpcSigner> => {
+  const wallet = await assertWalletChain(onboard, chainId)
+  const provider = createWeb3(wallet.provider)
+  return provider.getSigner()
 }
