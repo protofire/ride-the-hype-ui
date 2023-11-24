@@ -28,7 +28,7 @@ export const getChainsConfig = (): { results: ChainInfo[] } => ({
         textColor: '#ffffff',
         backgroundColor: '#43c9ba',
       },
-      disabledWallets: ['trust', 'coinbase', 'ledger', 'trezor', 'keystone'],
+      disabledWallets: ['trust', 'coinbase', 'ledger', 'trezor', 'keystone', 'walletConnect_v2'],
     },
     {
       chainId: '4690',
@@ -56,7 +56,7 @@ export const getChainsConfig = (): { results: ChainInfo[] } => ({
         textColor: '#ffffff',
         backgroundColor: '#000000',
       },
-      disabledWallets: ['trust', 'coinbase', 'ledger', 'trezor', 'keystone'],
+      disabledWallets: ['trust', 'coinbase', 'ledger', 'trezor', 'keystone', 'walletConnect_v2'],
     },
   ],
 })
