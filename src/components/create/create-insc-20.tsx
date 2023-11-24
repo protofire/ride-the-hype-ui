@@ -32,6 +32,7 @@ export type FormData = {
   [FormField.limitPerAddress]: number
 }
 
+// TODO: add a validation for already taken ticker
 export const CreateInsc20 = () => {
   const chain = useCurrentChain()
   const onboard = useOnboard()

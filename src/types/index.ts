@@ -29,6 +29,6 @@ export declare type ChainInfo = {
   blockExplorerUriTemplate: BlockExplorerUriTemplate
   nativeCurrency: NativeCurrency
   theme: Theme
-  ensRegistryAddress?: string
+  ensRegistryAddress?: string | null
   disabledWallets: string[]
 }

@@ -60,5 +60,35 @@ export const getChainsConfig = (): { results: ChainInfo[] } => ({
       },
       disabledWallets: ['trust', 'coinbase', 'ledger', 'trezor', 'keystone', 'walletConnect_v2'],
     },
+    {
+      chainId: '17000',
+      chainName: 'Holesky',
+      shortName: 'holesky',
+      inscriptionPrefix: 'hls',
+      description: 'Ethereum Holesky Testnet',
+      nativeCurrency: {
+        name: 'Ether',
+        symbol: 'ETH',
+        decimals: 18,
+        logoUri: 'https://staging-safe-holesky-static-assets-us-east-1.s3.amazonaws.com/chains/17000/currency_logo.png',
+      },
+      blockExplorerUriTemplate: {
+        address: 'https://holesky.etherscan.io/address/{{address}}',
+        txHash: 'https://holesky.etherscan.io/tx/{{txHash}}',
+        api: 'https://holesky.etherscan.io/api?module={{module}}&action={{action}}&address={{address}}&apiKey={{apiKey}}',
+      },
+      disabledWallets: ['trust', 'coinbase', 'ledger', 'trezor', 'keystone', 'walletConnect_v2'],
+      ensRegistryAddress: null,
+      publicRpcUri: {
+        value: 'https://ethereum-holesky.publicnode.com',
+      },
+      rpcUri: {
+        value: 'https://ethereum-holesky.publicnode.com',
+      },
+      theme: {
+        textColor: '#ffffff',
+        backgroundColor: '#000000',
+      },
+    },
   ],
 })
