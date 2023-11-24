@@ -1,12 +1,12 @@
 import Box from '@mui/material/Box'
 import { CreateInsc20 } from '~/components/create/create-insc-20'
-import { CreateInsc721 } from '~/components/create/create-insc-721'
+import { MintInsc20 } from '~/components/mint/mint-insc-20'
 
 export default function Home() {
   return (
     <Box>
       <CreateInsc20 />
-      <CreateInsc721 />
+      <MintInsc20 />
     </Box>
   )
 }

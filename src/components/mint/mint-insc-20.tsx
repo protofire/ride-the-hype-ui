@@ -20,19 +20,15 @@ import EthHashInfo from '~/components/common/EthHashInfo'
 
 export enum FormField {
   tick = 'tick',
-  totalSupply = 'totalSupply',
-  limitPerMint = 'limitPerMint',
-  limitPerAddress = 'limitPerAddress',
+  amount = 'amount',
 }
 
 export type FormData = {
   [FormField.tick]: string
-  [FormField.totalSupply]: number
-  [FormField.limitPerMint]: number
-  [FormField.limitPerAddress]: number
+  [FormField.amount]: number
 }
 
-export const CreateInsc20 = () => {
+export const MintInsc20 = () => {
   const chain = useCurrentChain()
   const onboard = useOnboard()
   const [tx, setTx] = useState<TransactionResponse | undefined>()
@@ -41,35 +37,29 @@ export const CreateInsc20 = () => {
     mode: 'onChange',
     values: {
       [FormField.tick]: '',
-      [FormField.totalSupply]: 21000000,
-      [FormField.limitPerMint]: 1000,
-      [FormField.limitPerAddress]: 20000,
+      [FormField.amount]: 0,
     },
   })
   const { register, handleSubmit, setValue, watch } = formMethods
 
   const tick = watch(FormField.tick)
-  const totalSupply = watch(FormField.totalSupply)
-  const limitPerMint = watch(FormField.limitPerMint)
-  const limitPerAddress = watch(FormField.limitPerAddress)
+  const amount = watch(FormField.amount)
 
   const onSubmit = handleSubmit(async (data) => {
     if (!onboard || !chain) {
       console.log('Please check you wallet')
       return
     }
+
     try {
       const signer = await getAssertedChainSigner(onboard, chain?.chainId)
       const nonce = await signer.getTransactionCount('latest')
 
       const txData = {
         p: `${chain.inscriptionPrefix}-20`,
-        op: 'deploy',
+        op: 'mint',
         tick: data[FormField.tick],
-        max: data[FormField.totalSupply],
-        lim: data[FormField.limitPerMint],
-        wlim: data[FormField.limitPerAddress],
-        dec: '8',
+        amt: data[FormField.amount],
         nonce: nonce,
       }
       console.log({ txData })
@@ -82,7 +72,6 @@ export const CreateInsc20 = () => {
       })
 
       setTx(tx)
-      // TODO: add loading
       await tx.wait()
     } catch (e) {
       console.error(e)
@@ -98,12 +87,12 @@ export const CreateInsc20 = () => {
       <Grid container direction="row" justifyContent="space-between" spacing={3} mb={2}>
         <Grid item lg={5} xs={12}>
           <Typography variant="h4" fontWeight={700}>
-            Deploy {chain?.inscriptionPrefix}-20
+            Mint {chain?.inscriptionPrefix}-20
           </Typography>
         </Grid>
 
         <Grid item xs>
-          <Typography mb={3}>You can easily deploy a {chain?.inscriptionPrefix}-20 in a few seconds!</Typography>
+          <Typography mb={3}>You can easily mint a {chain?.inscriptionPrefix}-20 in a few seconds!</Typography>
 
           <FormProvider {...formMethods}>
             <form onSubmit={onSubmit}>
@@ -161,84 +150,14 @@ export const CreateInsc20 = () => {
               </Typography>
 
               <TextField
-                {...register(FormField.totalSupply)}
+                {...register(FormField.amount)}
                 variant="outlined"
                 type="number"
                 InputProps={{
-                  endAdornment: totalSupply ? (
+                  endAdornment: amount ? (
                     <InputAdornment position="end">
-                      <Tooltip title="Reset to default value">
-                        <IconButton onClick={() => onReset(FormField.totalSupply)} size="small" color="primary">
-                          <RotateLeftIcon />
-                        </IconButton>
-                      </Tooltip>
-                    </InputAdornment>
-                  ) : null,
-                }}
-                fullWidth
-              />
-
-              <Typography fontWeight={700} mb={2} mt={3}>
-                Limit Per Mint
-                <Tooltip placement="top" arrow title="Limit for each mint">
-                  <span>
-                    <SvgIcon
-                      component={InfoIcon}
-                      inheritViewBox
-                      fontSize="small"
-                      color="border"
-                      sx={{ verticalAlign: 'middle', ml: 0.5 }}
-                    />
-                  </span>
-                </Tooltip>
-              </Typography>
-
-              <TextField
-                {...register(FormField.limitPerMint)}
-                variant="outlined"
-                type="number"
-                InputProps={{
-                  endAdornment: limitPerMint ? (
-                    <InputAdornment position="end">
-                      <Tooltip title="Reset to default value">
-                        <IconButton onClick={() => onReset(FormField.limitPerMint)} size="small" color="primary">
-                          <RotateLeftIcon />
-                        </IconButton>
-                      </Tooltip>
-                    </InputAdornment>
-                  ) : null,
-                }}
-                fullWidth
-              />
-
-              <Typography fontWeight={700} mb={2} mt={3}>
-                Limit for each address can maximum mint
-                <Tooltip
-                  placement="top"
-                  arrow
-                  title="address balance < this limit (Before mint, please do not receive transfers from others, transfers are also counted as balance)"
-                >
-                  <span>
-                    <SvgIcon
-                      component={InfoIcon}
-                      inheritViewBox
-                      fontSize="small"
-                      color="border"
-                      sx={{ verticalAlign: 'middle', ml: 0.5 }}
-                    />
-                  </span>
-                </Tooltip>
-              </Typography>
-
-              <TextField
-                {...register(FormField.limitPerAddress)}
-                variant="outlined"
-                type="number"
-                InputProps={{
-                  endAdornment: limitPerAddress ? (
-                    <InputAdornment position="end">
-                      <Tooltip title="Reset to default value">
-                        <IconButton onClick={() => onReset(FormField.limitPerAddress)} size="small" color="primary">
+                      <Tooltip title="Reset value">
+                        <IconButton onClick={() => onReset(FormField.amount)} size="small" color="primary">
                           <RotateLeftIcon />
                         </IconButton>
                       </Tooltip>
@@ -253,7 +172,7 @@ export const CreateInsc20 = () => {
               ) : null}
 
               <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
-                Deploy
+                Mint
               </Button>
             </form>
           </FormProvider>
