@@ -130,22 +130,7 @@ export const MintInsc20Form = () => {
               />
 
               <Typography fontWeight={700} mb={2} mt={3}>
-                Total Supply
-                <Tooltip
-                  placement="top"
-                  arrow
-                  title="Once you coin supply reaches this figure, new mints won't be indexed"
-                >
-                  <span>
-                    <SvgIcon
-                      component={InfoIcon}
-                      inheritViewBox
-                      fontSize="small"
-                      color="border"
-                      sx={{ verticalAlign: 'middle', ml: 0.5 }}
-                    />
-                  </span>
-                </Tooltip>
+                Amount
               </Typography>
 
               <TextField
