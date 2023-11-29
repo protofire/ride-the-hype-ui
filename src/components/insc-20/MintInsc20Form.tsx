@@ -28,7 +28,7 @@ export type FormData = {
   [FormField.amount]: number
 }
 
-export const MintInsc20 = () => {
+export const MintInsc20Form = () => {
   const chain = useCurrentChain()
   const onboard = useOnboard()
   const [tx, setTx] = useState<TransactionResponse | undefined>()

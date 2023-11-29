@@ -21,7 +21,7 @@ const InitApp = (): null => {
   useLoadableStores()
   useInitOnboard()
   useInitWeb3()
-  // TODO: initialize loadable state
+
   return null
 }
 

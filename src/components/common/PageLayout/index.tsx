@@ -1,17 +1,36 @@
-import { type ReactElement } from 'react'
+import { useEffect, useState, type ReactElement } from 'react'
 import classnames from 'classnames'
+import { useRouter } from 'next/router'
 
-import Header from '~/components/common/Header'
 import css from './styles.module.css'
+import SideDrawer from './SideDrawer'
+import Header from '~/components/common/Header'
+import useDebounce from '~/hooks/useDebounce'
 
 const PageLayout = ({ children }: { pathname: string; children: ReactElement }): ReactElement => {
+  const router = useRouter()
+  const [noSidebar, setNoSidebar] = useState<boolean>(false)
+  const [isSidebarOpen, setSidebarOpen] = useState<boolean>(true)
+  const isAnimated = useDebounce(true, 300)
+
+  useEffect(() => {
+    setNoSidebar(!router.isReady)
+  }, [router])
+
   return (
     <>
       <header className={css.header}>
-        <Header />
+        <Header onMenuToggle={noSidebar ? undefined : setSidebarOpen} />
       </header>
 
-      <div className={classnames(css.main)}>
+      {!noSidebar && <SideDrawer isOpen={isSidebarOpen} onToggle={setSidebarOpen} />}
+
+      <div
+        className={classnames(css.main, {
+          [css.mainNoSidebar]: !isSidebarOpen,
+          [css.mainAnimated]: isAnimated,
+        })}
+      >
         <div className={css.content}>{children}</div>
       </div>
     </>

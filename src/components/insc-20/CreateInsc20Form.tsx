@@ -33,7 +33,7 @@ export type FormData = {
 }
 
 // TODO: add a validation for already taken ticker
-export const CreateInsc20 = () => {
+export const CreateInsc20Form = () => {
   const chain = useCurrentChain()
   const onboard = useOnboard()
   const [tx, setTx] = useState<TransactionResponse | undefined>()
