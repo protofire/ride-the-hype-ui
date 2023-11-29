@@ -96,6 +96,67 @@ const chainsConfiguration: ChainInfo[] = [
       backgroundColor: '#000000',
     },
   },
+  {
+    chainId: '23294',
+    chainName: 'Oasis Sapphire',
+    inscriptionPrefix: 'oas',
+    description: 'Oasis Sapphire Mainnet',
+    nativeCurrency: {
+      name: 'Rose',
+      symbol: 'ROSE',
+      decimals: 18,
+      logoUri: 'https://safe-oasis-static-assets-us-east-1.s3.amazonaws.com/chains/23294/currency_logo.png',
+    },
+    blockExplorerUriTemplate: {
+      address: 'https://explorer.sapphire.oasis.io/address/{{address}}',
+      txHash: 'https://explorer.sapphire.oasis.io/tx/{{txHash}}',
+      api: 'https://explorer.sapphire.oasis.io/api?module={{module}}&action={{action}}&address={{address}}&apiKey={{apiKey}}',
+    },
+    disabledWallets: ['trust', 'coinbase', 'ledger', 'trezor', 'keystone', 'walletConnect_v2'],
+    ensRegistryAddress: null,
+    publicRpcUri: {
+      value: 'https://sapphire.oasis.io',
+    },
+    rpcUri: {
+      value: 'https://sapphire.oasis.io',
+    },
+    shortName: 'sapphire',
+    theme: {
+      textColor: '#ffffff',
+      backgroundColor: '#000000',
+    },
+  },
+  {
+    chainId: '23295',
+    chainName: 'Oasis Sapphire Testnet',
+    inscriptionPrefix: 'oast',
+    description: 'Oasis Sapphire Testnet',
+    nativeCurrency: {
+      name: 'Sapphire Test Rose',
+      symbol: 'TEST',
+      decimals: 18,
+      logoUri: 'https://safe-oasis-static-assets-us-east-1.s3.amazonaws.com/chains/23295/currency_logo.png',
+    },
+    blockExplorerUriTemplate: {
+      address: 'https://testnet.explorer.sapphire.oasis.dev/address/{{address}}',
+      txHash: 'https://testnet.explorer.sapphire.oasis.dev/tx/{{txHash}}',
+      api: 'https://testnet.sapphire.oasis.dev/api?module={{module}}&action={{action}}&address={{address}}&apiKey={{apiKey}',
+    },
+
+    disabledWallets: ['trust', 'coinbase', 'ledger', 'trezor', 'keystone', 'walletConnect_v2'],
+    ensRegistryAddress: null,
+    publicRpcUri: {
+      value: 'https://testnet.sapphire.oasis.dev',
+    },
+    rpcUri: {
+      value: 'https://testnet.sapphire.oasis.dev',
+    },
+    shortName: 'sapphire-testnet',
+    theme: {
+      textColor: '#ffffff',
+      backgroundColor: '#000000',
+    },
+  },
 ]
 
 // Create a map of chain short names to chain IDs
