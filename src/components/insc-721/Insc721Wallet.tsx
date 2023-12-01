@@ -4,7 +4,6 @@ import Link from 'next/link'
 import z from 'zod'
 import Paper from '@mui/material/Paper'
 import Grid from '@mui/material/Grid'
-import Typography from '@mui/material/Typography'
 import { INDEXER_API_URL } from '~/config/constants'
 import useWallet from '~/hooks/wallets/useWallet'
 import useChainId from '~/hooks/useChainId'
@@ -50,7 +49,7 @@ export const Insc721Wallet = () => {
     <Paper sx={{ padding: 4, maxWidth: '900px', m: '1rem auto' }}>
       <Grid container direction="row" spacing={3} mb={2}>
         {inscriptions.map((item) => (
-          <Grid item lg={5} xs={12}>
+          <Grid item lg={5} xs={12} key={item.id}>
             <Link
               href={chain ? getBlockExplorerLink(chain, item.hash)?.href || '' : ''}
               target="_blank"
