@@ -7,9 +7,8 @@ export const AppRoutes = {
     create: '/insc-20/create',
   },
   insc721: {
-    transfer: '/insc-721/transfer',
+    wallet: '/insc-721/wallet',
     mint: '/insc-721/mint',
     index: '/insc-721',
-    create: '/insc-721/create',
   },
 }

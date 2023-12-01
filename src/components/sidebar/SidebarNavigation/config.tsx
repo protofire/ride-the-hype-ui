@@ -21,7 +21,7 @@ export const navItems: NavItem[] = [
   {
     label: 'Insc-721',
     icon: <SvgIcon component={FileIcon} inheritViewBox />,
-    href: AppRoutes.index,
+    href: AppRoutes.insc721.mint,
   },
 ]
 
@@ -42,15 +42,11 @@ export const insc20NavItems = [
 
 export const insc721NavItems = [
   {
-    label: 'Create',
-    href: AppRoutes.insc721.create,
-  },
-  {
     label: 'Mint',
     href: AppRoutes.insc721.mint,
   },
   {
-    label: 'Transfer',
-    href: AppRoutes.insc721.transfer,
+    label: 'Wallet',
+    href: AppRoutes.insc721.wallet,
   },
 ]

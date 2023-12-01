@@ -7,3 +7,5 @@ export const TREZOR_APP_URL = 'https://www.blocknative.com'
 export const TREZOR_EMAIL = 'test@test.com'
 export const EMPTY_DATA = '0x'
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
+
+export const INDEXER_API_URL = 'https://inscriptions-api.protofire.io/api/v1'

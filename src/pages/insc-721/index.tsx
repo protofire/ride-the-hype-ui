@@ -1,3 +1,3 @@
-import CreatePage from './create'
+import MintPage from './mint'
 
-export default CreatePage
+export default MintPage
