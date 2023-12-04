@@ -31,6 +31,7 @@ declare namespace NodeJS {
   export interface ProcessEnv {
     NEXT_PUBLIC_IS_PRODUCTION?: string
     NEXT_PUBLIC_WC_PROJECT_ID?: string
+    NEXT_PUBLIC_INDEXER_API_BASE_URL?: string
   }
 }
 

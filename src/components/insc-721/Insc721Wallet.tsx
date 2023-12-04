@@ -4,7 +4,7 @@ import Link from 'next/link'
 import z from 'zod'
 import Paper from '@mui/material/Paper'
 import Grid from '@mui/material/Grid'
-import { INDEXER_API_URL } from '~/config/constants'
+import { INDEXER_API_BASE_URL } from '~/config/constants'
 import useWallet from '~/hooks/wallets/useWallet'
 import useChainId from '~/hooks/useChainId'
 import { useAppSelector } from '~/store'
@@ -31,7 +31,7 @@ export const Insc721Wallet = () => {
   useEffect(() => {
     if (wallet) {
       const fetchInscriptions = async () => {
-        const url = `${INDEXER_API_URL}/users/${wallet.address}/inscriptions`
+        const url = new URL(`api/v1/users/${wallet.address}/inscriptions`, INDEXER_API_BASE_URL)
         const res = await fetch(url)
         const data = await res.json()
 
