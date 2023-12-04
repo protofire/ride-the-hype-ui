@@ -11,4 +11,9 @@ export const AppRoutes = {
     mint: '/insc-721/mint',
     index: '/insc-721',
   },
+  wallet: {
+    ownableInsc721: '/wallet/ownable-insc-721',
+    ownableInsc20: '/wallet/ownable-insc-20',
+    index: '/wallet',
+  },
 }

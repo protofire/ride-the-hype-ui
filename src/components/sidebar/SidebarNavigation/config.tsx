@@ -23,6 +23,11 @@ export const navItems: NavItem[] = [
     icon: <SvgIcon component={FileIcon} inheritViewBox />,
     href: AppRoutes.insc721.mint,
   },
+  {
+    label: 'Wallet',
+    icon: <SvgIcon component={CoinIcon} inheritViewBox />,
+    href: AppRoutes.wallet.ownableInsc20,
+  },
 ]
 
 export const insc20NavItems = [
@@ -48,5 +53,16 @@ export const insc721NavItems = [
   {
     label: 'Wallet',
     href: AppRoutes.insc721.wallet,
+  },
+]
+
+export const walletNavItems = [
+  {
+    label: 'Coins',
+    href: AppRoutes.wallet.ownableInsc20,
+  },
+  {
+    label: 'NFTs',
+    href: AppRoutes.wallet.ownableInsc721,
   },
 ]
