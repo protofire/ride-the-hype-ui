@@ -2,6 +2,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 
 import WalletHeader from '~/components/wallet/WalletHeader'
+import OwnableInsc721 from '~/components/wallet/OwnableInsc721'
 
 const OwnableInsc721Page: NextPage = () => {
   return (
@@ -12,7 +13,9 @@ const OwnableInsc721Page: NextPage = () => {
 
       <WalletHeader />
 
-      <main></main>
+      <main>
+        <OwnableInsc721 />
+      </main>
     </>
   )
 }

@@ -50,10 +50,6 @@ export const insc721NavItems = [
     label: 'Mint',
     href: AppRoutes.insc721.mint,
   },
-  {
-    label: 'Wallet',
-    href: AppRoutes.insc721.wallet,
-  },
 ]
 
 export const walletNavItems = [
