@@ -34,7 +34,7 @@ const Header = ({ onMenuToggle }: HeaderProps): ReactElement => {
 
       <div className={classnames(css.element, css.hideMobile, css.logo)}>
         <Link href={AppRoutes.index} passHref>
-          <Image src="../../images/logo.png" width="70" height="70" alt="Logo" />
+          <Image src="../../images/logo.png" width="250" height="60" alt="Logo" />
         </Link>
       </div>
 
