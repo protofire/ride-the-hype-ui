@@ -30,7 +30,7 @@ const Inscription = () => {
   return (
     <Paper sx={{ padding: 4, maxWidth: '1200px', m: '1rem auto' }}>
       {error ? (
-        <Typography>An error occurred during loading this inscription by hash ${router.query.id}</Typography>
+        <Typography>An error occurred during loading this inscription by hash {router.query.id}</Typography>
       ) : null}
 
       {!loading && inscriptionDetails === null ? <Typography>{router.query.id} not found.</Typography> : null}

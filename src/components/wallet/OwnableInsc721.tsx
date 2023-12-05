@@ -5,7 +5,7 @@ import Grid from '@mui/material/Grid'
 import useWallet from '~/hooks/wallets/useWallet'
 import { IndexerApiService } from '~/services/indexer-api'
 import useAsync from '~/hooks/useAsync'
-import { Typography } from '@mui/material'
+import { Skeleton, Typography } from '@mui/material'
 import { AppRoutes } from '~/config/routes'
 
 const OwnableInsc721 = () => {
@@ -20,15 +20,23 @@ const OwnableInsc721 = () => {
 
   return (
     <Paper sx={{ padding: 4, maxWidth: '900px', m: '1rem auto' }}>
-      {loading ? <Typography>Loading...</Typography> : null}
-      {error ? <Typography>An error occurred during loading your NFTs...</Typography> : null}
+      {loading ? (
+        <Grid container direction="row" spacing={3} mb={2}>
+          {[...Array(9)].map((e) => (
+            <Grid item lg={4} xs={12} key={e}>
+              <Skeleton width="100%" height="150px" variant="rounded" />
+            </Grid>
+          ))}
+        </Grid>
+      ) : null}
+      {error ? <Typography>An error occurred during loading your inscriptions...</Typography> : null}
       {!loading && inscriptions !== undefined && inscriptions.length === 0 ? (
-        <Typography>You don&apos;t have any NFT yet.</Typography>
+        <Typography>You don&apos;t have any inscription yet.</Typography>
       ) : null}
       {!loading && inscriptions !== undefined && inscriptions.length > 0 ? (
         <Grid container direction="row" spacing={3} mb={2}>
           {inscriptions.map((item) => (
-            <Grid item lg={5} xs={12} key={item.id}>
+            <Grid item lg={4} xs={12} key={item.id}>
               <Link href={{ pathname: AppRoutes.insc721.inscriptionDetails, query: { id: item.hash } }}>
                 <Image
                   width={0}
