@@ -1,17 +1,14 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 
-import WalletHeader from '~/components/wallet/WalletHeader'
 import OwnableInsc721 from '~/components/wallet/OwnableInsc721'
 
 const OwnableInsc721Page: NextPage = () => {
   return (
     <>
       <Head>
-        <title>View your inscriptions - NFT</title>
+        <title>View your inscriptions</title>
       </Head>
-
-      <WalletHeader />
 
       <main>
         <OwnableInsc721 />
