@@ -3,15 +3,13 @@ import Link from 'next/link'
 import Paper from '@mui/material/Paper'
 import Grid from '@mui/material/Grid'
 import useWallet from '~/hooks/wallets/useWallet'
-import { getBlockExplorerLink } from '~/utils/chains'
 import { IndexerApiService } from '~/services/indexer-api'
 import useAsync from '~/hooks/useAsync'
 import { Typography } from '@mui/material'
-import { useCurrentChain } from '~/hooks/useChains'
+import { AppRoutes } from '~/config/routes'
 
 const OwnableInsc721 = () => {
   const wallet = useWallet()
-  const chain = useCurrentChain()
   const [inscriptions, error, loading] = useAsync(async () => {
     if (wallet) {
       const indexerApiService = IndexerApiService.getInstance()
@@ -31,11 +29,7 @@ const OwnableInsc721 = () => {
         <Grid container direction="row" spacing={3} mb={2}>
           {inscriptions.map((item) => (
             <Grid item lg={5} xs={12} key={item.id}>
-              <Link
-                href={chain ? getBlockExplorerLink(chain, item.hash)?.href || '' : ''}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <Link href={{ pathname: AppRoutes.insc721.inscriptionDetails, query: { id: item.hash } }}>
                 <Image
                   width={0}
                   height={0}

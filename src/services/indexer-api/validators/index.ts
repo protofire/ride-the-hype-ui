@@ -16,7 +16,7 @@ export const TransactionSchema = z.object({
   // FIXME: should be object or string
   data: z.any(),
   blockNumber: z.string(),
-  createdAt: z.date(), // DateTime @default(now()) @map("created_at")
+  createdAt: z.string(),
 })
 
 export const InscriptionSchema = z.object({
