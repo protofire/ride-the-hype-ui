@@ -8,6 +8,7 @@ export const AppRoutes = {
   },
   insc721: {
     mint: '/insc-721/mint',
+    inscriptionDetails: '/insc-721/inscription-details',
     index: '/insc-721',
   },
   wallet: {

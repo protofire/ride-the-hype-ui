@@ -2,7 +2,6 @@ import type { ReactElement } from 'react'
 import React from 'react'
 import { AppRoutes } from '~/config/routes'
 import CoinIcon from '~/public/images/sidebar/coin.svg'
-import FileIcon from '~/public/images/sidebar/file.svg'
 import { SvgIcon } from '@mui/material'
 
 export type NavItem = {
@@ -14,17 +13,17 @@ export type NavItem = {
 
 export const navItems: NavItem[] = [
   {
-    label: 'Insc-20',
+    label: 'Create',
     icon: <SvgIcon component={CoinIcon} inheritViewBox />,
-    href: AppRoutes.insc20.create,
-  },
-  {
-    label: 'Insc-721',
-    icon: <SvgIcon component={FileIcon} inheritViewBox />,
     href: AppRoutes.insc721.mint,
   },
   {
-    label: 'Wallet',
+    label: 'My inscriptions',
+    icon: <SvgIcon component={CoinIcon} inheritViewBox />,
+    href: AppRoutes.wallet.ownableInsc721,
+  },
+  {
+    label: 'All inscriptions',
     icon: <SvgIcon component={CoinIcon} inheritViewBox />,
     href: AppRoutes.wallet.ownableInsc20,
   },

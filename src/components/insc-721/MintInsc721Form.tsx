@@ -1,88 +1,107 @@
-import { FormProvider, useForm } from 'react-hook-form'
-import { useState } from 'react'
+import type { FormEventHandler } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { toHex } from 'web3-utils'
 import Paper from '@mui/material/Paper'
 import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
-import Tooltip from '@mui/material/Tooltip'
-import SvgIcon from '@mui/material/SvgIcon'
-import TextField from '@mui/material/TextField'
-import InputAdornment from '@mui/material/InputAdornment'
-import { Button, IconButton } from '@mui/material'
-import RotateLeftIcon from '@mui/icons-material/RotateLeft'
+import { Button } from '@mui/material'
 import { useCurrentChain } from '~/hooks/useChains'
 import useOnboard from '~/hooks/wallets/useOnboard'
-import InfoIcon from '~/public/images/info.svg'
 import { getAssertedChainSigner } from '~/utils/wallets'
 import { ZERO_ADDRESS } from '~/config/constants'
 import type { TransactionResponse } from '@ethersproject/abstract-provider'
 import EthHashInfo from '~/components/common/EthHashInfo'
+import { Insc721FileUpload } from '~/components/insc-721/Insc721FileUpload'
+import type { FileInfo } from '~/components/common/FileUpload'
+import Link from 'next/link'
+import { AppRoutes } from '~/config/routes'
 
-export enum FormField {
-  files = 'files',
-}
+function formatFileSize(size: number) {
+  const sizeKb = 1024
+  const sizeMb = sizeKb * sizeKb
+  const sizeGb = sizeMb * sizeKb
+  const sizeTerra = sizeGb * sizeKb
 
-export type FormData = {
-  [FormField.files]: File[]
+  if (size < sizeMb) {
+    const calculatedSizeMb = Number((size / sizeKb).toFixed(2))
+    if (calculatedSizeMb <= 0) {
+      return size + ' B'
+    }
+    return calculatedSizeMb + ' KB'
+  } else if (size < sizeGb) {
+    return (size / sizeMb).toFixed(2) + ' MB'
+  } else if (size < sizeTerra) {
+    return (size / sizeGb).toFixed(2) + ' GB'
+  }
+
+  return ''
 }
 
 export const MintInsc721Form = () => {
   const chain = useCurrentChain()
   const onboard = useOnboard()
+  const [file, setFile] = useState<File | undefined>()
   const [tx, setTx] = useState<TransactionResponse | undefined>()
+  const [txLoading, setTxLoading] = useState<boolean>(false)
 
-  const formMethods = useForm<FormData>({
-    mode: 'onChange',
-    values: {
-      [FormField.files]: [],
-    },
-  })
-  const { register, handleSubmit, setValue, watch } = formMethods
+  const onSubmit: FormEventHandler<HTMLFormElement> = useCallback(
+    async (event) => {
+      event.preventDefault()
 
-  const files = watch(FormField.files)
-
-  const onSubmit = handleSubmit(async (data) => {
-    if (!onboard || !chain) {
-      console.log('Please check you wallet')
-      return
-    }
-
-    try {
-      const [file] = files
-
-      const base64 = await new Promise<string>((resolve, reject) => {
-        const reader = new FileReader()
-        reader.onload = () => resolve(reader.result as string)
-        reader.onerror = reject
-        reader.readAsDataURL(file)
-      })
-
-      const signer = await getAssertedChainSigner(onboard, chain?.chainId)
-
-      const txData = {
-        p: `${chain.inscriptionPrefix}-721`,
-        op: 'mint',
-        'content-type': file.type,
-        content: base64,
+      if (!onboard || !chain || !file) {
+        console.log('Please check you wallet')
+        return
       }
-      console.log({ txData })
-      const dataHex = toHex('data:application/json,' + JSON.stringify(txData))
 
-      const tx = await signer.sendTransaction({
-        to: ZERO_ADDRESS,
-        value: 0,
-        data: dataHex,
-      })
+      try {
+        const base64 = await new Promise<string>((resolve, reject) => {
+          const reader = new FileReader()
+          reader.onload = () => resolve(reader.result as string)
+          reader.onerror = reject
+          reader.readAsDataURL(file)
+        })
 
-      setTx(tx)
-      await tx.wait()
-    } catch (e) {
-      console.error(e)
-    }
-  })
+        const signer = await getAssertedChainSigner(onboard, chain?.chainId)
 
-  const onReset = (name: FormField) => {
-    setValue(name, [])
+        const txData = {
+          p: `${chain.inscriptionPrefix}-721`,
+          op: 'mint',
+          'content-type': file.type,
+          content: base64,
+        }
+
+        const dataHex = toHex('data:application/json,' + JSON.stringify(txData))
+
+        const tx = await signer.sendTransaction({
+          to: ZERO_ADDRESS,
+          value: 0,
+          data: dataHex,
+        })
+
+        setTx(tx)
+        setTxLoading(true)
+        await tx.wait()
+        setTxLoading(false)
+      } catch (e) {
+        console.error(e)
+      }
+    },
+    [chain, file, onboard],
+  )
+
+  const fileInfo: FileInfo | undefined = useMemo(() => {
+    return file
+      ? {
+          name: file.name,
+          additionalInfo: formatFileSize(file.size),
+        }
+      : undefined
+  }, [file])
+
+  const onReset = () => {
+    setFile(undefined)
+    setTx(undefined)
+    setTxLoading(false)
   }
 
   return (
@@ -90,58 +109,47 @@ export const MintInsc721Form = () => {
       <Grid container direction="row" justifyContent="space-between" spacing={3} mb={2}>
         <Grid item lg={5} xs={12}>
           <Typography variant="h4" fontWeight={700}>
-            Mint {chain?.inscriptionPrefix}-721
+            Create an inscription
           </Typography>
         </Grid>
 
         <Grid item xs>
-          <Typography mb={3}>You can easily mint a {chain?.inscriptionPrefix}-721 in a few seconds!</Typography>
+          {!tx && !txLoading ? (
+            <>
+              <Typography mb={3}>You can easily mint a {chain?.inscriptionPrefix}-721 in a few seconds!</Typography>
 
-          <FormProvider {...formMethods}>
-            <form onSubmit={onSubmit}>
-              <Typography fontWeight={700} mb={2} mt={3}>
-                File
-                <Tooltip placement="top" arrow title="NFT image">
-                  <span>
-                    <SvgIcon
-                      component={InfoIcon}
-                      inheritViewBox
-                      fontSize="small"
-                      color="border"
-                      sx={{ verticalAlign: 'middle', ml: 0.5 }}
-                    />
-                  </span>
-                </Tooltip>
-              </Typography>
+              <form onSubmit={onSubmit}>
+                <Insc721FileUpload fileInfo={fileInfo} setFile={setFile} />
 
-              <TextField
-                {...register(FormField.files)}
-                variant="outlined"
-                type="file"
-                placeholder="File"
-                InputProps={{
-                  endAdornment: files?.length ? (
-                    <InputAdornment position="end">
-                      <Tooltip title="Reset">
-                        <IconButton onClick={() => onReset(FormField.files)} size="small" color="primary">
-                          <RotateLeftIcon />
-                        </IconButton>
-                      </Tooltip>
-                    </InputAdornment>
-                  ) : null,
-                }}
-                fullWidth
-              />
+                <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }} disabled={!file}>
+                  Mint
+                </Button>
+              </form>
+            </>
+          ) : null}
 
-              {tx !== undefined ? (
-                <EthHashInfo address={tx.hash} showAvatar={false} showCopyButton hasExplorer />
-              ) : null}
-
-              <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }} disabled={!files?.length}>
-                Mint
+          {tx ? (
+            <>
+              {txLoading ? (
+                <Typography>Your transaction was successfully submitted!</Typography>
+              ) : (
+                <Typography>
+                  Your inscription was created 🎉, you can view it{' '}
+                  <Link
+                    style={{ textDecoration: 'underline' }}
+                    href={{ pathname: AppRoutes.insc721.inscriptionDetails, query: { id: tx.hash } }}
+                  >
+                    there
+                  </Link>
+                  !
+                </Typography>
+              )}
+              <EthHashInfo address={tx.hash} showAvatar={false} showCopyButton hasExplorer />
+              <Button onClick={onReset} variant="contained" color="primary" sx={{ mt: 2 }}>
+                Mint a new one
               </Button>
-            </form>
-          </FormProvider>
+            </>
+          ) : null}
         </Grid>
       </Grid>
     </Paper>

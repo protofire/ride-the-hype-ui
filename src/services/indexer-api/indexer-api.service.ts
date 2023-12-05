@@ -29,7 +29,12 @@ export class IndexerApiService {
   public getOwnableInscriptions = async (walletAddress: string): Promise<Inscription[]> => {
     const response = await this.client.get(`api/v1/users/${walletAddress}/inscriptions`)
 
-    console.log({ response })
     return InscriptionSchema.array().parseAsync(response.data)
+  }
+
+  public getInscriptionByHash = async (hash: string): Promise<Inscription> => {
+    const response = await this.client.get(`api/v1/inscriptions/${hash}`)
+
+    return InscriptionSchema.parseAsync(response.data)
   }
 }
