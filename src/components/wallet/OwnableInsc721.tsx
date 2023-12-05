@@ -19,7 +19,7 @@ const OwnableInsc721 = () => {
   }, [wallet])
 
   return (
-    <Paper sx={{ padding: 4, maxWidth: '900px', m: '1rem auto' }}>
+    <Paper sx={{ padding: 4, maxWidth: '1200px', m: '1rem auto' }}>
       {loading ? (
         <Grid container direction="row" spacing={3} mb={2}>
           {[...Array(9)].map((e) => (
@@ -29,10 +29,13 @@ const OwnableInsc721 = () => {
           ))}
         </Grid>
       ) : null}
+
       {error ? <Typography>An error occurred during loading your inscriptions...</Typography> : null}
+
       {!loading && inscriptions !== undefined && inscriptions.length === 0 ? (
         <Typography>You don&apos;t have any inscription yet.</Typography>
       ) : null}
+
       {!loading && inscriptions !== undefined && inscriptions.length > 0 ? (
         <Grid container direction="row" spacing={3} mb={2}>
           {inscriptions.map((item) => (
