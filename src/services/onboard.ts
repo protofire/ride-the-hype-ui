@@ -1,7 +1,7 @@
 import Onboard, { type EIP1193Provider, type OnboardAPI } from '@web3-onboard/core'
 import type { ChainInfo } from '~/types'
 import { hexValue } from '@ethersproject/bytes'
-import { getAllWallets, getRecommendedInjectedWallets } from '~/hooks/wallets/wallets'
+import { /* getAllWallets, */ getRecommendedInjectedWallets, getSupportedWallets } from '~/hooks/wallets/wallets'
 import { getRpcServiceUrl } from '~/hooks/wallets/web3'
 
 export type ConnectedWallet = {
@@ -17,7 +17,9 @@ let onboard: OnboardAPI | null = null
 export const createOnboard = (chainConfigs: ChainInfo[], currentChain: ChainInfo): OnboardAPI => {
   if (onboard) return onboard
 
-  const wallets = getAllWallets(currentChain)
+  // FIXME:
+  // const wallets = getAllWallets(currentChain)
+  const wallets = getSupportedWallets(currentChain)
 
   const chains = chainConfigs.map((cfg) => ({
     id: hexValue(parseInt(cfg.chainId)),
