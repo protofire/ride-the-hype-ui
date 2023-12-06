@@ -13,9 +13,9 @@ export type NavItem = {
 
 export const navItems: NavItem[] = [
   {
-    label: 'Create',
+    label: 'Recent inscriptions',
     icon: <SvgIcon component={CoinIcon} inheritViewBox />,
-    href: AppRoutes.insc721.mint,
+    href: AppRoutes.allInscriptions,
   },
   {
     label: 'My inscriptions',
@@ -23,9 +23,9 @@ export const navItems: NavItem[] = [
     href: AppRoutes.wallet.ownableInsc721,
   },
   {
-    label: 'All inscriptions',
+    label: 'Create',
     icon: <SvgIcon component={CoinIcon} inheritViewBox />,
-    href: AppRoutes.allInscriptions,
+    href: AppRoutes.insc721.mint,
   },
 ]
 

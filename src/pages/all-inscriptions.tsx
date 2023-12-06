@@ -7,7 +7,7 @@ const AllInscriptionsPage: NextPage = () => {
   return (
     <>
       <Head>
-        <title>All inscriptions</title>
+        <title>Recent inscriptions</title>
       </Head>
 
       <main>

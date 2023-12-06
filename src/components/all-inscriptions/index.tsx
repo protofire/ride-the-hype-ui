@@ -17,8 +17,8 @@ const AllInscriptions = () => {
     <Paper sx={{ padding: 4, maxWidth: '1200px', m: '1rem auto' }}>
       {loading ? (
         <Grid container direction="row" spacing={3} mb={2}>
-          {[...Array(9)].map((e) => (
-            <Grid item lg={4} xs={12} key={e}>
+          {[...Array(9)].map((element, index) => (
+            <Grid item lg={4} xs={12} key={`${element}-${index}`}>
               <Skeleton width="100%" height="150px" variant="rounded" />
             </Grid>
           ))}
