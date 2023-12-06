@@ -8,7 +8,7 @@ import ConnectWallet from '~/components/common/ConnectWallet'
 // import NetworkSelector from '~/components/common/NetworkSelector'
 import { AppRoutes } from '~/config/routes'
 import Link from 'next/link'
-import Image from 'next/image'
+import Logo from '~/public/images/colored-logo.svg'
 
 type HeaderProps = {
   onMenuToggle?: Dispatch<SetStateAction<boolean>>
@@ -34,7 +34,7 @@ const Header = ({ onMenuToggle }: HeaderProps): ReactElement => {
 
       <div className={classnames(css.element, css.hideMobile, css.logo)}>
         <Link href={AppRoutes.index} passHref>
-          <Image src="../../images/logo.png" width="250" height="60" alt="Logo" />
+          <Logo alt="Logo" />
         </Link>
       </div>
 
