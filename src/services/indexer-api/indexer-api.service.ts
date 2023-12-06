@@ -15,6 +15,8 @@ export class IndexerApiService {
   }
 
   public static getInstance = (baseUrl: string = DEFAULT_INDEXER_API_BASE_URL): IndexerApiService => {
+    if (!baseUrl) throw new Error('baseUrl is required')
+
     const existingInstance = IndexerApiService.instances.get(baseUrl)
     if (existingInstance === undefined) {
       const newServiceInstance = new IndexerApiService(baseUrl)
