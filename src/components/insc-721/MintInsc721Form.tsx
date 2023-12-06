@@ -80,7 +80,7 @@ export const MintInsc721Form = () => {
 
         setTx(tx)
         setTxLoading(true)
-        await tx.wait()
+        await tx.wait(3)
         setTxLoading(false)
       } catch (e) {
         console.error(e)
@@ -131,7 +131,10 @@ export const MintInsc721Form = () => {
           {tx ? (
             <>
               {txLoading ? (
-                <Typography>Your transaction was successfully submitted!</Typography>
+                <Typography variant="body2" mb={1}>
+                  Your transaction was successfully submitted! It may take around 1 minute (8 blocks) to be added to the
+                  blockchain and indexed. Once processed, your inscription will be visible and accessible.
+                </Typography>
               ) : (
                 <Typography>
                   Your inscription was created 🎉, you can view it{' '}
