@@ -23,9 +23,8 @@ const chainsConfiguration: ChainInfo[] = IS_PRODUCTION
           value: 'https://babel-api.mainnet.iotex.io',
         },
         blockExplorerUriTemplate: {
-          address: 'https://iotexscout.io/address/{{address}}',
-          txHash: 'https://iotexscout.io/tx/{{txHash}}',
-          api: 'https://iotexscout.io/api?module={{module}}&action={{action}}&address={{address}}&apiKey={{apiKey}}',
+          address: 'https://iotexscan.io/address/{{address}}',
+          txHash: 'https://iotexscan.io/tx/{{txHash}}',
         },
         nativeCurrency: {
           name: 'IOTX',
@@ -145,9 +144,8 @@ const chainsConfiguration: ChainInfo[] = IS_PRODUCTION
           value: 'https://babel-api.testnet.iotex.io',
         },
         blockExplorerUriTemplate: {
-          address: 'https://testnet.iotexscout.io/address/{{address}}',
-          txHash: 'https://testnet.iotexscout.io/tx/{{txHash}}',
-          api: 'https://testnet.iotexscout.io/api?module={{module}}&action={{action}}&address={{address}}&apiKey={{apiKey}}',
+          address: 'https://testnet.iotexscan.io/address/{{address}}',
+          txHash: 'https://testnet.iotexscan.io/tx/{{txHash}}',
         },
         nativeCurrency: {
           name: 'IOTX',

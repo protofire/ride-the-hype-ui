@@ -5,7 +5,7 @@ export declare type RpcUri = {
 export declare type BlockExplorerUriTemplate = {
   address: string
   txHash: string
-  api: string
+  api?: string
 }
 export declare type NativeCurrency = {
   name: string
