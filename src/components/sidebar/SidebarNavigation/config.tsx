@@ -23,7 +23,7 @@ export const navItems: NavItem[] = [
     href: AppRoutes.wallet.ownableInsc721,
   },
   {
-    label: 'Create',
+    label: 'Create inscription',
     icon: <SvgIcon component={CoinIcon} inheritViewBox />,
     href: AppRoutes.insc721.mint,
   },
