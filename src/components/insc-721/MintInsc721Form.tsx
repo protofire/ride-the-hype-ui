@@ -130,23 +130,21 @@ export const MintInsc721Form = () => {
 
           {tx ? (
             <>
-              {txLoading ? (
-                <Typography variant="body2" mb={1}>
-                  Your transaction was successfully submitted! It may take around 1 minute (8 blocks) to be added to the
-                  blockchain and indexed. Once processed, your inscription will be visible and accessible.
-                </Typography>
-              ) : (
-                <Typography>
-                  Your inscription was created 🎉, you can view it{' '}
-                  <Link
-                    style={{ textDecoration: 'underline' }}
-                    href={{ pathname: AppRoutes.insc721.inscriptionDetails, query: { id: tx.hash } }}
-                  >
-                    there
-                  </Link>
-                  !
-                </Typography>
-              )}
+              <Typography variant="body2" mb={1}>
+                🎉 Your transaction was successfully submitted. It may take around 1 minute (8 blocks) to be approved
+                and added to the blockchain. Once processed, your inscription will be accessible by this{' '}
+                <Link
+                  style={{ textDecoration: 'underline' }}
+                  href={{ pathname: AppRoutes.insc721.inscriptionDetails, query: { id: tx.hash } }}
+                >
+                  link
+                </Link>{' '}
+                and will be visible in the list of{' '}
+                <Link style={{ textDecoration: 'underline' }} href={{ pathname: AppRoutes.wallet.ownableInsc721 }}>
+                  your inscriptions
+                </Link>
+                .
+              </Typography>
               <EthHashInfo address={tx.hash} showAvatar={false} showCopyButton hasExplorer />
               <Button onClick={onReset} variant="contained" color="primary" sx={{ mt: 2 }}>
                 Mint a new one
