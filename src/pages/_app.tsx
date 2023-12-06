@@ -41,7 +41,7 @@ function CustomApp({
   return (
     <StoreHydrator>
       <Head>
-        <title key="default-title">Ride the Hype</title>
+        <title key="default-title">Inscriptions</title>
         <MetaTags />
       </Head>
 

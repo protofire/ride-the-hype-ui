@@ -44,9 +44,9 @@ export const createOnboard = (chainConfigs: ChainInfo[], currentChain: ChainInfo
     },
 
     appMetadata: {
-      name: 'Ride The Hype',
-      icon: location.origin + '/hype.svg',
-      description: 'Poc of Ride The Hype',
+      name: 'Ioscriptions',
+      icon: location.origin + '/images/logo.svg',
+      description: 'Poc of Inscriptions',
       recommendedInjectedWallets: getRecommendedInjectedWallets(),
     },
 
