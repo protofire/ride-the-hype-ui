@@ -36,7 +36,7 @@ const chainsConfiguration: ChainInfo[] = IS_PRODUCTION
           textColor: '#ffffff',
           backgroundColor: '#43c9ba',
         },
-        disabledWallets: ['trust', 'coinbase', 'ledger', 'trezor', 'keystone', 'walletConnect_v2'],
+        disabledWallets: ['trust', 'coinbase', 'ledger', 'trezor', 'keystone', 'walletConnect_v2', 'NONE'],
       },
       // {
       //   chainId: '17000',
@@ -157,7 +157,7 @@ const chainsConfiguration: ChainInfo[] = IS_PRODUCTION
           textColor: '#ffffff',
           backgroundColor: '#000000',
         },
-        disabledWallets: ['trust', 'coinbase', 'ledger', 'trezor', 'keystone', 'walletConnect_v2'],
+        disabledWallets: ['trust', 'coinbase', 'ledger', 'trezor', 'keystone', 'walletConnect_v2', 'NONE'],
       },
     ]
 
