@@ -10,7 +10,7 @@ import Image from 'next/image'
 const AllInscriptions = () => {
   const [inscriptions, error, loading] = useAsync(async () => {
     const indexerApiService = IndexerApiService.getInstance()
-    return indexerApiService.getInscriptions()
+    return indexerApiService.getInscriptions({ limit: 50, order: 'desc', page: 1 })
   }, [])
 
   return (

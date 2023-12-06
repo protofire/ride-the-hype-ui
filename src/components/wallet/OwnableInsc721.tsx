@@ -13,7 +13,7 @@ const OwnableInsc721 = () => {
   const [inscriptions, error, loading] = useAsync(async () => {
     if (wallet) {
       const indexerApiService = IndexerApiService.getInstance()
-      return indexerApiService.getOwnableInscriptions(wallet.address)
+      return indexerApiService.getOwnableInscriptions(wallet.address, { limit: 100, order: 'desc', page: 1 })
     }
     return undefined
   }, [wallet])
