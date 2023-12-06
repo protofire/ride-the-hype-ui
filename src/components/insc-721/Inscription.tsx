@@ -43,7 +43,11 @@ const Inscription = () => {
               height={0}
               sizes="100vw"
               style={{ width: '100%', height: 'auto' }}
-              src={inscriptionDetails.content}
+              src={
+                inscriptionDetails.contentType === 'application/json'
+                  ? '/images/json-file.svg'
+                  : inscriptionDetails.content
+              }
               alt={inscriptionDetails.hash}
             />
           </Grid>

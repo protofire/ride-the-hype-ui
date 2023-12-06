@@ -25,6 +25,7 @@ export const InscriptionSchema = z.object({
   creator: z.string(),
   owner: z.string(),
   content: z.string(),
+  contentType: z.string(),
   createdAt: z.string(),
 })
 

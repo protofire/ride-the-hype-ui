@@ -41,7 +41,7 @@ const AllInscriptions = () => {
                   height={0}
                   sizes="100vw"
                   style={{ width: '100%', height: 'auto' }}
-                  src={item.content}
+                  src={item.contentType === 'application/json' ? '/images/json-file.svg' : item.content}
                   alt={item.hash}
                 />
               </Link>
