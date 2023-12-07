@@ -79,6 +79,15 @@ const Inscription = () => {
               </pre>
             </Typography>
           </Grid>
+
+          {inscriptionDetails.contentType === 'application/json' ? (
+            <Grid item>
+              <Typography component="div" marginRight=".3rem">
+                File content:
+              </Typography>
+              <pre>{Buffer.from(inscriptionDetails.content.split('base64,')[1], 'base64').toString('ascii')}</pre>
+            </Grid>
+          ) : null}
         </Grid>
       ) : null}
       <div />
