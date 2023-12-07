@@ -16,7 +16,6 @@ const Inscription = () => {
     const tx = await indexerApiService.getTransaction(router.query.id)
     const insc = await indexerApiService.getInscriptionByHash(router.query.id)
 
-    console.log({ insc, tx })
     if (!tx || !insc) return null
 
     return {

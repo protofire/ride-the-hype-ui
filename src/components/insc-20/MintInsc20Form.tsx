@@ -61,7 +61,7 @@ export const MintInsc20Form = () => {
         amt: data[FormField.amount],
         nonce: (+new Date()).toString(),
       }
-      console.log({ txData })
+
       const dataHex = toHex('data:application/json,' + JSON.stringify(txData))
 
       const tx = await signer.sendTransaction({

@@ -72,7 +72,7 @@ export const CreateInsc20Form = () => {
         dec: '8',
         nonce: (+new Date()).toString(),
       }
-      console.log({ txData })
+
       const dataHex = toHex('data:application/json,' + JSON.stringify(txData))
 
       const tx = await signer.sendTransaction({
