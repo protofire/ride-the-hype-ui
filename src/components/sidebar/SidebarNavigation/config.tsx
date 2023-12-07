@@ -17,18 +17,18 @@ export type NavItem = {
 
 export const navItems: NavItem[] = [
   {
-    label: 'Recent inscriptions',
+    label: 'All Inscriptions',
     icon: <SvgIcon component={RecentIcon} inheritViewBox />,
     href: AppRoutes.allInscriptions,
   },
   {
-    label: 'My inscriptions',
+    label: 'My Balance',
     icon: <SvgIcon component={PersonalIcon} inheritViewBox />,
     href: AppRoutes.wallet.ownableInsc721,
     listItemComponentProps: { divider: true },
   },
   {
-    label: 'Create inscription',
+    label: 'Create',
     icon: <SvgIcon component={CreateIcon} inheritViewBox />,
     href: AppRoutes.insc721.mint,
   },
