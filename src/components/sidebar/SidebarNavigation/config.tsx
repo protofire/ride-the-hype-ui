@@ -1,7 +1,9 @@
 import type { ReactElement } from 'react'
 import React from 'react'
 import { AppRoutes } from '~/config/routes'
-import CoinIcon from '~/public/images/sidebar/coin.svg'
+import CreateIcon from '~/public/images/sidebar/create.svg'
+import RecentIcon from '~/public/images/sidebar/recent.svg'
+import PersonalIcon from '~/public/images/sidebar/personal.svg'
 import { SvgIcon } from '@mui/material'
 
 export type NavItem = {
@@ -14,17 +16,17 @@ export type NavItem = {
 export const navItems: NavItem[] = [
   {
     label: 'Recent inscriptions',
-    icon: <SvgIcon component={CoinIcon} inheritViewBox />,
+    icon: <SvgIcon component={RecentIcon} inheritViewBox />,
     href: AppRoutes.allInscriptions,
   },
   {
     label: 'My inscriptions',
-    icon: <SvgIcon component={CoinIcon} inheritViewBox />,
+    icon: <SvgIcon component={PersonalIcon} inheritViewBox />,
     href: AppRoutes.wallet.ownableInsc721,
   },
   {
     label: 'Create inscription',
-    icon: <SvgIcon component={CoinIcon} inheritViewBox />,
+    icon: <SvgIcon component={CreateIcon} inheritViewBox />,
     href: AppRoutes.insc721.mint,
   },
 ]
