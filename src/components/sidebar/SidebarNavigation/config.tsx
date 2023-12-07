@@ -5,12 +5,14 @@ import CreateIcon from '~/public/images/sidebar/create.svg'
 import RecentIcon from '~/public/images/sidebar/recent.svg'
 import PersonalIcon from '~/public/images/sidebar/personal.svg'
 import { SvgIcon } from '@mui/material'
+import type { ListItemProps } from '@mui/material/ListItem/ListItem'
 
 export type NavItem = {
   label: string
   icon?: ReactElement
   href: string
   badge?: boolean
+  listItemComponentProps?: ListItemProps
 }
 
 export const navItems: NavItem[] = [
@@ -23,6 +25,7 @@ export const navItems: NavItem[] = [
     label: 'My inscriptions',
     icon: <SvgIcon component={PersonalIcon} inheritViewBox />,
     href: AppRoutes.wallet.ownableInsc721,
+    listItemComponentProps: { divider: true },
   },
   {
     label: 'Create inscription',

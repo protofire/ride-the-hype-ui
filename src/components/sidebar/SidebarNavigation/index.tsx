@@ -24,7 +24,7 @@ const Navigation = (): ReactElement => {
         const isSelected = currentSubdirectory === getSubdirectory(item.href)
 
         return (
-          <ListItem key={item.href} disablePadding selected={isSelected}>
+          <ListItem key={item.href} disablePadding selected={isSelected} {...item.listItemComponentProps}>
             <SidebarListItemButton selected={isSelected} href={{ pathname: item.href }}>
               {item.icon && <SidebarListItemIcon badge={item.badge}>{item.icon}</SidebarListItemIcon>}
               <SidebarListItemText bold>{item.label}</SidebarListItemText>
