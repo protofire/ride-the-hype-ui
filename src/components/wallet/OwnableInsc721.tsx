@@ -22,9 +22,9 @@ const OwnableInsc721 = () => {
     <Paper sx={{ padding: 4, maxWidth: '1200px', m: '1rem auto' }}>
       {loading ? (
         <Grid container direction="row" spacing={3} mb={2}>
-          {[...Array(9)].map((e) => (
-            <Grid item lg={4} xs={12} key={e}>
-              <Skeleton width="100%" height="150px" variant="rounded" />
+          {[...Array(12)].map((e) => (
+            <Grid item lg={3} xs={6} key={e}>
+              <Skeleton width="100%" height="250px" variant="rounded" />
             </Grid>
           ))}
         </Grid>
@@ -39,7 +39,7 @@ const OwnableInsc721 = () => {
       {!loading && inscriptions !== undefined && inscriptions.length > 0 ? (
         <Grid container direction="row" spacing={3} mb={2}>
           {inscriptions.map((item) => (
-            <Grid item lg={4} xs={12} key={item.id}>
+            <Grid item lg={3} xs={6} key={item.id}>
               <Link href={{ pathname: AppRoutes.insc721.inscriptionDetails, query: { id: item.hash } }}>
                 <Image
                   width={0}
