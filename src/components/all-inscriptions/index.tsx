@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import useAsync from '~/hooks/useAsync'
 import { IndexerApiService } from '~/services/indexer-api'
 import Paper from '@mui/material/Paper'
@@ -6,12 +7,32 @@ import { Skeleton, Typography } from '@mui/material'
 import Link from 'next/link'
 import { AppRoutes } from '~/config/routes'
 import Image from 'next/image'
+import InfiniteScroll from 'react-infinite-scroll-component'
+import type { Inscription } from '~/services/indexer-api/types'
+
+const limit = 12
 
 const AllInscriptions = () => {
-  const [inscriptions, error, loading] = useAsync(async () => {
-    const indexerApiService = IndexerApiService.getInstance()
-    return indexerApiService.getInscriptions({ limit: 50, order: 'desc', page: 1 })
+  const [inscriptions, setInscriptions] = useState([] as Inscription[])
+  const [hasMore, setHasMore] = useState(true)
+  const [page, setPage] = useState(2)
+
+  const [, error, loading] = useAsync(async () => {
+    const api = IndexerApiService.getInstance()
+    const data = await api.getInscriptions({ limit, order: 'desc', page: 1 })
+    setInscriptions(data)
   }, [])
+
+  const fetchInscriptions = async () => {
+    const api = IndexerApiService.getInstance()
+    const data = await api.getInscriptions({ limit, order: 'desc', page })
+    if (data.length > 0) {
+      setInscriptions((prev) => [...prev, ...data])
+    } else {
+      setHasMore(false)
+    }
+    setPage((page) => page + 1)
+  }
 
   return (
     <Paper sx={{ padding: 4, maxWidth: '1200px', m: '1rem auto' }}>
@@ -31,7 +52,7 @@ const AllInscriptions = () => {
         <Typography>There is no any inscription yet.</Typography>
       ) : null}
 
-      {!loading && inscriptions !== undefined && inscriptions.length > 0 ? (
+      <InfiniteScroll dataLength={inscriptions.length} next={fetchInscriptions} hasMore={hasMore} loader={null}>
         <Grid container direction="row" spacing={3} mb={2}>
           {inscriptions.map((item) => (
             <Grid item lg={3} xs={6} key={item.id}>
@@ -48,7 +69,7 @@ const AllInscriptions = () => {
             </Grid>
           ))}
         </Grid>
-      ) : null}
+      </InfiniteScroll>
       <div />
     </Paper>
   )
