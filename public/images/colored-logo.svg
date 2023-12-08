@@ -690,7 +690,7 @@
   L 296.2618 38.9429"
         />
     </g>
-    <path fill="#ffffff" d="
+    <path fill="transparent" d="
   M 0.00 0.00
   L 370.00 0.00
   L 370.00 89.00
@@ -1437,7 +1437,7 @@
   Q 64.53 29.84 64.28 30.31
   Z"
     />
-    <path fill="#ffffff" d="
+    <path fill="transparent" d="
   M 64.28 30.31
   Q 64.53 29.84 64.82 30.29
   Q 65.12 30.75 64.99 31.34
@@ -1445,9 +1445,9 @@
   Q 63.90 31.00 64.28 30.31
   Z"
     />
-    <rect fill="#797979" x="-2.46" y="-12.32" transform="translate(101.59,45.68) rotate(0.1)" width="4.92"
+    <rect fill="currentColor" x="-2.46" y="-12.32" transform="translate(101.59,45.68) rotate(0.1)" width="4.92"
           height="24.64" rx="0.51"/>
-    <path fill="#797979" d="
+    <path fill="currentColor" d="
   M 130.9965 53.2469
   A 4.72 4.72 0.0 0 1 126.2930 57.9834
   L 111.0731 58.0365
@@ -1469,7 +1469,7 @@
   L 126.03 38.71
   Z"
     />
-    <path fill="#797979" d="
+    <path fill="currentColor" d="
   M 139.55 43.30
   Q 146.37 43.16 153.70 43.30
   C 158.30 43.38 158.84 47.21 158.79 50.82
@@ -1500,7 +1500,7 @@
   Q 138.86 43.31 139.55 43.30
   Z"
     />
-    <path fill="#797979" d="
+    <path fill="currentColor" d="
   M 166.84 38.95
   L 166.79 52.53
   A 0.49 0.49 0.0 0 0 167.28 53.03
@@ -1520,7 +1520,7 @@
   Q 166.84 38.25 166.84 38.95
   Z"
     />
-    <path fill="#797979" d="
+    <path fill="currentColor" d="
   M 194.24 50.51
   L 194.29 57.48
   Q 194.29 58.00 193.77 58.00
@@ -1553,7 +1553,7 @@
   L 209.0254 38.9271
   Z"
     />
-    <path fill="#797979" d="
+    <path fill="currentColor" d="
   M 222.03 50.76
   L 222.01 57.38
   Q 222.01 58.03 221.36 58.03
@@ -1579,7 +1579,7 @@
   L 236.9876 39.0724
   Z"
     />
-    <path fill="#797979" d="
+    <path fill="currentColor" d="
   M 251.84 38.34
   L 243.36 38.41
   A 0.68 0.68 0.0 0 1 242.67 37.75
@@ -1599,8 +1599,8 @@
   A 0.68 0.68 0.0 0 0 251.84 38.34
   Z"
     />
-    <rect fill="#797979" x="269.38" y="33.33" width="4.96" height="24.66" rx="0.61"/>
-    <path fill="#797979" d="
+    <rect fill="currentColor" x="269.38" y="33.33" width="4.96" height="24.66" rx="0.61"/>
+    <path fill="currentColor" d="
   M 301.2666 53.2769
   A 4.68 4.68 0.0 0 1 296.6030 57.9732
   L 281.3031 58.0266
@@ -1622,7 +1622,7 @@
   L 296.2618 38.9429
   Z"
     />
-    <path fill="#797979" d="
+    <path fill="currentColor" d="
   M 323.75 49.85
   Q 324.04 49.79 324.03 49.53
   Q 324.00 41.71 324.01 34.20
@@ -1647,7 +1647,7 @@
   A 0.36 0.34 -24.4 0 0 323.75 49.85
   Z"
     />
-    <path fill="#797979" d="
+    <path fill="currentColor" d="
   M 351.19 48.19
   Q 344.62 48.10 337.45 48.09
   Q 332.65 48.08 332.31 43.58
@@ -1690,12 +1690,12 @@
   L 62.79 38.29
   Z"
     />
-    <rect fill="#ffffff" x="111.23" y="38.26" width="14.80" height="14.80" rx="0.45"/>
-    <rect fill="#ffffff" x="-7.39" y="-3.31" transform="translate(201.64,41.58) rotate(-0.1)" width="14.78"
+    <rect fill="transparent" x="111.23" y="38.26" width="14.80" height="14.80" rx="0.45"/>
+    <rect fill="transparent" x="-7.39" y="-3.31" transform="translate(201.64,41.58) rotate(-0.1)" width="14.78"
           height="6.62" rx="0.67"/>
-    <rect fill="#ffffff" x="-7.49" y="-3.26" transform="translate(229.48,41.57) rotate(0.4)" width="14.98" height="6.52"
+    <rect fill="transparent" x="-7.49" y="-3.26" transform="translate(229.48,41.57) rotate(0.4)" width="14.98" height="6.52"
           rx="0.71"/>
-    <rect fill="#ffffff" x="-7.37" y="-7.41" transform="translate(288.88,45.67) rotate(0.1)" width="14.74"
+    <rect fill="transparent" x="-7.37" y="-7.41" transform="translate(288.88,45.67) rotate(0.1)" width="14.74"
           height="14.82" rx="0.67"/>
     <path fill="#1b638c" d="
   M 29.32 56.55

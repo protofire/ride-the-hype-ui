@@ -46,7 +46,7 @@ function CustomApp({
       </Head>
 
       <CacheProvider value={emotionCache}>
-        <ThemeProvider theme={theme('light')}>
+        <ThemeProvider theme={theme('dark')}>
           <CssBaseline />
 
           <InitApp />
