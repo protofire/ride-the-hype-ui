@@ -15,12 +15,7 @@ const SideDrawer = ({ isOpen, onToggle }: SideDrawerProps): ReactElement => {
 
   return (
     <>
-      <Drawer
-        variant={isSmallScreen ? 'temporary' : 'persistent'}
-        anchor="left"
-        open={isOpen}
-        onClose={() => onToggle(false)}
-      >
+      <Drawer variant="temporary" anchor="left" open={isOpen && isSmallScreen} onClose={() => onToggle(false)}>
         <aside>
           <Sidebar />
         </aside>
