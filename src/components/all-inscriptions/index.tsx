@@ -3,12 +3,13 @@ import useAsync from '~/hooks/useAsync'
 import { IndexerApiService } from '~/services/indexer-api'
 import Paper from '@mui/material/Paper'
 import Grid from '@mui/material/Grid'
+import Box from '@mui/material/Box'
 import { Skeleton, Typography } from '@mui/material'
 import Link from 'next/link'
 import { AppRoutes } from '~/config/routes'
-import Image from 'next/image'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import type { Inscription } from '~/services/indexer-api/types'
+import css from './styles.module.css'
 
 const limit = 12
 
@@ -53,17 +54,14 @@ const AllInscriptions = () => {
       ) : null}
 
       <InfiniteScroll dataLength={inscriptions.length} next={fetchInscriptions} hasMore={hasMore} loader={null}>
-        <Grid container direction="row" spacing={3} mb={2}>
+        <Grid container direction="row" spacing={0} mb={2}>
           {inscriptions.map((item) => (
-            <Grid item lg={3} xs={6} key={item.id}>
+            <Grid item lg={3} xs={6} key={item.id} className={css.item}>
               <Link href={{ pathname: AppRoutes.insc721.inscriptionDetails, query: { id: item.hash } }}>
-                <Image
-                  width={0}
-                  height={0}
-                  sizes="100vw"
-                  style={{ width: '100%', height: 'auto' }}
+                <img
                   src={item.contentType === 'application/json' ? '/images/json-file.svg' : item.content}
                   alt={item.hash}
+                  className={css.img}
                 />
               </Link>
             </Grid>
