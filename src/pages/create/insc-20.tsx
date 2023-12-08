@@ -1,17 +1,16 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-
+import CreateHeader from '~/components/create/CreateHeader'
 import { CreateInsc20Form } from '~/components/create/CreateInsc20Form'
-import Insc20Header from '~/components/insc-20/Insc20Header'
 
-const CreatePage: NextPage = () => {
+const CreateInsc20Page: NextPage = () => {
   return (
     <>
       <Head>
         <title>Create an Inscription - Coin</title>
       </Head>
 
-      <Insc20Header />
+      <CreateHeader />
 
       <main>
         <CreateInsc20Form />
@@ -20,4 +19,4 @@ const CreatePage: NextPage = () => {
   )
 }
 
-export default CreatePage
+export default CreateInsc20Page

@@ -30,7 +30,18 @@ export const navItems: NavItem[] = [
   {
     label: 'Create',
     icon: <SvgIcon component={CreateIcon} inheritViewBox />,
-    href: AppRoutes.insc721.mint,
+    href: AppRoutes.create.insc721,
+  },
+]
+
+export const createNavItems = [
+  {
+    label: 'Coin',
+    href: AppRoutes.create.insc20,
+  },
+  {
+    label: 'NFT',
+    href: AppRoutes.create.insc721,
   },
 ]
 

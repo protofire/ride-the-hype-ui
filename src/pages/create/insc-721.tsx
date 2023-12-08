@@ -1,14 +1,16 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-
 import { MintInsc721Form } from '~/components/create/MintInsc721Form'
+import CreateHeader from '~/components/create/CreateHeader'
 
-const MintPage: NextPage = () => {
+const CreateInsc721Page: NextPage = () => {
   return (
     <>
       <Head>
         <title>Create an Inscription - NFT</title>
       </Head>
+
+      <CreateHeader />
 
       <main>
         <MintInsc721Form />
@@ -17,4 +19,4 @@ const MintPage: NextPage = () => {
   )
 }
 
-export default MintPage
+export default CreateInsc721Page

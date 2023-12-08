@@ -1,6 +1,11 @@
 export const AppRoutes = {
   index: '/',
   allInscriptions: '/all-inscriptions',
+  create: {
+    insc721: '/create/insc-721',
+    insc20: '/create/insc-20',
+    index: '/create',
+  },
   insc20: {
     transfer: '/insc-20/transfer',
     mint: '/insc-20/mint',
