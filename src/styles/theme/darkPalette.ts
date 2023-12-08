@@ -1,25 +1,33 @@
+// const newColors = {
+//   lightSkyBlue: '#6ECBF5',
+//   mediumOrchid: '#C252E1',
+//   lavender: '#E0D9F6',
+//   royalBlue: '#586AE2',
+//   midnightBlue: '#2A2356',
+// }
+
 const darkPalette = {
   text: {
-    primary: '#B3C6D9',
-    secondary: '#bdccfb',
-    disabled: '#bdccfb',
+    primary: '#C252E1',
+    secondary: '#E0D9F6',
+    disabled: '#E0D9F6',
     light: '#ffffff',
   },
   primary: {
-    dark: '#bdccfb',
-    main: '#a0b3f8',
-    light: '#bdccfb',
+    dark: '#E0D9F6',
+    main: '#6ECBF5',
+    light: '#E0D9F6',
   },
   secondary: {
-    dark: '#636669',
-    main: '#FFFFFF',
-    light: '#12FF80',
-    background: '#303033',
+    dark: '#2A2356',
+    main: '#6ECBF5',
+    light: '#922ab2',
+    background: '#2A2356',
   },
   border: {
-    main: '#636669',
-    light: '#292D3C',
-    background: '#121312',
+    main: '#C252E1',
+    light: '#e38dff',
+    background: '#2A2356',
   },
   error: {
     dark: '#AC2C3B',
@@ -46,20 +54,20 @@ const darkPalette = {
     background: '#2F2318',
   },
   background: {
-    default: '#121312',
-    main: '#121312',
-    paper: '#1C1C1C',
-    light: '#292D3C',
+    default: '#2A2356',
+    main: '#2A2356',
+    paper: '#332C5B',
+    light: '#637aae',
   },
   backdrop: {
     main: '#636669',
   },
   logo: {
-    main: '#C9CAFF',
-    background: '#303033',
+    main: '#C252E1',
+    background: '#2A2356',
   },
   static: {
-    main: '#121312',
+    main: '#2A2356',
   },
 }
 
