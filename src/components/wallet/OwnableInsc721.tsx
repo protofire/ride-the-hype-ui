@@ -1,22 +1,44 @@
+import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import Paper from '@mui/material/Paper'
 import Grid from '@mui/material/Grid'
+import InfiniteScroll from 'react-infinite-scroll-component'
 import useWallet from '~/hooks/wallets/useWallet'
 import { IndexerApiService } from '~/services/indexer-api'
 import useAsync from '~/hooks/useAsync'
 import { Skeleton, Typography } from '@mui/material'
 import { AppRoutes } from '~/config/routes'
+import { Inscription } from '~/services/indexer-api/types'
+
+const limit = 12
 
 const OwnableInsc721 = () => {
+  const [inscriptions, setInscriptions] = useState([] as Inscription[])
+  const [hasMore, setHasMore] = useState(true)
+  const [page, setPage] = useState(2)
   const wallet = useWallet()
-  const [inscriptions, error, loading] = useAsync(async () => {
+
+  const [, error, loading] = useAsync(async () => {
     if (wallet) {
-      const indexerApiService = IndexerApiService.getInstance()
-      return indexerApiService.getOwnableInscriptions(wallet.address, { limit: 100, order: 'desc', page: 1 })
+      const api = IndexerApiService.getInstance()
+      const data = await api.getOwnableInscriptions(wallet.address, { limit, order: 'desc', page: 1 })
+      setInscriptions(data)
     }
-    return undefined
   }, [wallet])
+
+  const fetchInscriptions = async () => {
+    if (wallet) {
+      const api = IndexerApiService.getInstance()
+      const data = await api.getOwnableInscriptions(wallet?.address, { limit, order: 'desc', page })
+      if (data.length > 0) {
+        setInscriptions((prev) => [...prev, ...data])
+      } else {
+        setHasMore(false)
+      }
+      setPage((page) => page + 1)
+    }
+  }
 
   return (
     <Paper sx={{ padding: 4, maxWidth: '1200px', m: '1rem auto' }}>
@@ -36,7 +58,7 @@ const OwnableInsc721 = () => {
         <Typography>You don&apos;t have any inscription yet.</Typography>
       ) : null}
 
-      {!loading && inscriptions !== undefined && inscriptions.length > 0 ? (
+      <InfiniteScroll dataLength={inscriptions.length} next={fetchInscriptions} hasMore={hasMore} loader={null}>
         <Grid container direction="row" spacing={3} mb={2}>
           {inscriptions.map((item) => (
             <Grid item lg={3} xs={6} key={item.id}>
@@ -53,7 +75,7 @@ const OwnableInsc721 = () => {
             </Grid>
           ))}
         </Grid>
-      ) : null}
+      </InfiniteScroll>
       <div />
     </Paper>
   )
