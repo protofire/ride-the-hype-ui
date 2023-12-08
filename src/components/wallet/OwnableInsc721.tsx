@@ -9,7 +9,7 @@ import { IndexerApiService } from '~/services/indexer-api'
 import useAsync from '~/hooks/useAsync'
 import { Skeleton, Typography } from '@mui/material'
 import { AppRoutes } from '~/config/routes'
-import { Inscription } from '~/services/indexer-api/types'
+import type { Inscription } from '~/services/indexer-api/types'
 
 const limit = 12
 
