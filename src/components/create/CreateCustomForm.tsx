@@ -48,12 +48,7 @@ export const CreateCustomForm = () => {
     }
     try {
       const signer = await getAssertedChainSigner(onboard, chain?.chainId)
-      const tx = await signer.sendTransaction({
-        to: ZERO_ADDRESS,
-        value: 0,
-        data: toHex(text.trim()),
-      })
-
+      const tx = await signer.sendTransaction({ to: ZERO_ADDRESS, value: 0, data: toHex(text.trim()) })
       setTx(tx)
       // TODO: add loading
       await tx.wait()
