@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { useRouter } from 'next/router'
 import useAsync from '~/hooks/useAsync'
 import { IndexerApiService } from '~/services/indexer-api'
@@ -6,6 +7,9 @@ import Paper from '@mui/material/Paper'
 import Image from 'next/image'
 import Grid from '@mui/material/Grid'
 import EthHashInfo from '~/components/common/EthHashInfo'
+
+const MIMETYPE_JSON = 'application/json'
+const INPUT_HEADER = `data:${MIMETYPE_JSON},`
 
 const Inscription = () => {
   const router = useRouter()
@@ -23,6 +27,17 @@ const Inscription = () => {
       tx,
     }
   }, [router.query.id])
+
+  const json = useMemo(() => {
+    if (inscriptionDetails?.contentType === MIMETYPE_JSON) {
+      const str = Buffer.from(inscriptionDetails.content.split('base64,')[1], 'base64').toString('ascii')
+      try {
+        return JSON.stringify(JSON.parse(str.slice(INPUT_HEADER.length)), null, 2)
+      } catch {
+        return 'Invalid JSON content'
+      }
+    }
+  }, [inscriptionDetails])
 
   if (loading) return <Skeleton width="100%" height="10px" variant="rounded" />
 
@@ -85,7 +100,7 @@ const Inscription = () => {
               <Typography component="div" marginRight=".3rem">
                 File content:
               </Typography>
-              <pre>{Buffer.from(inscriptionDetails.content.split('base64,')[1], 'base64').toString('ascii')}</pre>
+              <pre style={{ whiteSpace: 'pre-wrap' }}>{json}</pre>
             </Grid>
           ) : null}
         </Grid>

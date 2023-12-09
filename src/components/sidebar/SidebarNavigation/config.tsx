@@ -43,6 +43,10 @@ export const createNavItems = [
     label: 'NFT',
     href: AppRoutes.create.insc721,
   },
+  {
+    label: 'Custom',
+    href: AppRoutes.create.custom,
+  },
 ]
 
 export const insc20NavItems = [

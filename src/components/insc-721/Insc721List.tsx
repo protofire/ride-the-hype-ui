@@ -1,31 +1,35 @@
 import { useState } from 'react'
-import useAsync from '~/hooks/useAsync'
-import { IndexerApiService } from '~/services/indexer-api'
+import { useRouter } from 'next/router'
+import Link from 'next/link'
+import InfiniteScroll from 'react-infinite-scroll-component'
 import Paper from '@mui/material/Paper'
 import Grid from '@mui/material/Grid'
 import { Skeleton, Typography } from '@mui/material'
-import Link from 'next/link'
+import useAsync from '~/hooks/useAsync'
 import { AppRoutes } from '~/config/routes'
-import InfiniteScroll from 'react-infinite-scroll-component'
 import type { Inscription } from '~/services/indexer-api/types'
 import css from './styles.module.css'
 
-const limit = 12
+const PAGE_SIZE = 12
 
-const AllInscriptions = () => {
+export const Insc721List = ({
+  fetchInscriptions,
+}: {
+  fetchInscriptions: (page: number, limit: number) => Promise<Inscription[]>
+}) => {
+  const router = useRouter()
+
   const [inscriptions, setInscriptions] = useState([] as Inscription[])
   const [hasMore, setHasMore] = useState(true)
   const [page, setPage] = useState(2)
 
   const [, error, loading] = useAsync(async () => {
-    const api = IndexerApiService.getInstance()
-    const data = await api.getInscriptions({ limit, order: 'desc', page: 1 })
+    const data = await fetchInscriptions(1, PAGE_SIZE)
     setInscriptions(data)
-  }, [])
+  }, [fetchInscriptions])
 
-  const fetchInscriptions = async () => {
-    const api = IndexerApiService.getInstance()
-    const data = await api.getInscriptions({ limit, order: 'desc', page })
+  const next = async () => {
+    const data = await fetchInscriptions(page, PAGE_SIZE)
     if (data.length > 0) {
       setInscriptions((prev) => [...prev, ...data])
     } else {
@@ -52,24 +56,27 @@ const AllInscriptions = () => {
         <Typography>There is no any inscription yet.</Typography>
       ) : null}
 
-      <InfiniteScroll dataLength={inscriptions.length} next={fetchInscriptions} hasMore={hasMore} loader={null}>
+      <InfiniteScroll dataLength={inscriptions.length} next={next} hasMore={hasMore} loader={null}>
         <Grid container direction="row" spacing={0} mb={2}>
-          {inscriptions.map((item) => (
-            <Grid item lg={3} xs={6} key={item.id} className={css.item}>
-              <Link href={{ pathname: AppRoutes.insc721.inscriptionDetails, query: { id: item.hash } }}>
-                <img
-                  src={item.contentType === 'application/json' ? '/images/json-file.svg' : item.content}
-                  alt={item.hash}
-                  className={css.img}
-                />
-              </Link>
-            </Grid>
-          ))}
+          {inscriptions.map((item) => {
+            const href = { pathname: AppRoutes.insc721.inscriptionDetails, query: { id: item.hash } }
+            return (
+              <Grid item lg={3} xs={6} key={item.id} className={css.item}>
+                <div className={css.itemInner} onClick={() => router.push(href)}>
+                  <Link href={href}>
+                    <img
+                      src={item.contentType === 'application/json' ? '/images/json-file.svg' : item.content}
+                      alt={item.hash}
+                      className={css.img}
+                    />
+                  </Link>
+                </div>
+              </Grid>
+            )
+          })}
         </Grid>
       </InfiniteScroll>
       <div />
     </Paper>
   )
 }
-
-export default AllInscriptions
