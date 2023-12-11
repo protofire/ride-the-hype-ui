@@ -9,7 +9,7 @@ import Grid from '@mui/material/Grid'
 import EthHashInfo from '~/components/common/EthHashInfo'
 
 const MIMETYPE_JSON = 'application/json'
-const INPUT_HEADER = `data:${MIMETYPE_JSON},`
+const INPUT_HEADER = `data:${MIMETYPE_JSON};base64,`
 
 const Inscription = () => {
   const router = useRouter()
@@ -30,9 +30,9 @@ const Inscription = () => {
 
   const json = useMemo(() => {
     if (inscriptionDetails?.contentType === MIMETYPE_JSON) {
-      const str = Buffer.from(inscriptionDetails.content.split('base64,')[1], 'base64').toString('ascii')
+      const str = Buffer.from(inscriptionDetails.content.slice(INPUT_HEADER.length), 'base64').toString('ascii')
       try {
-        return JSON.stringify(JSON.parse(str.slice(INPUT_HEADER.length)), null, 2)
+        return JSON.stringify(JSON.parse(str), null, 2)
       } catch {
         return 'Invalid JSON content'
       }
