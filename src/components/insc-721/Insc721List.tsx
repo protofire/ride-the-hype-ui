@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import InfiniteScroll from 'react-infinite-scroll-component'
@@ -15,34 +15,36 @@ const PAGE_SIZE = 12
 export const Insc721List = ({
   fetchInscriptions,
 }: {
-  fetchInscriptions: (page: number, limit: number) => Promise<Inscription[]>
+  fetchInscriptions: (page: number, limit: number) => Promise<Inscription[]> | undefined
 }) => {
   const router = useRouter()
 
   const [inscriptions, setInscriptions] = useState([] as Inscription[])
   const [hasMore, setHasMore] = useState(true)
-  const [page, setPage] = useState(2)
+  const [page, setPage] = useState(1)
 
-  const [, error, loading] = useAsync(async () => {
-    const data = await fetchInscriptions(1, PAGE_SIZE)
-    setInscriptions(data)
-  }, [fetchInscriptions])
+  const [newInscriptions, error, loading] = useAsync(async () => {
+    if (!!fetchInscriptions) {
+      const data = await fetchInscriptions(page, PAGE_SIZE)
 
-  const next = async () => {
-    const data = await fetchInscriptions(page, PAGE_SIZE)
-    if (data.length > 0) {
-      setInscriptions((prev) => [...prev, ...data])
-    } else {
-      setHasMore(false)
+      if (data && data.length < PAGE_SIZE) setHasMore(false)
+
+      return data
     }
-    setPage((page) => page + 1)
-  }
+  }, [fetchInscriptions, page])
+
+  // Add new inscriptions to the accumulated list
+  useEffect(() => {
+    if (newInscriptions && newInscriptions.length > 0) {
+      setInscriptions((prev) => prev.concat(newInscriptions))
+    }
+  }, [newInscriptions])
 
   return (
     <Paper sx={{ padding: 4, maxWidth: '1200px', m: '1rem auto' }}>
       {loading ? (
         <Grid container direction="row" spacing={3} mb={2}>
-          {[...Array(12)].map((element, index) => (
+          {[...Array(PAGE_SIZE)].map((element, index) => (
             <Grid item lg={3} xs={6} key={`${element}-${index}`}>
               <Skeleton width="100%" height="250px" variant="rounded" />
             </Grid>
@@ -56,7 +58,12 @@ export const Insc721List = ({
         <Typography>There is no any inscription yet.</Typography>
       ) : null}
 
-      <InfiniteScroll dataLength={inscriptions.length} next={next} hasMore={hasMore} loader={null}>
+      <InfiniteScroll
+        dataLength={inscriptions.length}
+        next={() => setPage((page) => page + 1)}
+        hasMore={hasMore}
+        loader={null}
+      >
         <Grid container direction="row" spacing={0} mb={2}>
           {inscriptions.map((item) => {
             const href = { pathname: AppRoutes.insc721.inscriptionDetails, query: { id: item.hash } }

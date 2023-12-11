@@ -11,11 +11,11 @@ const OwnableInsc721Page: NextPage = () => {
 
   const fetchInscriptions = useCallback(
     (page: number, limit: number) => {
-      if (!wallet) {
-        return Promise.resolve([])
+      if (wallet) {
+        const api = IndexerApiService.getInstance()
+
+        return api.getOwnableInscriptions(wallet.address, { page, limit, order: 'desc' })
       }
-      const api = IndexerApiService.getInstance()
-      return api.getOwnableInscriptions(wallet.address, { page, limit, order: 'desc' })
     },
     [wallet],
   )
