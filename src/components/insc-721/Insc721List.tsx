@@ -20,14 +20,14 @@ export const Insc721List = ({
   const router = useRouter()
 
   const [inscriptions, setInscriptions] = useState([] as Inscription[])
-  const [hasMore, setHasMore] = useState(true)
+  const [hasMore, setHasMore] = useState(false)
   const [page, setPage] = useState(1)
 
   const [newInscriptions, error, loading] = useAsync(async () => {
     if (!!fetchInscriptions) {
       const data = await fetchInscriptions(page, PAGE_SIZE)
 
-      if (data && data.length < PAGE_SIZE) setHasMore(false)
+      setHasMore(!(data && data.length < PAGE_SIZE))
 
       return data
     }
@@ -68,7 +68,7 @@ export const Insc721List = ({
           {inscriptions.map((item) => {
             const href = { pathname: AppRoutes.insc721.inscriptionDetails, query: { id: item.hash } }
             return (
-              <Grid item lg={3} xs={6} key={item.id} className={css.item}>
+              <Grid item lg={3} xs={6} key={item.id + item.hash} className={css.item}>
                 <div className={css.itemInner} onClick={() => router.push(href)}>
                   <Link href={href}>
                     <img
