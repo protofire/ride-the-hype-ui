@@ -5,11 +5,11 @@ import MenuIcon from '@mui/icons-material/Menu'
 import classnames from 'classnames'
 import css from './styles.module.css'
 import ConnectWallet from '~/components/common/ConnectWallet'
-// import NetworkSelector from '~/components/common/NetworkSelector'
 import { AppRoutes } from '~/config/routes'
 import Link from 'next/link'
-import Logo from '~/public/images/colored-logo.svg'
+import Logo from '~/public/logo-no-text.svg'
 import Navigation from './Navigation'
+// import NetworkSelector from '~/components/common/NetworkSelector'
 
 type HeaderProps = {
   onMenuToggle?: Dispatch<SetStateAction<boolean>>
