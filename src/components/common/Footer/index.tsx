@@ -29,7 +29,7 @@ const Footer = (): ReactElement | null => {
   return (
     <footer className={css.container}>
       <ul>
-        <li>
+        {/* <li>
           <ExternalLink href={SOCIALS.TELEGRAM} noIcon>
             <SvgIcon component={TelegramIcon} inheritViewBox fontSize="medium" sx={{ mr: 0.5 }} />
           </ExternalLink>
@@ -38,13 +38,13 @@ const Footer = (): ReactElement | null => {
           <ExternalLink href={SOCIALS.TWITTER} noIcon>
             <SvgIcon component={TwitterIcon} inheritViewBox fontSize="medium" sx={{ mr: 0.5 }} />
           </ExternalLink>
-        </li>
-        <li>
+        </li> */}
+        {/* <li>
           <ExternalLink href="https://ecosystem.iotex.io/" noIcon sx={{ textDecoration: 'underline' }}>
             IoTeX Ecosystem
           </ExternalLink>
         </li>
-        |
+        | */}
         <li>
           <ExternalLink href="https://protofire.io/" noIcon sx={{ textDecoration: 'underline' }}>
             Supported by Protofire.io

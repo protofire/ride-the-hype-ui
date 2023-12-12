@@ -7,7 +7,8 @@ import css from './styles.module.css'
 import ConnectWallet from '~/components/common/ConnectWallet'
 import { AppRoutes } from '~/config/routes'
 import Link from 'next/link'
-import Logo from '~/public/logo-no-text.svg'
+import LogoNoText from '~/public/logo-no-text.svg'
+import LogoText from '~/public/logo-text.svg'
 import Navigation from './Navigation'
 // import NetworkSelector from '~/components/common/NetworkSelector'
 
@@ -35,7 +36,8 @@ const Header = ({ onMenuToggle }: HeaderProps): ReactElement => {
 
       <div className={classnames(css.element, css.hideMobile, css.logo)}>
         <Link href={AppRoutes.allInscriptions} passHref>
-          <Logo alt="Logo" />
+          <LogoNoText alt="Logo" />
+          <LogoText alt="Logo" />
         </Link>
       </div>
 
