@@ -1,10 +1,11 @@
+import z from 'zod'
 import type { Axios } from 'axios'
 
 import type { PaginationQuery } from '~/services/indexer-api/types'
 import { PaginationQuerySchema } from '~/services/indexer-api/validators'
-import { Insc20Schema } from './validators'
-import type { Insc20 } from './types'
-import z from 'zod'
+
+import { Insc20BalanceSchema, Insc20Schema } from './validators'
+import type { Insc20, Insc20Balance } from './types'
 
 export class IndexerTokensModule {
   constructor(private client: Axios) {}
@@ -23,5 +24,14 @@ export class IndexerTokensModule {
     const response = await this.client.get(`api/v1/tokens/${ticker}`)
 
     return Insc20Schema.parseAsync(response.data)
+  }
+
+  // TODO: add pagination
+  public async getUserHoldings(walletAddress: string): Promise<Insc20Balance[]> {
+    const address = await z.string().parseAsync(walletAddress)
+
+    const response = await this.client.get(`api/v1/users/${address}/balances`)
+
+    return Insc20BalanceSchema.array().parseAsync(response.data)
   }
 }
