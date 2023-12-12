@@ -28,9 +28,9 @@ export const navItems: NavItem[] = [
     listItemComponentProps: { divider: true },
   },
   {
-    label: 'Create',
+    label: 'Inscribe',
     icon: <SvgIcon component={CreateIcon} inheritViewBox />,
-    href: AppRoutes.create.insc721,
+    href: AppRoutes.create.index,
   },
 ]
 
@@ -51,7 +51,7 @@ export const createNavItems = [
 
 export const insc20NavItems = [
   {
-    label: 'Create',
+    label: 'Inscribe',
     href: AppRoutes.insc20.create,
   },
   {
