@@ -5,6 +5,7 @@ export const AppRoutes = {
     insc721: '/create/insc-721',
     insc20: '/create/insc-20',
     index: '/create',
+    custom: '/create/custom',
   },
   insc20: {
     transfer: '/insc-20/transfer',
