@@ -3,10 +3,10 @@ import { useRouter } from 'next/router'
 import css from './styles.module.css'
 import { AppRoutes } from '~/config/routes'
 import ExternalLink from '../ExternalLink'
-import TelegramIcon from '~/public/images/telegram.svg'
+/* import TelegramIcon from '~/public/images/telegram.svg'
 import TwitterIcon from '~/public/images/x-twitter.svg'
 import SvgIcon from '@mui/material/SvgIcon'
-import { SOCIALS } from '~/config/constants'
+import { SOCIALS } from '~/config/constants' */
 import { useTheme } from '@mui/material/styles'
 import { useMediaQuery } from '@mui/material'
 
