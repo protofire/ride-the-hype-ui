@@ -36,11 +36,11 @@ export const navItems: NavItem[] = [
 
 export const createNavItems = [
   {
-    label: 'Coin',
+    label: 'IRC-20',
     href: AppRoutes.create.insc20,
   },
   {
-    label: 'NFT',
+    label: 'IRC-721',
     href: AppRoutes.create.insc721,
   },
   {
@@ -73,11 +73,11 @@ export const insc721NavItems = [
 
 export const walletNavItems = [
   {
-    label: 'Coins',
+    label: 'IRC-20',
     href: AppRoutes.wallet.index,
   },
   {
-    label: 'NFTs',
+    label: 'IRC-721',
     href: AppRoutes.wallet.ownableInsc721,
   },
 ]
