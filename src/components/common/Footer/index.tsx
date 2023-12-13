@@ -10,12 +10,7 @@ import { SOCIALS } from '~/config/constants'
 import { useTheme } from '@mui/material/styles'
 import { useMediaQuery } from '@mui/material'
 
-const footerPages = [
-  AppRoutes.allInscriptions,
-  AppRoutes.create.insc721,
-  AppRoutes.create.insc20,
-  AppRoutes.create.custom,
-]
+const footerPages = [AppRoutes.allInscriptions.index, AppRoutes.create.index]
 
 const Footer = (): ReactElement | null => {
   const router = useRouter()

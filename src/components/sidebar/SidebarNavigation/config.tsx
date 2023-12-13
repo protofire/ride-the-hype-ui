@@ -19,7 +19,7 @@ export const navItems: NavItem[] = [
   {
     label: 'All Inscriptions',
     icon: <SvgIcon component={RecentIcon} inheritViewBox />,
-    href: AppRoutes.allInscriptions,
+    href: AppRoutes.allInscriptions.index,
   },
   {
     label: 'My Balance',
@@ -31,6 +31,17 @@ export const navItems: NavItem[] = [
     label: 'Inscribe',
     icon: <SvgIcon component={CreateIcon} inheritViewBox />,
     href: AppRoutes.create.index,
+  },
+]
+
+export const allInscriptionsNavItems: NavItem[] = [
+  {
+    label: 'IRC-20',
+    href: AppRoutes.allInscriptions.allInsc20,
+  },
+  {
+    label: 'IRC-721',
+    href: AppRoutes.allInscriptions.allInsc721,
   },
 ]
 
@@ -74,7 +85,7 @@ export const insc721NavItems = [
 export const walletNavItems = [
   {
     label: 'IRC-20',
-    href: AppRoutes.wallet.index,
+    href: AppRoutes.wallet.ownableInsc20,
   },
   {
     label: 'IRC-721',
