@@ -130,7 +130,7 @@ const Insc20List = ({ fetchTokens }: Props) => {
               sticky: true,
               content: (
                 <Box display="flex" flexDirection="row" gap={1} alignItems="center">
-                  {progressValue !== 1 ? <MintButton insc20={item} /> : null}
+                  {progressValue !== 1 ? <MintButton insc20={item} /> : <Typography color="error">Ended</Typography>}
                 </Box>
               ),
             },
