@@ -1,11 +1,12 @@
-import { useCallback } from 'react'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 
-import { Insc721List } from '~/components/insc-721/Insc721List'
+import AllInscriptionsHeader from '~/components/AllInscriptionsHeader'
+import { useCallback } from 'react'
 import { IndexerApiService } from '~/services/indexer-api'
+import { Insc721List } from '~/components/insc-721/Insc721List'
 
-const AllInscriptionsPage: NextPage = () => {
+const AllInsc721Page: NextPage = () => {
   const fetchInscriptions = useCallback((page: number, limit: number) => {
     const api = IndexerApiService.getInstance()
     return api.getInscriptions({ page, limit, order: 'desc' })
@@ -14,8 +15,10 @@ const AllInscriptionsPage: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Recent inscriptions</title>
+        <title>View All IRC-721s</title>
       </Head>
+
+      <AllInscriptionsHeader />
 
       <main>
         <Insc721List fetchInscriptions={fetchInscriptions} />
@@ -24,4 +27,4 @@ const AllInscriptionsPage: NextPage = () => {
   )
 }
 
-export default AllInscriptionsPage
+export default AllInsc721Page

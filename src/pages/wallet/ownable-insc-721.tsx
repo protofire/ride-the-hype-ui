@@ -5,6 +5,7 @@ import { Insc721List } from '~/components/insc-721/Insc721List'
 
 import useWallet from '~/hooks/wallets/useWallet'
 import { IndexerApiService } from '~/services/indexer-api'
+import WalletHeader from '~/components/wallet/WalletHeader'
 
 const OwnableInsc721Page: NextPage = () => {
   const wallet = useWallet()
@@ -23,8 +24,10 @@ const OwnableInsc721Page: NextPage = () => {
   return (
     <>
       <Head>
-        <title>View your inscriptions</title>
+        <title>View your IRC-721s</title>
       </Head>
+
+      <WalletHeader />
 
       <main>
         <Insc721List fetchInscriptions={fetchInscriptions} />

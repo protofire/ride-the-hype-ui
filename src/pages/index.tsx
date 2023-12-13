@@ -1,5 +1,5 @@
-import AllInscriptionsPage from '~/pages/all-inscriptions'
-export default AllInscriptionsPage
+import AllInsc20Page from 'src/pages/all-inscriptions'
+export default AllInsc20Page
 
 // import Box from '@mui/material/Box'
 //

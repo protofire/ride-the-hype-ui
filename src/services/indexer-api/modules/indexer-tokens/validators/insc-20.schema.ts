@@ -9,5 +9,5 @@ export const Insc20Schema = z.object({
   holdLimit: z.string(),
   totalSupply: z.string(),
   creatorAddress: z.string(),
-  createdAt: z.date(),
+  createdAt: z.string(), // Date
 })
