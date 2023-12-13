@@ -6,6 +6,7 @@ import RecentIcon from '~/public/images/sidebar/recent.svg'
 import PersonalIcon from '~/public/images/sidebar/personal.svg'
 import { SvgIcon } from '@mui/material'
 import type { ListItemProps } from '@mui/material/ListItem/ListItem'
+import { FEATURES } from '~/types'
 
 export type NavItem = {
   label: string
@@ -13,6 +14,7 @@ export type NavItem = {
   href: string
   badge?: boolean
   listItemComponentProps?: ListItemProps
+  featureName?: FEATURES
 }
 
 export const navItems: NavItem[] = [
@@ -24,7 +26,7 @@ export const navItems: NavItem[] = [
   {
     label: 'My Balance',
     icon: <SvgIcon component={PersonalIcon} inheritViewBox />,
-    href: AppRoutes.wallet.ownableInsc721,
+    href: AppRoutes.wallet.index,
     listItemComponentProps: { divider: true },
   },
   {
@@ -38,10 +40,12 @@ export const allInscriptionsNavItems: NavItem[] = [
   {
     label: 'IRC-20',
     href: AppRoutes.allInscriptions.allInsc20,
+    featureName: FEATURES.INSC20,
   },
   {
     label: 'IRC-721',
     href: AppRoutes.allInscriptions.allInsc721,
+    featureName: FEATURES.INSC721,
   },
 ]
 
@@ -49,14 +53,17 @@ export const createNavItems = [
   {
     label: 'IRC-20',
     href: AppRoutes.create.insc20,
+    featureName: FEATURES.INSC20,
   },
   {
     label: 'IRC-721',
     href: AppRoutes.create.insc721,
+    featureName: FEATURES.INSC721,
   },
   {
     label: 'Custom',
     href: AppRoutes.create.custom,
+    featureName: FEATURES.CUSTOM_INSC,
   },
 ]
 
@@ -86,9 +93,11 @@ export const walletNavItems = [
   {
     label: 'IRC-20',
     href: AppRoutes.wallet.ownableInsc20,
+    featureName: FEATURES.INSC20,
   },
   {
     label: 'IRC-721',
     href: AppRoutes.wallet.ownableInsc721,
+    featureName: FEATURES.INSC721,
   },
 ]

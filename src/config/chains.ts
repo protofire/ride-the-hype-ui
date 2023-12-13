@@ -5,6 +5,7 @@
  */
 
 import type { ChainInfo } from '~/types'
+import { FEATURES } from '~/types'
 import { IS_PRODUCTION } from '~/config/constants'
 
 // Define the chains configuration
@@ -16,6 +17,7 @@ const chainsConfiguration: ChainInfo[] = IS_PRODUCTION
         shortName: 'iotx',
         inscriptionPrefix: 'io',
         description: 'IoTeX Mainnet',
+        features: [FEATURES.INSC20, FEATURES.CUSTOM_INSC],
         rpcUri: {
           value: 'https://babel-api.mainnet.iotex.io',
         },
@@ -137,6 +139,7 @@ const chainsConfiguration: ChainInfo[] = IS_PRODUCTION
         shortName: 'iotxtest',
         inscriptionPrefix: 'iott',
         description: 'IoTeX Testnet',
+        features: [FEATURES.INSC20, FEATURES.CUSTOM_INSC],
         rpcUri: {
           value: 'https://babel-api.testnet.iotex.io',
         },
