@@ -5,6 +5,7 @@
  */
 
 import type { ChainInfo } from '~/types'
+import { FEATURES } from '~/types'
 import { IS_PRODUCTION } from '~/config/constants'
 
 // Define the chains configuration

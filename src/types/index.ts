@@ -18,6 +18,12 @@ export declare type Theme = {
   backgroundColor: string
 }
 
+export enum FEATURES {
+  INSC20 = 'INSC20',
+  INSC721 = 'INSC721',
+  CUSTOM_INSC = 'CUSTOM_INSC',
+}
+
 export declare type ChainInfo = {
   chainId: string
   chainName: string
@@ -31,4 +37,5 @@ export declare type ChainInfo = {
   theme: Theme
   ensRegistryAddress?: string | null
   disabledWallets: string[]
+  features: FEATURES[]
 }

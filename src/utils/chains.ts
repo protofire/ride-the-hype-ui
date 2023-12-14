@@ -1,4 +1,4 @@
-import type { ChainInfo } from '~/types'
+import type { ChainInfo, FEATURES } from '~/types'
 
 export const _replaceTemplate = (uri: string, data: Record<string, string>): string => {
   // Template syntax returned from gateway is {{this}}
@@ -34,4 +34,8 @@ export const getBlockExplorerLink = (
   if (chain.blockExplorerUriTemplate) {
     return getExplorerLink(address, chain.blockExplorerUriTemplate)
   }
+}
+
+export const hasFeature = (chain: ChainInfo, feature: FEATURES): boolean => {
+  return (chain.features as string[]).includes(feature)
 }
