@@ -16,6 +16,7 @@ const chainsConfiguration: ChainInfo[] = [
     description: 'Astar zkEVM Testnet zKatana',
     shortName: 'azktn',
     inscriptionPrefix: 'zktt',
+    features: [FEATURES.INSC20, FEATURES.CUSTOM_INSC],
     nativeCurrency: {
       name: 'Ether',
       symbol: 'ETH',
@@ -46,6 +47,7 @@ const chainsConfiguration: ChainInfo[] = [
     description: 'Hardhat localhost',
     shortName: 'hardhat',
     inscriptionPrefix: 'hrd',
+    features: [FEATURES.INSC20, FEATURES.CUSTOM_INSC],
     nativeCurrency: {
       name: 'Ether',
       symbol: 'ETH',
@@ -77,6 +79,7 @@ const chainsConfiguration: ChainInfo[] = [
           chainName: 'IoTeX',
           shortName: 'iotx',
           inscriptionPrefix: 'io',
+          features: [FEATURES.INSC20, FEATURES.CUSTOM_INSC],
           description: 'IoTeX Mainnet',
           rpcUri: {
             value: 'https://babel-api.mainnet.iotex.io',
@@ -107,6 +110,7 @@ const chainsConfiguration: ChainInfo[] = [
           chainName: 'IoTeX Testnet',
           shortName: 'iotxtest',
           inscriptionPrefix: 'iott',
+          features: [FEATURES.INSC20, FEATURES.CUSTOM_INSC],
           description: 'IoTeX Testnet',
           rpcUri: {
             value: 'https://babel-api.testnet.iotex.io',
