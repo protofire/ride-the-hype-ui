@@ -1,20 +1,20 @@
 import type { ReactElement, ReactNode } from 'react'
+import { useMemo } from 'react'
 
 import PageHeader from '~/components/common/PageHeader'
 import NavTabs from '~/components/common/NavTabs'
 import css from '~/components/common/PageHeader/styles.module.css'
-import { walletNavItems } from '~/components/sidebar/SidebarNavigation/config'
+import { allInscriptionsNavItems } from '~/components/sidebar/SidebarNavigation/config'
 import { useCurrentChain } from '~/hooks/useChains'
-import { useMemo } from 'react'
-import { FEATURES } from '~/types'
 import { hasFeature } from '~/utils/chains'
+import { FEATURES } from '~/types'
 
-const WalletHeader = ({ children }: { children?: ReactNode }): ReactElement => {
+const AllTokensHeader = ({ children }: { children?: ReactNode }): ReactElement => {
   const currentChain = useCurrentChain()
 
   const navItems = useMemo(() => {
     if (currentChain) {
-      return walletNavItems.filter((item) => {
+      return allInscriptionsNavItems.filter((item) => {
         switch (item.featureName) {
           case FEATURES.INSC20:
             return hasFeature(currentChain, FEATURES.INSC20)
@@ -31,7 +31,7 @@ const WalletHeader = ({ children }: { children?: ReactNode }): ReactElement => {
 
   return (
     <PageHeader
-      title="Your tokens"
+      title="Explore all tokens"
       action={
         <div className={css.pageHeader}>
           <div className={css.navWrapper}>{navItems.length > 1 ? <NavTabs tabs={navItems} /> : null}</div>
@@ -42,4 +42,4 @@ const WalletHeader = ({ children }: { children?: ReactNode }): ReactElement => {
   )
 }
 
-export default WalletHeader
+export default AllTokensHeader

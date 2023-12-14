@@ -10,6 +10,7 @@ import css from './styles.module.css'
 import type { EnhancedTableProps } from '~/components/common/EnhancedTable'
 import EnhancedTable from '~/components/common/EnhancedTable'
 import { MintButton } from './MintButton'
+import LinearProgress from '@mui/material/LinearProgress'
 
 const PAGE_SIZE = 100
 
@@ -40,6 +41,22 @@ const skeletonCells: EnhancedTableProps['rows'][0]['cells'] = {
       </Typography>
     ),
   },
+  holders: {
+    rawValue: '',
+    content: (
+      <Typography>
+        <Skeleton width="90px" height="60px" />
+      </Typography>
+    ),
+  },
+  transactions: {
+    rawValue: '',
+    content: (
+      <Typography>
+        <Skeleton width="90px" height="60px" />
+      </Typography>
+    ),
+  },
   actions: {
     rawValue: '',
     sticky: true,
@@ -57,7 +74,7 @@ const headCells = [
   {
     id: 'createdAt',
     label: 'Deploy time',
-    width: '40%',
+    width: '25%',
   },
   {
     id: 'progress',
@@ -65,9 +82,19 @@ const headCells = [
     width: '25%',
   },
   {
+    id: 'holders',
+    label: 'Holders',
+    width: '10%',
+  },
+  {
+    id: 'transactions',
+    label: 'Transactions',
+    width: '10%',
+  },
+  {
     id: 'actions',
     label: '',
-    width: '20%',
+    width: '15%',
     sticky: true,
   },
 ]
@@ -115,7 +142,7 @@ const Insc20List = ({ fetchTokens }: Props) => {
           cells: {
             tick: {
               rawValue: item.tick,
-              content: <Typography>{item.tick}</Typography>,
+              content: <Typography>${item.tick}</Typography>,
             },
             createdAt: {
               rawValue: createdAtDate.getTime(),
@@ -123,7 +150,27 @@ const Insc20List = ({ fetchTokens }: Props) => {
             },
             progress: {
               rawValue: progressValue,
-              content: <Typography>{progressValue.toFixed(2)}%</Typography>,
+              content: (
+                <Box display="flex" alignItems="center">
+                  <Box width="100%" mr={1}>
+                    <LinearProgress variant="determinate" value={progressValue} />
+                  </Box>
+                  <Box minWidth={35}>
+                    <Typography variant="body2" color="textSecondary">{`${Math.round(
+                      progressValue,
+                    )}%`}</Typography>
+                  </Box>
+                </Box>
+              ),
+            },
+            
+            holders: {
+              rawValue: item.holders,
+              content: <Typography>{item.holders}</Typography>,
+            },
+            transactions: {
+              rawValue: item.transactions,
+              content: <Typography>{item.transactions}</Typography>,
             },
             actions: {
               rawValue: '',

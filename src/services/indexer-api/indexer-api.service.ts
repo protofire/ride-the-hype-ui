@@ -39,6 +39,12 @@ export class IndexerApiService {
     return IndexerApiStatusSchema.parseAsync(response.data)
   }
 
+  public getTransactions = async (params?: PaginationQuery): Promise<Transaction[]> => {
+    const response = await this.client.get(`api/v1/transactions/`, { params })
+
+    return TransactionSchema.array().parseAsync(response.data)
+  }
+
   public getTransaction = async (hash: string): Promise<Transaction> => {
     const response = await this.client.get(`api/v1/transactions/${hash}`)
 

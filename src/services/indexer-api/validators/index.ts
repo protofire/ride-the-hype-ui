@@ -10,6 +10,7 @@ export const TransactionSchema = z.object({
   id: z.string().uuid(),
   hash: z.string(),
   protocol: z.string(),
+  tick: z.string(),
   type: z.string(),
   from: z.string(),
   to: z.string().array(),

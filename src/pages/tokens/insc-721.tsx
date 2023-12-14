@@ -1,7 +1,7 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 
-import AllInscriptionsHeader from '~/components/AllInscriptionsHeader'
+import AllTokensHeader from '~/components/AllTokensHeader'
 import { useCallback } from 'react'
 import { IndexerApiService } from '~/services/indexer-api'
 import { Insc721List } from '~/components/insc-721/Insc721List'
@@ -18,7 +18,7 @@ const AllInsc721Page: NextPage = () => {
         <title>View All IRC-721s</title>
       </Head>
 
-      <AllInscriptionsHeader />
+      <AllTokensHeader />
 
       <main>
         <Insc721List fetchInscriptions={fetchInscriptions} />

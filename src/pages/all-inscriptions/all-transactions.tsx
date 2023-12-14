@@ -2,26 +2,26 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 
 import AllInscriptionsHeader from '~/components/AllInscriptionsHeader'
-import Insc20List from '~/components/insc-20/Insc20List'
+import { TransactionList } from '~/components/TransactionList'
 import { useCallback } from 'react'
 import { IndexerApiService } from '~/services/indexer-api'
 
 const AllInsc20Page: NextPage = () => {
-  const fetchTokens = useCallback(async (page: number, limit: number) => {
+  const fetchInscriptions = useCallback(async (page: number, limit: number) => {
     const indexerApiService = IndexerApiService.getInstance()
-    return indexerApiService.tokensModule.getAllInsc20({ page, limit, order: 'desc' })
+    return indexerApiService.getTransactions({ page, limit, order: 'desc' })
   }, [])
 
   return (
     <>
       <Head>
-        <title>View All IRC-20s</title>
+        <title>Latest Inscriptions</title>
       </Head>
 
       <AllInscriptionsHeader />
 
       <main>
-        <Insc20List fetchTokens={fetchTokens} />
+        <TransactionList fetchInscriptions={fetchInscriptions} />
       </main>
     </>
   )

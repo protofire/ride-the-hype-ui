@@ -1,3 +1,3 @@
-import AllInsc20Page from '~/pages/all-inscriptions/all-insc-20'
+import AllTransactionsPage from '~/pages/all-inscriptions/all-transactions'
 
-export default AllInsc20Page
+export default AllTransactionsPage
