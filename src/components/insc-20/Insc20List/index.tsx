@@ -156,14 +156,11 @@ const Insc20List = ({ fetchTokens }: Props) => {
                     <LinearProgress variant="determinate" value={progressValue} />
                   </Box>
                   <Box minWidth={35}>
-                    <Typography variant="body2" color="textSecondary">{`${Math.round(
-                      progressValue,
-                    )}%`}</Typography>
+                    <Typography variant="body2" color="textSecondary">{`${Math.round(progressValue)}%`}</Typography>
                   </Box>
                 </Box>
               ),
             },
-            
             holders: {
               rawValue: item.holders,
               content: <Typography>{item.holders}</Typography>,

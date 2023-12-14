@@ -1,12 +1,10 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import Link from 'next/link'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import Paper from '@mui/material/Paper'
 import Grid from '@mui/material/Grid'
 import { Skeleton, Typography } from '@mui/material'
 import useAsync from '~/hooks/useAsync'
-import { AppRoutes } from '~/config/routes'
 import type { Transaction } from '~/services/indexer-api/types'
 import css from './styles.module.css'
 
@@ -73,12 +71,8 @@ export const TransactionList = ({
           {inscriptions.map((item, index) => (
             <div key={index} className={css.jsonItem}>
               <pre>{JSON.stringify(item.data, null, 2)}</pre>
-              <div className={css.hash}>
-                {`${item.hash.slice(0, 8)}...${item.hash.slice(-8)}`}
-              </div>
-              <div className={css.createdAt}>
-                Created at {new Date(Number(item.createdAt)*1000).toLocaleString()}
-              </div>
+              <div className={css.hash}>{`${item.hash.slice(0, 8)}...${item.hash.slice(-8)}`}</div>
+              <div className={css.createdAt}>Created at {new Date(Number(item.createdAt) * 1000).toLocaleString()}</div>
             </div>
           ))}
         </div>

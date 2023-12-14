@@ -1,12 +1,10 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import Link from 'next/link'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import Paper from '@mui/material/Paper'
 import Grid from '@mui/material/Grid'
 import { Skeleton, Typography } from '@mui/material'
 import useAsync from '~/hooks/useAsync'
-import { AppRoutes } from '~/config/routes'
 import type { Insc20Balance } from '~/services/indexer-api/types'
 import css from './styles.module.css'
 
@@ -70,18 +68,14 @@ export const TokenList = ({
         }
       >
         <div className={css.gridContainer}>
-          {inscriptions.map((item, index) => (
-            <div className={css.card}>
+          {inscriptions.map((item) => (
+            <div className={css.card} key={item.tokenId}>
               <div className={css.cardHeader}>
                 <span className={css.dollar}>${item.tick}</span>
               </div>
-              <div className={css.cardBody}>
-                {item.amount.toLocaleString()}
-              </div>
+              <div className={css.cardBody}>{item.amount.toLocaleString()}</div>
               <div className={css.cardFooter}>
-                <div className={css.hash}>
-                  {`${item.hash.slice(0, 8)}...${item.hash.slice(-8)}`}
-                </div>
+                <div className={css.hash}>{`${item.hash.slice(0, 8)}...${item.hash.slice(-8)}`}</div>
                 <div className={css.actions}>
                   <button className={css.button}>Transfer</button>
                   {/* <button className={css.button}>List</button> */}
