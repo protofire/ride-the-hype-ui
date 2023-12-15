@@ -3,15 +3,8 @@ import Head from 'next/head'
 
 import AllInscriptionsHeader from '~/components/AllInscriptionsHeader'
 import { TransactionList } from '~/components/TransactionList'
-import { useCallback } from 'react'
-import { IndexerApiService } from '~/services/indexer-api'
 
-const AllInsc20Page: NextPage = () => {
-  const fetchInscriptions = useCallback(async (page: number, limit: number) => {
-    const indexerApiService = IndexerApiService.getInstance()
-    return indexerApiService.getTransactions({ page, limit, order: 'desc' })
-  }, [])
-
+const LatestTransactionsPage: NextPage = () => {
   return (
     <>
       <Head>
@@ -21,10 +14,10 @@ const AllInsc20Page: NextPage = () => {
       <AllInscriptionsHeader />
 
       <main>
-        <TransactionList fetchInscriptions={fetchInscriptions} />
+        <TransactionList />
       </main>
     </>
   )
 }
 
-export default AllInsc20Page
+export default LatestTransactionsPage

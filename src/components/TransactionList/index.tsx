@@ -1,35 +1,35 @@
 import { useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import Paper from '@mui/material/Paper'
 import Grid from '@mui/material/Grid'
-import { Skeleton, Typography } from '@mui/material'
+import Skeleton from '@mui/material/Skeleton'
+import Typography from '@mui/material/Typography'
+import RefreshIcon from '@mui/icons-material/Refresh'
+import Button from '@mui/material/Button'
+
 import useAsync from '~/hooks/useAsync'
 import type { Transaction } from '~/services/indexer-api/types'
+import { IndexerApiService } from '~/services/indexer-api'
+
 import css from './styles.module.css'
 
 const PAGE_SIZE = 12
 
-export const TransactionList = ({
-  fetchInscriptions,
-}: {
-  fetchInscriptions: (page: number, limit: number) => Promise<Transaction[]> | undefined
-}) => {
-  const router = useRouter()
-
+export const TransactionList = () => {
+  const [counter, setCounter] = useState<number>(0)
   const [inscriptions, setInscriptions] = useState([] as Transaction[])
   const [hasMore, setHasMore] = useState(false)
   const [page, setPage] = useState(1)
 
   const [newInscriptions, error, loading] = useAsync(async () => {
-    if (!!fetchInscriptions) {
-      const data = await fetchInscriptions(page, PAGE_SIZE)
+    const indexerApiService = IndexerApiService.getInstance()
+    const data = await indexerApiService.getTransactions({ page, limit: PAGE_SIZE, order: 'desc' })
 
-      setHasMore(!(data && data.length < PAGE_SIZE))
+    setHasMore(!(data && data.length < PAGE_SIZE))
 
-      return data
-    }
-  }, [fetchInscriptions, page])
+    return data
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page, counter])
 
   // Add new inscriptions to the accumulated list
   useEffect(() => {
@@ -38,8 +38,21 @@ export const TransactionList = ({
     }
   }, [newInscriptions])
 
+  const refresh = () => {
+    setInscriptions([])
+    setHasMore(true)
+    setPage(1)
+    setCounter((prevState) => prevState + 1)
+  }
+
   return (
     <Paper sx={{ padding: 4, maxWidth: '1200px', m: '1rem auto' }}>
+      <div className={css.refreshContainer}>
+        <Button variant="text" onClick={refresh} size="small" endIcon={<RefreshIcon />}>
+          Refresh
+        </Button>
+      </div>
+
       {loading ? (
         <Grid container direction="row" spacing={3} mb={2}>
           {[...Array(PAGE_SIZE)].map((element, index) => (
