@@ -5,9 +5,9 @@ import css from './styles.module.css'
 import type { EnhancedTableProps } from '~/components/common/EnhancedTable'
 import EnhancedTable from '~/components/common/EnhancedTable'
 import type { TokenHolder } from '~/services/indexer-api/types'
-import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 import useAsync from '~/hooks/useAsync'
+import EthHashInfo from '~/components/common/EthHashInfo'
 
 const PAGE_SIZE = 10
 
@@ -48,13 +48,11 @@ interface Props {
 }
 
 const HoldersTable = ({ fetchHolders, ticker }: Props) => {
-  const router = useRouter()
-
   const [holders, setHolders] = useState([] as TokenHolder[])
   const [hasMore, setHasMore] = useState(false)
   const [page, setPage] = useState(1)
 
-  const [newTokens, error, loading] = useAsync(async () => {
+  const [newHolders, error, loading] = useAsync(async () => {
     if (!!fetchHolders) {
       try {
         const data = await fetchHolders(ticker, page, PAGE_SIZE)
@@ -70,10 +68,10 @@ const HoldersTable = ({ fetchHolders, ticker }: Props) => {
 
   // Add new tokens to the accumulated list
   useEffect(() => {
-    if (newTokens && newTokens.length > 0) {
-      setHolders((prev) => prev.concat(newTokens))
+    if (newHolders && newHolders.length > 0) {
+      setHolders((prev) => prev.concat(newHolders))
     }
-  }, [newTokens])
+  }, [newHolders])
 
   const rows = loading
     ? skeletonRows
@@ -83,11 +81,22 @@ const HoldersTable = ({ fetchHolders, ticker }: Props) => {
           cells: {
             address: {
               rawValue: item.address,
-              content: item.address,
+              content: (
+                <Typography fontFamily={'Inter'}>
+                  <EthHashInfo
+                    shortAddress={false}
+                    showCopyButton
+                    address={item.address}
+                    showPrefix={false}
+                    hasExplorer
+                    avatarSize={0}
+                  />
+                </Typography>
+              ),
             },
             amount: {
               rawValue: item.amount,
-              content: <Typography>{item.amount}</Typography>,
+              content: <Typography fontFamily={'Inter'}>{item.amount}</Typography>,
             },
           },
         }

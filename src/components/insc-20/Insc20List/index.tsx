@@ -147,7 +147,7 @@ const Insc20List = ({ fetchTokens }: Props) => {
             },
             createdAt: {
               rawValue: createdAtDate.getTime(),
-              content: <Typography>{createdAtDate.toLocaleString()}</Typography>,
+              content: <Link href={'/token/?ticker=' + item.tick}>${createdAtDate.toLocaleString()}</Link>,
             },
             progress: {
               rawValue: progressValue,
@@ -164,11 +164,11 @@ const Insc20List = ({ fetchTokens }: Props) => {
             },
             holders: {
               rawValue: item.holders,
-              content: <Typography>{item.holders}</Typography>,
+              content: <Link href={'/token/?ticker=' + item.tick}>${item.holders}</Link>,
             },
             transactions: {
               rawValue: item.transactions,
-              content: <Typography>{item.transactions}</Typography>,
+              content: <Link href={'/token/?ticker=' + item.tick}>${item.transactions}</Link>,
             },
             actions: {
               rawValue: '',

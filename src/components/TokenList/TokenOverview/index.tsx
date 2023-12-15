@@ -1,6 +1,6 @@
 import { List, ListItem, ListItemText, Skeleton, Typography } from '@mui/material'
 import Paper from '@mui/material/Paper'
-import ExplorerButton from '~/components/common/ExplorerButton'
+import EthHashInfo from '~/components/common/EthHashInfo'
 import useAsync from '~/hooks/useAsync'
 import type { Insc20 } from '~/services/indexer-api/types'
 
@@ -32,16 +32,16 @@ const listProperties = [
   },
   {
     id: 'createdAt',
-    label: 'Created At',
+    label: 'Deploy Time',
   },
-  {
-    id: 'holders',
-    label: 'Holders',
-  },
-  {
-    id: 'transactions',
-    label: 'Transactions',
-  },
+  // {
+  //   id: 'holders',
+  //   label: 'Holders',
+  // },
+  // {
+  //   id: 'transactions',
+  //   label: 'Transactions',
+  // },
 ]
 
 interface Props {
@@ -63,6 +63,9 @@ const TokenOverview = ({ fetchToken, ticker }: Props) => {
 
   return (
     <Paper sx={{ padding: 8, maxWidth: '1200px', m: '1rem auto' }}>
+      <Typography color="secondary" textAlign={'center'} variant="h2">
+        {'$' + ticker}
+      </Typography>
       <List disablePadding>
         {listProperties.map((property) => (
           <ListItem key={property.id} sx={{ py: 1, px: 0 }}>
@@ -71,14 +74,17 @@ const TokenOverview = ({ fetchToken, ticker }: Props) => {
               <Skeleton width="50%" />
             ) : tokenData ? (
               <>
-                <Typography color="secondary" variant="body2">
-                  {property.id === 'progress'
-                    ? `${Math.round((Number(tokenData.totalSupply) / Number(tokenData.maxSupply)) * 100)}%`
-                    : property.id === 'createdAt'
-                    ? new Date(Number(tokenData[property.id]) * 1000).toLocaleString()
-                    : tokenData[property.id as keyof Insc20]}
+                <Typography color="secondary" fontFamily={'Inter'} fontSize={'18px'} variant="body2">
+                  {property.id === 'progress' ? (
+                    `${Math.round((Number(tokenData.totalSupply) / Number(tokenData.maxSupply)) * 100)}%`
+                  ) : property.id === 'createdAt' ? (
+                    new Date(Number(tokenData[property.id]) * 1000).toLocaleString()
+                  ) : property.link === true ? (
+                    <EthHashInfo address={tokenData['creatorAddress']} showPrefix={false} hasExplorer avatarSize={0} />
+                  ) : (
+                    tokenData[property.id as keyof Insc20]
+                  )}
                 </Typography>
-                {property.link ? <ExplorerButton href={''} /> : <></>}
               </>
             ) : (
               <Typography color="secondary">No data available</Typography>
@@ -86,6 +92,7 @@ const TokenOverview = ({ fetchToken, ticker }: Props) => {
           </ListItem>
         ))}
       </List>
+      {/* <Button fullWidth>Mint</Button> */}
       {error ? <Typography>An error occurred when during loading token...</Typography> : null}
     </Paper>
   )
