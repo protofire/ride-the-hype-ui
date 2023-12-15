@@ -1,0 +1,9 @@
+.transferModalContainer {
+  padding: 0;
+}
+
+.transferModalFields {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-3);
+}

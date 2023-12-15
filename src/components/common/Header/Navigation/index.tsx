@@ -2,7 +2,6 @@ import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import type { ListItemButtonProps } from '@mui/material/ListItemButton'
 import ListItemButton from '@mui/material/ListItemButton'
-import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 import { navItems } from '~/components/sidebar/SidebarNavigation/config'
 import { useRouter } from 'next/router'
@@ -45,9 +44,9 @@ const Navigation = () => {
         const isSelected = currentSubdirectory === getSubdirectory(item.href)
 
         return (
-          <ListItem key={item.href} disablePadding selected={isSelected}>
+          <ListItem key={item.href} disablePadding>
             <NavListItemButton selected={isSelected} href={{ pathname: item.href }}>
-              {item.icon && (
+              {/* {item.icon && (
                 <ListItemIcon
                   className={css.icon}
                   sx={{
@@ -62,7 +61,7 @@ const Navigation = () => {
                 >
                   {item.icon}
                 </ListItemIcon>
-              )}
+              )} */}
 
               <ListItemText primaryTypographyProps={{ variant: 'body2', fontWeight: 700 }}>{item.label}</ListItemText>
             </NavListItemButton>

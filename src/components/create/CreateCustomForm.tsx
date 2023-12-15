@@ -75,7 +75,7 @@ export const CreateCustomForm = () => {
 
           <FormProvider {...formMethods}>
             <form onSubmit={onSubmit}>
-              <Typography fontWeight={700} mb={2} mt={3}>
+              <Typography color="secondary" fontWeight={700} mb={2} mt={3}>
                 Text
                 <Tooltip placement="top" arrow title="case-sensitive">
                   <span>

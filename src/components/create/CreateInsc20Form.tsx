@@ -23,6 +23,7 @@ export enum FormField {
   totalSupply = 'totalSupply',
   limitPerMint = 'limitPerMint',
   limitPerAddress = 'limitPerAddress',
+  description = 'description',
 }
 
 export type FormData = {
@@ -30,6 +31,7 @@ export type FormData = {
   [FormField.totalSupply]: number
   [FormField.limitPerMint]: number
   [FormField.limitPerAddress]: number
+  [FormField.description]: string
 }
 
 // TODO: add a validation for already taken ticker
@@ -45,6 +47,7 @@ export const CreateInsc20Form = () => {
       [FormField.totalSupply]: 21000000,
       [FormField.limitPerMint]: 1000,
       [FormField.limitPerAddress]: 20000,
+      [FormField.description]: '',
     },
   })
   const { register, handleSubmit, setValue, watch } = formMethods
@@ -53,6 +56,7 @@ export const CreateInsc20Form = () => {
   const totalSupply = watch(FormField.totalSupply)
   const limitPerMint = watch(FormField.limitPerMint)
   const limitPerAddress = watch(FormField.limitPerAddress)
+  // const description = watch(FormField.description)
 
   const onSubmit = handleSubmit(async (data) => {
     if (!onboard || !chain) {
@@ -71,9 +75,10 @@ export const CreateInsc20Form = () => {
         wlim: data[FormField.limitPerAddress],
         dec: '8',
         nonce: (+new Date()).toString(),
+        desc: data[FormField.description],
       }
 
-      const dataHex = toHex('data:application/json,' + JSON.stringify(txData))
+      const dataHex = toHex('data:,' + JSON.stringify(txData))
 
       const tx = await signer.sendTransaction({
         to: ZERO_ADDRESS,
@@ -107,7 +112,7 @@ export const CreateInsc20Form = () => {
 
           <FormProvider {...formMethods}>
             <form onSubmit={onSubmit}>
-              <Typography fontWeight={700} mb={2} mt={3}>
+              <Typography color="secondary" fontWeight={700} mb={2} mt={3}>
                 Tick
                 <Tooltip placement="top" arrow title="case-sensitive">
                   <span>
@@ -141,12 +146,12 @@ export const CreateInsc20Form = () => {
                 fullWidth
               />
 
-              <Typography fontWeight={700} mb={2} mt={3}>
+              <Typography color="secondary" fontWeight={700} mb={2} mt={3}>
                 Total Supply
                 <Tooltip
                   placement="top"
                   arrow
-                  title="Once you coin supply reaches this figure, new mints won't be indexed"
+                  title="Once your irc-20 supply reaches this figure, new mints won't be indexed"
                 >
                   <span>
                     <SvgIcon
@@ -178,7 +183,7 @@ export const CreateInsc20Form = () => {
                 fullWidth
               />
 
-              <Typography fontWeight={700} mb={2} mt={3}>
+              <Typography color="secondary" fontWeight={700} mb={2} mt={3}>
                 Limit Per Mint
                 <Tooltip placement="top" arrow title="Limit for each mint">
                   <span>
@@ -211,7 +216,7 @@ export const CreateInsc20Form = () => {
                 fullWidth
               />
 
-              <Typography fontWeight={700} mb={2} mt={3}>
+              <Typography color="secondary" fontWeight={700} mb={2} mt={3}>
                 Limit for each address can maximum mint
                 <Tooltip
                   placement="top"
@@ -239,6 +244,43 @@ export const CreateInsc20Form = () => {
                     <InputAdornment position="end">
                       <Tooltip title="Reset to default value">
                         <IconButton onClick={() => onReset(FormField.limitPerAddress)} size="small" color="primary">
+                          <RotateLeftIcon />
+                        </IconButton>
+                      </Tooltip>
+                    </InputAdornment>
+                  ) : null,
+                }}
+                fullWidth
+              />
+
+              <Typography color="secondary" fontWeight={700} mb={2} mt={3}>
+                Description (optional)
+                <Tooltip
+                  placement="top"
+                  arrow
+                  title="You can provide an optional description for your token. This will appear in the token's metadata"
+                >
+                  <span>
+                    <SvgIcon
+                      component={InfoIcon}
+                      inheritViewBox
+                      fontSize="small"
+                      color="border"
+                      sx={{ verticalAlign: 'middle', ml: 0.5 }}
+                    />
+                  </span>
+                </Tooltip>
+              </Typography>
+
+              <TextField
+                {...register(FormField.description)}
+                variant="outlined"
+                type="text"
+                InputProps={{
+                  endAdornment: limitPerAddress ? (
+                    <InputAdornment position="end">
+                      <Tooltip title="Reset to default value">
+                        <IconButton onClick={() => onReset(FormField.description)} size="small" color="primary">
                           <RotateLeftIcon />
                         </IconButton>
                       </Tooltip>

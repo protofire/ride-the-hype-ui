@@ -7,9 +7,10 @@ export const IndexerApiStatusSchema = z.object({
 })
 
 export const TransactionSchema = z.object({
-  id: z.string().uuid(),
+  id: z.number(),
   hash: z.string(),
   protocol: z.string(),
+  tick: z.string(),
   type: z.string(),
   from: z.string(),
   to: z.string().array(),
@@ -29,10 +30,4 @@ export const InscriptionSchema = z.object({
   createdAt: z.string(),
 })
 
-export const intString = z.string().transform((x) => parseInt(x, 10))
-
-export const PaginationQuerySchema = z.object({
-  page: intString.pipe(z.number().min(1)).optional().default('1'),
-  limit: intString.pipe(z.number().min(1).max(100)).optional().default('20'),
-  order: z.enum(['asc', 'desc']).optional().default('asc'),
-})
+export * from './pagination-query.schema'

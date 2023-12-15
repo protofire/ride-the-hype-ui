@@ -18,6 +18,7 @@
 
 .list :global .MuiListItemButton-root {
   color: var(--color-text-primary);
+  text-transform: uppercase;
 }
 
 [data-theme='dark'] .list :global .Mui-selected {
@@ -26,12 +27,13 @@
 
 .list :global .MuiListItemButton-root:hover {
   border-radius: 6px;
-  background-color: var(--color-background-light);
+  background-color: var(--color-primary-dark);
 }
 
 .list :global .Mui-selected {
   border-radius: 6px;
-  background-color: var(--color-background-main);
+  background-color: var(--color-primary-main);
+  color: #000;
 }
 
 .listItemButton :global .beamer_icon.active {

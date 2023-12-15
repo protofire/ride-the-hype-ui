@@ -3,6 +3,7 @@ import { Axios } from 'axios'
 import { DEFAULT_INDEXER_API_BASE_URL } from '~/config/constants'
 import { IndexerApiStatusSchema, InscriptionSchema, TransactionSchema } from '~/services/indexer-api/validators'
 import type { IndexerApiStatus, Inscription, PaginationQuery, Transaction } from '~/services/indexer-api/types'
+import { IndexerTokensModule } from '~/services/indexer-api/modules/indexer-tokens'
 import { transformAxiosResponse as transformResponse } from '~/utils'
 
 export class IndexerApiService {
@@ -10,8 +11,12 @@ export class IndexerApiService {
 
   private readonly client: Axios
 
+  public readonly tokensModule: IndexerTokensModule
+
   private constructor(baseURL: string) {
     this.client = new Axios({ baseURL, transformResponse })
+
+    this.tokensModule = new IndexerTokensModule(this.client)
   }
 
   public static getInstance = (baseUrl: string = DEFAULT_INDEXER_API_BASE_URL): IndexerApiService => {
@@ -32,6 +37,12 @@ export class IndexerApiService {
     const response = await this.client.get(`api/v1/status`)
 
     return IndexerApiStatusSchema.parseAsync(response.data)
+  }
+
+  public getTransactions = async (params?: PaginationQuery): Promise<Transaction[]> => {
+    const response = await this.client.get(`api/v1/transactions/`, { params })
+
+    return TransactionSchema.array().parseAsync(response.data)
   }
 
   public getTransaction = async (hash: string): Promise<Transaction> => {

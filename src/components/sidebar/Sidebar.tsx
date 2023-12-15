@@ -17,14 +17,14 @@ const Sidebar = (): ReactElement => {
         {/* Address, balance, copy button, etc */}
         <SidebarHeader />
 
-        <Divider />
+        <Divider sx={{ bgcolor: 'secondary.main' }} />
 
         {/* Nav menu */}
         <SidebarNavigation />
 
         <Box flex={1} />
 
-        <Divider flexItem />
+        <Divider flexItem sx={{ bgcolor: 'secondary.main' }} />
 
         <SidebarFooter />
       </div>

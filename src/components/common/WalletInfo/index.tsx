@@ -46,7 +46,7 @@ export const WalletInfo = ({ wallet, handleClose }: WalletInfoProps) => {
             hasExplorer
             showCopyButton
             prefix={prefix}
-            avatarSize={32}
+            avatarSize={0}
           />
         </Box>
       </Box>
@@ -57,7 +57,7 @@ export const WalletInfo = ({ wallet, handleClose }: WalletInfoProps) => {
         Switch wallet
       </Button>
 
-      <Button onClick={handleDisconnect} variant="danger" size="small" fullWidth disableElevation>
+      <Button onClick={handleDisconnect} variant="contained" color="secondary" size="small" fullWidth disableElevation>
         Disconnect
       </Button>
     </Box>

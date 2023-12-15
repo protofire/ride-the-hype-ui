@@ -1,0 +1,38 @@
+.gridContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.jsonItem {
+  background: var(--color-background-default);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  color: #fff;
+  width: 250px;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  height: 15rem;
+}
+
+.jsonItem pre {
+  background: var(--color-background-main);
+  border: 1px solid #333;
+  overflow: auto;
+  margin: 0;
+  border-radius: 0.5rem;
+  font-size: 0.8rem;
+  height: 80%;
+}
+
+.hash {
+  color: #aaa;
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+}
+
+.createdAt {
+  color: #aaa;
+  font-size: 0.6rem;
+  margin-top: 0.25rem;
+}

@@ -1,6 +1,15 @@
 export const AppRoutes = {
   index: '/',
-  allInscriptions: '/all-inscriptions',
+  allInscriptions: {
+    index: '/all-inscriptions',
+    allInsc721: '/all-inscriptions/all-insc-721',
+    allInsc20: '/all-inscriptions/all-insc-20',
+  },
+  tokens: {
+    index: '/tokens',
+    allInsc721: '/tokens/insc-721',
+    allInsc20: '/tokens/insc-20',
+  },
   create: {
     insc721: '/create/insc-721',
     insc20: '/create/insc-20',
@@ -20,6 +29,7 @@ export const AppRoutes = {
   },
   wallet: {
     ownableInsc721: '/wallet/ownable-insc-721',
+    ownableInsc20: '/wallet/ownable-insc-20',
     index: '/wallet',
   },
 }

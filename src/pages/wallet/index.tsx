@@ -1,3 +1,3 @@
-import OwnableInsc721Page from './ownable-insc-721'
+import OwnableInsc20Page from './ownable-insc-20'
 
-export default OwnableInsc721Page
+export default OwnableInsc20Page
