@@ -5,7 +5,7 @@ import ListItem from '@mui/material/ListItem'
 import {
   SidebarList,
   SidebarListItemButton,
-  SidebarListItemIcon,
+  // SidebarListItemIcon,
   SidebarListItemText,
 } from '~/components/sidebar/SidebarList'
 import { navItems } from './config'

@@ -34,10 +34,12 @@ const Header = ({ onMenuToggle }: HeaderProps): ReactElement => {
       </div>
 
       <div className={classnames(css.element, css.hideMobile, css.logo)}>
-        <Link href={AppRoutes.allInscriptions.index} passfHref>
+        <Link href={AppRoutes.allInscriptions.index} passHref>
           <Stack direction="row" alignItems="center" gap={1}>
             <Logo alt="Logo" />
-            <Typography fontFamily={'Inter'} color="white">IOSCRIPTIONS</Typography>
+            <Typography fontFamily={'Inter'} color="white">
+              IOSCRIPTIONS
+            </Typography>
           </Stack>
         </Link>
       </div>

@@ -1,9 +1,9 @@
 import { Box, Typography } from '@mui/material'
-import { Suspense } from 'react'
+// import { Suspense } from 'react'
 import type { ReactElement } from 'react'
 
 import EthHashInfo from '~/components/common/EthHashInfo'
-import WalletIcon from '~/components/common/WalletIcon'
+// import WalletIcon from '~/components/common/WalletIcon'
 import type { ConnectedWallet } from '~/hooks/wallets/useOnboard'
 import { useAppSelector } from '~/store'
 import { selectChainById } from '~/store/chainsSlice'

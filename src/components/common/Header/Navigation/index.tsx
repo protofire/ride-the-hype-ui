@@ -44,7 +44,7 @@ const Navigation = () => {
         const isSelected = currentSubdirectory === getSubdirectory(item.href)
 
         return (
-          <ListItem key={item.href} disablePadding >
+          <ListItem key={item.href} disablePadding>
             <NavListItemButton selected={isSelected} href={{ pathname: item.href }}>
               {/* {item.icon && (
                 <ListItemIcon
