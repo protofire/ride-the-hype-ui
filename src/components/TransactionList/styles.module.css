@@ -5,6 +5,12 @@
   padding: 1rem;
 }
 
+.refreshContainer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -1rem;
+}
+
 .jsonItem {
   background: var(--color-background-default);
   border-radius: 0.5rem;
