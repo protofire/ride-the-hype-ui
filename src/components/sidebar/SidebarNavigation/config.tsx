@@ -19,7 +19,7 @@ export type NavItem = {
 
 export const navItems: NavItem[] = [
   {
-    label: 'All Inscriptions',
+    label: 'Inscriptions',
     icon: <SvgIcon component={RecentIcon} inheritViewBox />,
     href: AppRoutes.allInscriptions.index,
   },

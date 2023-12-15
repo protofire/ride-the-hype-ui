@@ -70,7 +70,7 @@ export const MintInsc721Form = () => {
           content: base64,
         }
 
-        const dataHex = toHex('data:application/json,' + JSON.stringify(txData))
+        const dataHex = toHex('data:,' + JSON.stringify(txData))
 
         const tx = await signer.sendTransaction({
           to: ZERO_ADDRESS,

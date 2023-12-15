@@ -6,32 +6,40 @@
   width: fit-content;
 }
 
+
 .icon {
   min-width: 0;
   margin-right: var(--space-2);
 }
 
 .listItemButton {
-  border-radius: 6px;
+  /* border-radius: 6px; */
   padding-top: 6px;
   padding-bottom: 6px;
   width: 180px;
+  border-bottom: 2px solid var(--color-primary-main);
 }
 
 .list :global .MuiListItemButton-root {
   color: var(--color-text-primary);
+  text-transform: uppercase;
+  text-align: center;
+  margin: var(--space-2);
 }
 
 [data-theme='dark'] .list :global .Mui-selected {
-  background-color: var(--color-border-light);
+  background-color: var(--color-border-main);
 }
 
 .list :global .MuiListItemButton-root:hover {
-  border-radius: 6px;
-  background-color: var(--color-background-light);
+  /* border-radius: 6px; */
+  background-color: var(--color-primary-dark);
+  border-bottom: 2px solid #000;
 }
 
 .list :global .Mui-selected {
-  border-radius: 6px;
-  background-color: var(--color-background-main);
+  /* border-radius: 6px; */
+  background-color: var(--color-primary-main);
+  border-bottom: 2px solid #000;
+  color:#000;
 }
