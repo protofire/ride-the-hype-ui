@@ -31,6 +31,17 @@
   height: 80%;
 }
 
+.jsonItem > *::-webkit-scrollbar {
+    width: 0.5em;
+    height: 0.5em;
+    background-color: var(--color-background-default);
+}
+
+.jsonItem > *::-webkit-scrollbar-thumb {
+    background-color: var(--color-primary-light);
+    border-radius: 5px;
+}
+
 .hash {
   color: #aaa;
   font-size: 0.8rem;
