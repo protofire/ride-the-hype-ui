@@ -6,7 +6,7 @@
 }
 
 .jsonItem {
-  background: #1a1a1a;
+  background: var(--color-background-default);
   border-radius: 0.5rem;
   padding: 1rem;
   color: #fff;
@@ -16,7 +16,7 @@
 }
 
 .jsonItem pre {
-  background: #000;
+  background: var(--color-background-main);
   border: 1px solid #333;
   overflow: auto;
   margin: 0;

@@ -6,7 +6,7 @@
 }
 
 .card {
-  background: #1a1a1a;
+  background: var(--color-background-default);
   color: white;
   border-radius: 20px;
   padding: 20px;
@@ -19,14 +19,14 @@
 
 .cardHeader {
   font-size: 1.5rem;
-  color: #c252c1;
+  color: var(--color-secondary-main);
   display: flex;
   justify-content: center;
   margin-bottom: 1rem;
 }
 
 .dollar {
-  color: #c252c1;
+  color: var(--color-secondary-main);
 }
 
 .cardBody {
@@ -50,17 +50,17 @@
 }
 
 .button {
-  border: 2px solid #c252c1;
+  border: 2px solid var(--color-secondary-main);
   padding: 10px 20px;
   border-radius: 20px;
   background: transparent;
-  color: #c252c1;
+  color: var(--color-secondary-main);
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
 .button:hover {
-  background: #c252c1;
+  background: var(--color-secondary-dark);
   color: #1a1a1a;
 }
 

@@ -53,7 +53,7 @@ export const TokenList = ({
       {error ? <Typography>An error occurred during loading inscriptions...</Typography> : null}
 
       {!loading && inscriptions !== undefined && inscriptions.length === 0 ? (
-        <Typography>There is no any inscription yet.</Typography>
+        <Typography>There are not any inscription yet.</Typography>
       ) : null}
 
       <InfiniteScroll

@@ -1,18 +1,18 @@
 :root {
   --w3o-background-color: var(--color-background-paper);
-  --w3o-foreground-color: var(--color-border-light);
+  --w3o-foreground-color: var(--color-background-main);
   --w3o-text-color: var(--color-text-primary);
-  --w3o-border-color: var(--color-border-light);
+  --w3o-border-color: var(--color-border-main);
   --w3o-action-color: var(--color-primary-main);
   --w3o-border-radius: 6px;
-  --w3o-font-family: Audiowide, sans-serif;
+  --w3o-font-family: Inter, sans-serif;
 
   --onboard-border-radius-1: var(--w3o-border-radius);
   --onboard-border-radius-2: var(--w3o-border-radius);
   --onboard-border-radius-3: var(--w3o-border-radius);
 
   /* Palette */
-  --onboard-white: var(--color-background-paper);
+  --onboard-white: var(--color-background-main);
   --onboard-black: var(--color-text-primary);
 
   --onboard-primary-1: var(--color-secondary-main);
@@ -24,7 +24,7 @@
   --onboard-primary-600: var(--color-primary-main);
   --onboard-primary-700: var(--color-secondary-main);
 
-  --onboard-gray-100: var(--color-border-light);
+  --onboard-gray-100: var(--color-border-main);
   --onboard-gray-200: var(--color-border-main);
   --onboard-gray-300: var(--color-primary-light);
   --onboard-gray-400: var(--color-primary-main);
@@ -57,7 +57,7 @@
 
   --onboard-link-color: var(--color-primary-main);
 
-  --onboard-wallet-app-icon-border-color: var(--color-border-light);
+  --onboard-wallet-app-icon-border-color: var(--color-border-main);
   --onboard-wallet-app-icon-background-transparent: rgba(255, 255, 255, 0.2);
   --onboard-wallet-app-icon-background-light-gray: rgba(255, 255, 255, 0.5);
 

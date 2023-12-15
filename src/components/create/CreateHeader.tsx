@@ -40,6 +40,7 @@ const CreateHeader = ({ children }: { children?: ReactNode }): ReactElement => {
           {children && <div className={css.actionsWrapper}>{children}</div>}
         </div>
       }
+      titleOnly={false}
     />
   )
 }

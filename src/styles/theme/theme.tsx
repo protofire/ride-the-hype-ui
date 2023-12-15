@@ -230,7 +230,7 @@ const createCustomTheme = (mode?: PaletteMode): Theme => {
       MuiDivider: {
         styleOverrides: {
           root: ({ theme }) => ({
-            borderColor: theme.palette.border.light,
+            borderColor: theme.palette.border.main,
           }),
         },
       },
@@ -474,7 +474,7 @@ const createCustomTheme = (mode?: PaletteMode): Theme => {
           root: ({ theme }) => ({
             fontWeight: 700,
             '&:hover': {
-              color: theme.palette.primary.light,
+              color: theme.palette.secondary.light,
             },
           }),
         },

@@ -18,22 +18,28 @@ const WalletOverview = ({ wallet }: { wallet: ConnectedWallet }): ReactElement =
 
   return (
     <Box className={css.container}>
-      <Box className={css.imageContainer}>
-        <Suspense>
+      {/* <Box className={css.imageContainer}>
+       <Suspense>
           <WalletIcon provider={wallet.label} icon={wallet.icon} />
         </Suspense>
-      </Box>
+      </Box>  */}
 
       <Box className={css.walletDetails}>
         <Typography variant="caption" component="div" className={css.walletName}>
           {wallet.label} @ {walletChain?.chainName || UNKNOWN_CHAIN_NAME}
         </Typography>
 
-        <Typography variant="caption" fontWeight="bold" component="div">
+        <Typography variant="caption" color="secondary" /*fontWeight="bold"*/ component="div">
           {wallet.ens ? (
             <div>{wallet.ens}</div>
           ) : (
-            <EthHashInfo prefix={prefix || ''} address={wallet.address} showName={false} showAvatar avatarSize={12} />
+            <EthHashInfo
+              prefix={prefix || ''}
+              address={wallet.address}
+              showName={false}
+              showAvatar={false}
+              avatarSize={12}
+            />
           )}
         </Typography>
       </Box>

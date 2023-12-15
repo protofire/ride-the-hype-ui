@@ -112,7 +112,7 @@ export const CreateInsc20Form = () => {
 
           <FormProvider {...formMethods}>
             <form onSubmit={onSubmit}>
-              <Typography fontWeight={700} mb={2} mt={3}>
+              <Typography color="secondary" fontWeight={700} mb={2} mt={3}>
                 Tick
                 <Tooltip placement="top" arrow title="case-sensitive">
                   <span>
@@ -146,7 +146,7 @@ export const CreateInsc20Form = () => {
                 fullWidth
               />
 
-              <Typography fontWeight={700} mb={2} mt={3}>
+              <Typography color="secondary" fontWeight={700} mb={2} mt={3}>
                 Total Supply
                 <Tooltip
                   placement="top"
@@ -183,7 +183,7 @@ export const CreateInsc20Form = () => {
                 fullWidth
               />
 
-              <Typography fontWeight={700} mb={2} mt={3}>
+              <Typography color="secondary" fontWeight={700} mb={2} mt={3}>
                 Limit Per Mint
                 <Tooltip placement="top" arrow title="Limit for each mint">
                   <span>
@@ -216,7 +216,7 @@ export const CreateInsc20Form = () => {
                 fullWidth
               />
 
-              <Typography fontWeight={700} mb={2} mt={3}>
+              <Typography color="secondary" fontWeight={700} mb={2} mt={3}>
                 Limit for each address can maximum mint
                 <Tooltip
                   placement="top"
@@ -253,7 +253,7 @@ export const CreateInsc20Form = () => {
                 fullWidth
               />
 
-              <Typography fontWeight={700} mb={2} mt={3}>
+              <Typography color="secondary" fontWeight={700} mb={2} mt={3}>
                 Description (optional)
                 <Tooltip
                   placement="top"
