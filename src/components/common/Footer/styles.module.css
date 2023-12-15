@@ -1,7 +1,15 @@
 .container {
   padding: var(--space-1);
   font-size: 13px;
-  background-color: var(--color-background-light);
+  background-color: #FDF700;
+}
+
+.topSection {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 20px; 
+  background-image: url('/images/common/footer-tech-bg.png'); 
 }
 
 .container ul {

@@ -4,3 +4,10 @@
   font-weight: 400;
   src: url('./Audiowide-Regular.ttf') format('truetype');
 }
+
+@font-face {
+  font-family: 'Inter';
+  font-display: swap;
+  font-weight: 400;
+  src: url('./Inter-Regular.ttf') format('truetype');
+}

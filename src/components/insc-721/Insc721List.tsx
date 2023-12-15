@@ -55,7 +55,7 @@ export const Insc721List = ({
       {error ? <Typography>An error occurred during loading inscriptions...</Typography> : null}
 
       {!loading && inscriptions !== undefined && inscriptions.length === 0 ? (
-        <Typography>There is no any inscription yet.</Typography>
+        <Typography>There are not any inscriptions yet.</Typography>
       ) : null}
 
       <InfiniteScroll
