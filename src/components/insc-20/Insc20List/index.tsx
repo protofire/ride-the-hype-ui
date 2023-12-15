@@ -135,7 +135,7 @@ const Insc20List = ({ fetchTokens }: Props) => {
     ? skeletonRows
     : (tokens || []).map((item) => {
         const progressValue = (Number(item.totalSupply) / Number(item.maxSupply)) * 100
-        const createdAtDate = new Date(item.createdAt)
+        const createdAtDate = new Date(Number(item.createdAt) * 1000)
 
         return {
           key: item.id,
@@ -174,7 +174,11 @@ const Insc20List = ({ fetchTokens }: Props) => {
               sticky: true,
               content: (
                 <Box display="flex" flexDirection="row" gap={1} alignItems="center">
-                  {progressValue !== 1 ? <MintButton insc20={item} /> : <Typography color="error">Ended</Typography>}
+                  {progressValue !== 100 ? (
+                    <MintButton insc20={item} />
+                  ) : (
+                    <Typography color="error">Fully minted</Typography>
+                  )}
                 </Box>
               ),
             },
