@@ -1,22 +1,22 @@
 import type { SubmitHandler } from 'react-hook-form'
 import { useForm } from 'react-hook-form'
-import { isAddress } from 'ethers/lib/utils'
 import TextField from '@mui/material/TextField'
 import DialogActions from '@mui/material/DialogActions'
 import Button from '@mui/material/Button'
 import DialogContent from '@mui/material/DialogContent'
+import { useState } from 'react'
+import { Box, CircularProgress } from '@mui/material'
+import { toHex } from 'web3-utils'
 
 import ModalDialog from '~/components/common/ModalDialog'
 import type { Insc20, Insc20Balance } from '~/services/indexer-api/types'
 import { useCurrentChain } from '~/hooks/useChains'
-
-import css from './styles.module.css'
 import { getAssertedChainSigner } from '~/utils/wallets'
-import { toHex } from 'web3-utils'
 import { ZERO_ADDRESS } from '~/config/constants'
 import useOnboard from '~/hooks/wallets/useOnboard'
-import { useState } from 'react'
-import { Box, CircularProgress } from '@mui/material'
+import CheckWallet from '~/components/common/CheckWallet'
+
+import css from './styles.module.css'
 
 interface Props {
   open: boolean
@@ -25,13 +25,11 @@ interface Props {
   maxAmount: Insc20Balance['amount']
 }
 
-type TransferInsc20FormData = {
+type MintInsc20FormData = {
   amount: number
-  beneficiary: string
 }
 
-// TODO: implement batch transfer
-const TransferInsc20Modal = ({ open, onClose, tick, maxAmount }: Props) => {
+const MintInsc20Modal = ({ open, onClose, tick, maxAmount }: Props) => {
   const currentChain = useCurrentChain()
   const onboard = useOnboard()
   const [loading, setLoading] = useState<boolean>(false)
@@ -41,9 +39,9 @@ const TransferInsc20Modal = ({ open, onClose, tick, maxAmount }: Props) => {
     handleSubmit,
     formState: { errors, isValid },
     reset,
-  } = useForm<TransferInsc20FormData>({ defaultValues: { amount: 0 }, mode: 'onChange' })
+  } = useForm<MintInsc20FormData>({ defaultValues: { amount: Number(maxAmount) }, mode: 'onChange' })
 
-  const onSubmit: SubmitHandler<TransferInsc20FormData> = async (data, __) => {
+  const onSubmit: SubmitHandler<MintInsc20FormData> = async (data, __) => {
     if (!onboard || !currentChain) {
       console.log('Please check you wallet')
       return
@@ -55,14 +53,9 @@ const TransferInsc20Modal = ({ open, onClose, tick, maxAmount }: Props) => {
 
       const txData = {
         p: `${currentChain.inscriptionPrefix}-20`,
-        op: 'transfer',
+        op: 'mint',
         tick,
-        to: [
-          {
-            recv: data.beneficiary,
-            amt: data.amount,
-          },
-        ],
+        amt: data.amount,
         nonce: (+new Date()).toString(),
       }
 
@@ -91,35 +84,20 @@ const TransferInsc20Modal = ({ open, onClose, tick, maxAmount }: Props) => {
   }
 
   return (
-    <ModalDialog open={open} onClose={handleClose} dialogTitle={`Transfer $${tick}`}>
+    <ModalDialog open={open} onClose={handleClose} dialogTitle={`Mint $${tick}`}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <DialogContent className={css.transferModalContainer}>
-          <div className={css.transferModalFields}>
+        <DialogContent className={css.mintModalContainer}>
+          <div className={css.mintModalFields}>
             <TextField
               required
               label="Amount"
               error={errors?.amount?.message !== undefined}
-              // helperText={errors?.amount?.type === 'validUrl' && errors?.appUrl?.message}
               autoComplete="off"
               type="number"
               {...register('amount', {
                 required: true,
                 max: Number(maxAmount),
                 valueAsNumber: true,
-              })}
-            />
-            <TextField
-              required
-              label="To"
-              error={errors?.beneficiary?.message !== undefined}
-              helperText={errors?.beneficiary?.type === 'isValidAddress' && errors?.beneficiary?.message}
-              autoComplete="off"
-              placeholder="0x..."
-              {...register('beneficiary', {
-                required: true,
-                validate: {
-                  isValidAddress: (val: string) => (isAddress(val) ? undefined : 'Invalid address'),
-                },
               })}
             />
           </div>
@@ -133,9 +111,14 @@ const TransferInsc20Modal = ({ open, onClose, tick, maxAmount }: Props) => {
           ) : (
             <>
               <Button onClick={handleClose}>Cancel</Button>
-              <Button type="submit" variant="contained" disabled={!isValid}>
-                Transfer
-              </Button>
+
+              <CheckWallet>
+                {(isOk) => (
+                  <Button type="submit" variant="contained" disabled={!isOk || !isValid}>
+                    Mint
+                  </Button>
+                )}
+              </CheckWallet>
             </>
           )}
         </DialogActions>
@@ -144,4 +127,4 @@ const TransferInsc20Modal = ({ open, onClose, tick, maxAmount }: Props) => {
   )
 }
 
-export default TransferInsc20Modal
+export default MintInsc20Modal

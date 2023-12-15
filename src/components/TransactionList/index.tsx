@@ -54,7 +54,7 @@ export const TransactionList = () => {
         </Button>
       </div>
 
-      {loading ? (
+      {loading && inscriptions.length === 0 ? (
         <Grid container direction="row" spacing={3} mb={2}>
           {[...Array(PAGE_SIZE)].map((element, index) => (
             <Grid item lg={3} xs={6} key={`${element}-${index}`}>
