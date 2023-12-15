@@ -7,29 +7,34 @@ import { Skeleton, Typography } from '@mui/material'
 import useAsync from '~/hooks/useAsync'
 import type { Insc20Balance } from '~/services/indexer-api/types'
 import { TokenListItem } from '~/components/TokenList/TokenListItem'
+import useWallet from '~/hooks/wallets/useWallet'
+import { IndexerApiService } from '~/services/indexer-api'
 
 import css from './styles.module.css'
 
 const PAGE_SIZE = 12
 
-export const TokenList = ({
-  getUserHoldings,
-}: {
-  getUserHoldings: (page: number, limit: number) => Promise<Insc20Balance[]> | undefined
-}) => {
+export const TokenList = () => {
+  const wallet = useWallet()
+
   const [inscriptions, setInscriptions] = useState([] as Insc20Balance[])
   const [hasMore, setHasMore] = useState(false)
   const [page, setPage] = useState(1)
 
   const [newInscriptions, error, loading] = useAsync(async () => {
-    if (!!getUserHoldings) {
-      const data = await getUserHoldings(page, PAGE_SIZE)
+    if (!!wallet) {
+      const api = IndexerApiService.getInstance()
+      const data = await api.tokensModule.getUserHoldings(wallet.address, { page, limit: PAGE_SIZE, order: 'desc' })
 
       setHasMore(!(data && data.length < PAGE_SIZE))
 
       return data
     }
-  }, [getUserHoldings, page])
+  }, [page, wallet])
+
+  useEffect(() => {
+    setInscriptions([])
+  }, [wallet])
 
   // Add new inscriptions to the accumulated list
   useEffect(() => {
