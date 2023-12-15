@@ -28,7 +28,8 @@
   margin: 0;
   border-radius: 0.5rem;
   font-size: 0.8rem;
-  height: 80%;
+  height: 75%;
+  margin-bottom: 0.5rem;
 }
 
 .jsonItem > *::-webkit-scrollbar {
@@ -40,16 +41,4 @@
 .jsonItem > *::-webkit-scrollbar-thumb {
     background-color: var(--color-primary-light);
     border-radius: 5px;
-}
-
-.hash {
-  color: #aaa;
-  font-size: 0.8rem;
-  margin-top: 0.5rem;
-}
-
-.createdAt {
-  color: #aaa;
-  font-size: 0.6rem;
-  margin-top: 0.25rem;
 }
