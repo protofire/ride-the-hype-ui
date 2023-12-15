@@ -4,30 +4,39 @@ import { useCallback } from 'react'
 import { IndexerApiService } from '~/services/indexer-api'
 import TokenHeader from '~/components/TokenHeader'
 import { useSearchParams } from 'next/navigation'
+import TokenOverview from '~/components/TokenList/TokenOverview'
+import ContentTabs from '~/components/common/NavTabs/ContentTabs'
 import HoldersTable from '~/components/TokenList/HoldersTable'
 import TransfersTable from '~/components/TokenList/TransfersTable'
-import TokenOverview from '~/components/TokenList/TokenOverview'
+
+const labels = ['holders', 'transactions']
 
 const TokenInfoPage: NextPage = () => {
   const searchParams = useSearchParams()
   const ticker = searchParams.get('ticker')
-
   const fetchToken = useCallback(async (ticker: string) => {
     const indexerApiService = IndexerApiService.getInstance()
     return indexerApiService.tokensModule.getInsc20ByTick(ticker)
   }, [])
 
+  const fetchHolders = useCallback(async (ticker: string, page: number, limit: number) => {
+    const indexerApiService = IndexerApiService.getInstance()
+    return indexerApiService.tokensModule.getHoldersByTick(ticker, { page, limit, order: 'desc' })
+  }, [])
+
   return (
     <>
       <Head>
-        <title>Token Overview</title>
+        <title>{ticker} Token Overview</title>
       </Head>
       <TokenHeader ticker={ticker ?? ''} />
 
       <main>
         <TokenOverview ticker={ticker ?? ''} fetchToken={fetchToken} />
-        <HoldersTable />
-        <TransfersTable />
+        <ContentTabs navItems={labels}>
+          <HoldersTable ticker={ticker ?? ''} fetchHolders={fetchHolders} />
+          <TransfersTable />
+        </ContentTabs>
       </main>
     </>
   )
