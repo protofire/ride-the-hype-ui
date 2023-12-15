@@ -92,13 +92,13 @@ const TransferInsc20Modal = ({ open, onClose, tick, maxAmount }: Props) => {
   }
 
   return (
-    <ModalDialog open={open} onClose={handleClose} dialogTitle={`Transfer ${tick}`}>
+    <ModalDialog open={open} onClose={handleClose} dialogTitle={`Transfer $${tick}`}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <DialogContent className={css.transferModalContainer}>
           <div className={css.transferModalFields}>
             <TextField
               required
-              label="Safe App URL"
+              label="Amount"
               error={errors?.amount?.message !== undefined}
               // helperText={errors?.amount?.type === 'validUrl' && errors?.appUrl?.message}
               autoComplete="off"
