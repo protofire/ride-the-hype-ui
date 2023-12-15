@@ -12,6 +12,7 @@ import type { Transaction } from '~/services/indexer-api/types'
 import { IndexerApiService } from '~/services/indexer-api'
 
 import css from './styles.module.css'
+import EthHashInfo from '~/components/common/EthHashInfo'
 
 const PAGE_SIZE = 12
 
@@ -84,8 +85,11 @@ export const TransactionList = () => {
           {inscriptions.map((item, index) => (
             <div key={index} className={css.jsonItem}>
               <pre>{JSON.stringify(item.data, null, 2)}</pre>
-              <div className={css.hash}>{`${item.hash.slice(0, 8)}...${item.hash.slice(-8)}`}</div>
-              <div className={css.createdAt}>Created at {new Date(Number(item.createdAt) * 1000).toLocaleString()}</div>
+
+              <EthHashInfo address={item.hash} showCopyButton hasExplorer />
+              <Typography fontSize="0.6rem" mt="0.25rem">
+                Created at {new Date(Number(item.createdAt) * 1000).toLocaleString()}
+              </Typography>
             </div>
           ))}
         </div>

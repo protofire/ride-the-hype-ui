@@ -37,7 +37,7 @@ const SrcEthHashInfo = ({
   copyPrefix,
   showPrefix,
   shortAddress = true,
-  showAvatar = true,
+  showAvatar = false,
   avatarSize,
   name,
   showCopyButton,
