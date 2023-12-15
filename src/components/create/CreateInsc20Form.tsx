@@ -56,7 +56,7 @@ export const CreateInsc20Form = () => {
   const totalSupply = watch(FormField.totalSupply)
   const limitPerMint = watch(FormField.limitPerMint)
   const limitPerAddress = watch(FormField.limitPerAddress)
-  const description = watch(FormField.description)
+  // const description = watch(FormField.description)
 
   const onSubmit = handleSubmit(async (data) => {
     if (!onboard || !chain) {
@@ -78,7 +78,7 @@ export const CreateInsc20Form = () => {
         desc: data[FormField.description],
       }
 
-      const dataHex = toHex('data:application/json,' + JSON.stringify(txData))
+      const dataHex = toHex('data:,' + JSON.stringify(txData))
 
       const tx = await signer.sendTransaction({
         to: ZERO_ADDRESS,
