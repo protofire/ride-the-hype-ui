@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import Paper from '@mui/material/Paper'
 import Grid from '@mui/material/Grid'
 import { Skeleton, Typography } from '@mui/material'
+
 import useAsync from '~/hooks/useAsync'
 import type { Insc20Balance } from '~/services/indexer-api/types'
+import { TokenListItem } from '~/components/TokenList/TokenListItem'
+
 import css from './styles.module.css'
 
 const PAGE_SIZE = 12
@@ -15,8 +17,6 @@ export const TokenList = ({
 }: {
   getUserHoldings: (page: number, limit: number) => Promise<Insc20Balance[]> | undefined
 }) => {
-  const router = useRouter()
-
   const [inscriptions, setInscriptions] = useState([] as Insc20Balance[])
   const [hasMore, setHasMore] = useState(false)
   const [page, setPage] = useState(1)
@@ -69,19 +69,7 @@ export const TokenList = ({
       >
         <div className={css.gridContainer}>
           {inscriptions.map((item) => (
-            <div className={css.card} key={item.tokenId}>
-              <div className={css.cardHeader}>
-                <span className={css.dollar}>${item.tick}</span>
-              </div>
-              <div className={css.cardBody}>{item.amount.toLocaleString()}</div>
-              <div className={css.cardFooter}>
-                <div className={css.hash}>{`${item.hash.slice(0, 8)}...${item.hash.slice(-8)}`}</div>
-                <div className={css.actions}>
-                  <button className={css.button}>Transfer</button>
-                  {/* <button className={css.button}>List</button> */}
-                </div>
-              </div>
-            </div>
+            <TokenListItem key={item.tokenId} item={item} />
           ))}
         </div>
       </InfiniteScroll>
