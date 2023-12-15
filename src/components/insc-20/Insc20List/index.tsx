@@ -11,6 +11,7 @@ import type { EnhancedTableProps } from '~/components/common/EnhancedTable'
 import EnhancedTable from '~/components/common/EnhancedTable'
 import { MintButton } from './MintButton'
 import LinearProgress from '@mui/material/LinearProgress'
+import Link from 'next/link'
 
 const PAGE_SIZE = 100
 
@@ -142,11 +143,11 @@ const Insc20List = ({ fetchTokens }: Props) => {
           cells: {
             tick: {
               rawValue: item.tick,
-              content: <Typography>${item.tick}</Typography>,
+              content: <Link href={'/token/?ticker=' + item.tick}>${item.tick}</Link>,
             },
             createdAt: {
               rawValue: createdAtDate.getTime(),
-              content: <Typography>{createdAtDate.toLocaleString()}</Typography>,
+              content: <Link href={'/token/?ticker=' + item.tick}>${createdAtDate.toLocaleString()}</Link>,
             },
             progress: {
               rawValue: progressValue,
@@ -163,11 +164,11 @@ const Insc20List = ({ fetchTokens }: Props) => {
             },
             holders: {
               rawValue: item.holders,
-              content: <Typography>{item.holders}</Typography>,
+              content: <Link href={'/token/?ticker=' + item.tick}>${item.holders}</Link>,
             },
             transactions: {
               rawValue: item.transactions,
-              content: <Typography>{item.transactions}</Typography>,
+              content: <Link href={'/token/?ticker=' + item.tick}>${item.transactions}</Link>,
             },
             actions: {
               rawValue: '',

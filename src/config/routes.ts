@@ -10,6 +10,9 @@ export const AppRoutes = {
     allInsc721: '/tokens/insc-721',
     allInsc20: '/tokens/insc-20',
   },
+  token: {
+    index: '/token',
+  },
   create: {
     insc721: '/create/insc-721',
     insc20: '/create/insc-20',

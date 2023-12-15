@@ -1,0 +1,73 @@
+.gridContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.card {
+  background: var(--color-background-default);
+  color: white;
+  border-radius: 20px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 240px; /* Adjust based on your requirements */
+  width: 240px;
+}
+
+.cardHeader {
+  font-size: 1.5rem;
+  color: var(--color-secondary-main);
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.dollar {
+  color: var(--color-secondary-main);
+}
+
+.cardBody {
+  font-size: 2rem;
+  display: flex;
+  justify-content: center;
+  flex-grow: 1;
+}
+
+.cardFooter {
+  font-size: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+}
+
+.button {
+  border: 2px solid var(--color-secondary-main);
+  padding: 10px 20px;
+  border-radius: 20px;
+  background: transparent;
+  color: var(--color-secondary-main);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background: var(--color-secondary-dark);
+  color: #1a1a1a;
+}
+
+.hash {
+  color: #aaa;
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+  display: block;
+  margin-bottom: 10px;
+}
