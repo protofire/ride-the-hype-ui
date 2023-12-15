@@ -1,26 +1,10 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import { useCallback } from 'react'
-import { TokenList } from '~/components/TokenList'
 
-import useWallet from '~/hooks/wallets/useWallet'
-import { IndexerApiService } from '~/services/indexer-api'
+import { TokenList } from '~/components/TokenList'
 import WalletHeader from '~/components/wallet/WalletHeader'
 
 const OwnableInsc20Page: NextPage = () => {
-  const wallet = useWallet()
-
-  const getUserHoldings = useCallback(
-    (page: number, limit: number) => {
-      if (wallet) {
-        const api = IndexerApiService.getInstance()
-
-        return api.tokensModule.getUserHoldings(wallet.address, { page, limit, order: 'desc' })
-      }
-    },
-    [wallet],
-  )
-
   return (
     <>
       <Head>
@@ -30,7 +14,7 @@ const OwnableInsc20Page: NextPage = () => {
       <WalletHeader />
 
       <main>
-        <TokenList getUserHoldings={getUserHoldings} />
+        <TokenList />
       </main>
     </>
   )

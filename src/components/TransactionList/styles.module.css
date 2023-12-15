@@ -5,6 +5,12 @@
   padding: 1rem;
 }
 
+.refreshContainer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -1rem;
+}
+
 .jsonItem {
   background: var(--color-background-default);
   border-radius: 0.5rem;
@@ -22,17 +28,17 @@
   margin: 0;
   border-radius: 0.5rem;
   font-size: 0.8rem;
-  height: 80%;
+  height: 75%;
+  margin-bottom: 0.5rem;
 }
 
-.hash {
-  color: #aaa;
-  font-size: 0.8rem;
-  margin-top: 0.5rem;
+.jsonItem > *::-webkit-scrollbar {
+    width: 0.5em;
+    height: 0.5em;
+    background-color: var(--color-background-default);
 }
 
-.createdAt {
-  color: #aaa;
-  font-size: 0.6rem;
-  margin-top: 0.25rem;
+.jsonItem > *::-webkit-scrollbar-thumb {
+    background-color: var(--color-primary-light);
+    border-radius: 5px;
 }
