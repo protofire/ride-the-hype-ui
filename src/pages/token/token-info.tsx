@@ -10,13 +10,11 @@ import TokenOverview from '~/components/TokenList/TokenOverview'
 
 const TokenInfoPage: NextPage = () => {
   const searchParams = useSearchParams()
-
   const ticker = searchParams.get('ticker')
-  const fetchToken = useCallback(async (page: number, limit: number) => {
+
+  const fetchToken = useCallback(async (ticker: string) => {
     const indexerApiService = IndexerApiService.getInstance()
-    const a = await indexerApiService.tokensModule.getInsc20ByTick(ticker ?? 'iotex')
-    console.log(a)
-    if (ticker) return indexerApiService.tokensModule.getInsc20ByTick(ticker)
+    return indexerApiService.tokensModule.getInsc20ByTick(ticker)
   }, [])
 
   return (
@@ -27,7 +25,7 @@ const TokenInfoPage: NextPage = () => {
       <TokenHeader ticker={ticker ?? ''} />
 
       <main>
-        <TokenOverview />
+        <TokenOverview ticker={ticker ?? ''} fetchToken={fetchToken} />
         <HoldersTable />
         <TransfersTable />
       </main>
