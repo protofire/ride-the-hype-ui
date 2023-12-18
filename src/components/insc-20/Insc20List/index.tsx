@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import Paper from '@mui/material/Paper'
 import Skeleton from '@mui/material/Skeleton'
@@ -11,7 +10,7 @@ import type { EnhancedTableProps } from '~/components/common/EnhancedTable'
 import EnhancedTable from '~/components/common/EnhancedTable'
 import { MintButton } from './MintButton'
 import LinearProgress from '@mui/material/LinearProgress'
-import Link from 'next/link'
+import { AppRoutes } from '~/config/routes'
 
 const PAGE_SIZE = 100
 
@@ -105,8 +104,6 @@ interface Props {
 }
 
 const Insc20List = ({ fetchTokens }: Props) => {
-  const router = useRouter()
-
   const [tokens, setTokens] = useState([] as Insc20[])
   const [hasMore, setHasMore] = useState(false)
   const [page, setPage] = useState(1)
@@ -140,14 +137,15 @@ const Insc20List = ({ fetchTokens }: Props) => {
 
         return {
           key: item.id,
+          href: AppRoutes.token.index + `?ticker=${item.tick}`,
           cells: {
             tick: {
               rawValue: item.tick,
-              content: <Link href={'/token/?ticker=' + item.tick}>${item.tick}</Link>,
+              content: <Typography>{item.tick}</Typography>,
             },
             createdAt: {
               rawValue: createdAtDate.getTime(),
-              content: <Link href={'/token/?ticker=' + item.tick}>{createdAtDate.toLocaleString()}</Link>,
+              content: <Typography>{createdAtDate.toLocaleString()}</Typography>,
             },
             progress: {
               rawValue: progressValue,
@@ -164,11 +162,11 @@ const Insc20List = ({ fetchTokens }: Props) => {
             },
             holders: {
               rawValue: item.holders,
-              content: <Link href={'/token/?ticker=' + item.tick}>{item.holders}</Link>,
+              content: <Typography>{item.holders}</Typography>,
             },
             transactions: {
               rawValue: item.transactions,
-              content: <Link href={'/token/?ticker=' + item.tick}>{item.transactions}</Link>,
+              content: <Typography>{item.transactions}</Typography>,
             },
             actions: {
               rawValue: '',
