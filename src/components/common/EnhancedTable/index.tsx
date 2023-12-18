@@ -112,7 +112,7 @@ export type EnhancedTableProps = {
   rows: EnhancedRow[]
   headCells: EnhancedHeadCell[]
   mobileVariant?: boolean
-  onDemandPagination: onDemandFetchOption
+  onDemandPagination?: onDemandFetchOption
 }
 
 export type onDemandFetchOption = {
