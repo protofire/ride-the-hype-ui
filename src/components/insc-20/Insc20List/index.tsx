@@ -3,14 +3,18 @@ import Paper from '@mui/material/Paper'
 import Skeleton from '@mui/material/Skeleton'
 import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
+import RefreshIcon from '@mui/icons-material/Refresh'
+import LinearProgress from '@mui/material/LinearProgress'
 import type { Insc20 } from '~/services/indexer-api/types'
 import useAsync from '~/hooks/useAsync'
-import css from './styles.module.css'
 import type { EnhancedTableProps } from '~/components/common/EnhancedTable'
 import EnhancedTable from '~/components/common/EnhancedTable'
-import { MintButton } from './MintButton'
-import LinearProgress from '@mui/material/LinearProgress'
 import { AppRoutes } from '~/config/routes'
+import { IndexerApiService } from '~/services/indexer-api'
+
+import { MintButton } from './MintButton'
+import css from './styles.module.css'
 
 const PAGE_SIZE = 100
 
@@ -99,28 +103,21 @@ const headCells = [
   },
 ]
 
-interface Props {
-  fetchTokens: (page: number, limit: number) => Promise<Insc20[]> | undefined
-}
-
-const Insc20List = ({ fetchTokens }: Props) => {
+const Insc20List = () => {
+  const [counter, setCounter] = useState<number>(0)
   const [tokens, setTokens] = useState([] as Insc20[])
   const [hasMore, setHasMore] = useState(false)
   const [page, setPage] = useState(1)
 
   const [newTokens, error, loading] = useAsync(async () => {
-    if (!!fetchTokens) {
-      try {
-        const data = await fetchTokens(page, PAGE_SIZE)
+    const indexerApiService = IndexerApiService.getInstance()
+    const data = await indexerApiService.tokensModule.getAllInsc20({ page, limit: PAGE_SIZE, order: 'desc' })
 
-        setHasMore(!(data && data.length < PAGE_SIZE))
+    setHasMore(!(data && data.length < PAGE_SIZE))
 
-        return data
-      } catch (e) {
-        console.log(e)
-      }
-    }
-  }, [fetchTokens, page])
+    return data
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page, counter])
 
   // Add new tokens to the accumulated list
   useEffect(() => {
@@ -128,6 +125,13 @@ const Insc20List = ({ fetchTokens }: Props) => {
       setTokens((prev) => prev.concat(newTokens))
     }
   }, [newTokens])
+
+  const refresh = () => {
+    setTokens([])
+    setHasMore(true)
+    setPage(1)
+    setCounter((prevState) => prevState + 1)
+  }
 
   const rows = loading
     ? skeletonRows
@@ -187,6 +191,12 @@ const Insc20List = ({ fetchTokens }: Props) => {
 
   return (
     <Paper sx={{ padding: 4, maxWidth: '1200px', m: '1rem auto' }}>
+      <div className={css.refreshContainer}>
+        <Button variant="text" onClick={refresh} size="small" endIcon={<RefreshIcon />}>
+          Refresh
+        </Button>
+      </div>
+
       {error ? <Typography>An error occurred during loading tokens...</Typography> : null}
 
       <div className={css.container}>
