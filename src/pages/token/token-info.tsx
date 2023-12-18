@@ -9,7 +9,7 @@ import ContentTabs from '~/components/common/NavTabs/ContentTabs'
 import HoldersTable from '~/components/TokenList/HoldersTable'
 import TransactionsTable from '~/components/TokenList/TransactionsTable'
 
-const labels = ['holders', 'transactions']
+const labels = ['holders', 'latest transactions']
 
 const TokenInfoPage: NextPage = () => {
   const searchParams = useSearchParams()
