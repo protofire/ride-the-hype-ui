@@ -1,13 +1,15 @@
 import { useEffect } from 'react'
 import { type Slice } from '@reduxjs/toolkit'
 import { useAppDispatch } from '~/store'
-import { type AsyncResult } from './useAsync'
+import { type AsyncResult } from '~/hooks/useAsync'
 
 // Import all the loadable hooks
-import useLoadChains from './loadables/useLoadChains'
+import useLoadChains from '~/hooks/loadables/useLoadChains'
+import useLoadBalances from '~/hooks/loadables/useLoadBalances'
 
 // Import all the loadable slices
 import { chainsSlice } from '~/store/chainsSlice'
+import { balancesSlice } from '~/store/balancesSlice'
 
 // Dispatch into the corresponding store when the loadable is loaded
 const useUpdateStore = (slice: Slice, useLoadHook: () => AsyncResult<unknown>): void => {
@@ -28,6 +30,7 @@ const useUpdateStore = (slice: Slice, useLoadHook: () => AsyncResult<unknown>): 
 
 const useLoadableStores = () => {
   useUpdateStore(chainsSlice, useLoadChains)
+  useUpdateStore(balancesSlice, useLoadBalances)
 }
 
 export default useLoadableStores

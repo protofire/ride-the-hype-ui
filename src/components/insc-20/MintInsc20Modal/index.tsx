@@ -84,7 +84,7 @@ const MintInsc20Modal = ({ open, onClose, tick, maxAmount }: Props) => {
   }
 
   return (
-    <ModalDialog open={open} onClose={handleClose} dialogTitle={`Mint $${tick}`}>
+    <ModalDialog open={open} onClose={handleClose} dialogTitle={`Mint ${tick}`}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <DialogContent className={css.mintModalContainer}>
           <div className={css.mintModalFields}>

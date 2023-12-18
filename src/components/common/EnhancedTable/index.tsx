@@ -1,5 +1,7 @@
 import type { ChangeEvent, ReactNode, SetStateAction } from 'react'
 import React, { useState } from 'react'
+import Link from 'next/link'
+import type { Url } from 'next/dist/shared/lib/router/router'
 import Box from '@mui/material/Box'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
@@ -28,6 +30,7 @@ type EnhancedRow = {
   collapsed?: boolean
   key?: string
   cells: Record<string, EnhancedCell>
+  href?: string
 }
 
 type EnhancedHeadCell = {
@@ -101,6 +104,10 @@ function EnhancedTableHead(props: EnhancedTableHeadProps) {
   )
 }
 
+function ConditionalLink(props: { href?: Url; children?: React.ReactNode }) {
+  return props.href ? <Link href={props.href}>{props.children}</Link> : <>{props.children}</>
+}
+
 export type EnhancedTableProps = {
   rows: EnhancedRow[]
   headCells: EnhancedHeadCell[]
@@ -170,9 +177,11 @@ function EnhancedTable({ rows, headCells, mobileVariant, onDemandPagination }: E
                         [css.collapsedCell]: row.collapsed,
                       })}
                     >
-                      <Collapse key={index} in={!row.collapsed} enter={false}>
-                        {cell.content}
-                      </Collapse>
+                      <ConditionalLink href={row.href}>
+                        <Collapse key={index} in={!row.collapsed} enter={false}>
+                          {cell.content}
+                        </Collapse>
+                      </ConditionalLink>
                     </TableCell>
                   ))}
                 </TableRow>
