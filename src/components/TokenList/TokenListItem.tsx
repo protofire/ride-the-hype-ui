@@ -18,7 +18,7 @@ export const TokenListItem = ({ item }: Props) => {
     <>
       <div className={css.card} key={item.tokenId}>
         <div className={css.cardHeader}>
-          <span className={css.dollar}>${item.tick}</span>
+          <span className={css.dollar}>{item.tick}</span>
         </div>
         <div className={css.cardBody}>{item.amount.toLocaleString()}</div>
         <div className={css.cardFooter}>
