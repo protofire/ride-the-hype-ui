@@ -1,47 +1,22 @@
-import { useEffect, useState } from 'react'
+import { useMemo, useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import Paper from '@mui/material/Paper'
 import Grid from '@mui/material/Grid'
 import { Skeleton, Typography } from '@mui/material'
 
-import useAsync from '~/hooks/useAsync'
-import type { Insc20Balance } from '~/services/indexer-api/types'
 import { TokenListItem } from '~/components/TokenList/TokenListItem'
-import useWallet from '~/hooks/wallets/useWallet'
-import { IndexerApiService } from '~/services/indexer-api'
+import useBalances from '~/hooks/useBalances'
 
 import css from './styles.module.css'
 
 const PAGE_SIZE = 12
 
 export const TokenList = () => {
-  const wallet = useWallet()
-
-  const [inscriptions, setInscriptions] = useState([] as Insc20Balance[])
-  const [hasMore, setHasMore] = useState(false)
+  const { balances, loading, error } = useBalances()
   const [page, setPage] = useState(1)
 
-  const [newInscriptions, error, loading] = useAsync(async () => {
-    if (!!wallet) {
-      const api = IndexerApiService.getInstance()
-      const data = await api.tokensModule.getUserHoldings(wallet.address, { page, limit: PAGE_SIZE, order: 'desc' })
-
-      setHasMore(!(data && data.length < PAGE_SIZE))
-
-      return data
-    }
-  }, [page, wallet])
-
-  useEffect(() => {
-    setInscriptions([])
-  }, [wallet])
-
-  // Add new inscriptions to the accumulated list
-  useEffect(() => {
-    if (newInscriptions && newInscriptions.length > 0) {
-      setInscriptions((prev) => prev.concat(newInscriptions))
-    }
-  }, [newInscriptions])
+  const visibleBalances = useMemo(() => balances.insc20s.slice(0, PAGE_SIZE * page), [balances.insc20s, page])
+  const hasMore = visibleBalances.length % PAGE_SIZE === 0
 
   return (
     <Paper sx={{ padding: 4, maxWidth: '1200px', m: '1rem auto' }}>
@@ -55,14 +30,12 @@ export const TokenList = () => {
         </Grid>
       ) : null}
 
-      {error ? <Typography>An error occurred during loading inscriptions...</Typography> : null}
+      {error ? <Typography>An error occurred during loading balances...</Typography> : null}
 
-      {!loading && inscriptions !== undefined && inscriptions.length === 0 ? (
-        <Typography>There are not any inscriptions yet.</Typography>
-      ) : null}
+      {!loading && balances.insc20s.length === 0 ? <Typography>You don&apos;t have any IRC-20 yet.</Typography> : null}
 
       <InfiniteScroll
-        dataLength={inscriptions.length}
+        dataLength={visibleBalances.length}
         next={() => setPage((page) => page + 1)}
         hasMore={hasMore}
         loader={<h4>Loading...</h4>}
@@ -73,7 +46,7 @@ export const TokenList = () => {
         }
       >
         <div className={css.gridContainer}>
-          {inscriptions.map((item) => (
+          {visibleBalances.map((item) => (
             <TokenListItem key={item.tokenId} item={item} />
           ))}
         </div>

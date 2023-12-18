@@ -12,11 +12,13 @@ import { IS_PRODUCTION } from '~/config/constants'
 import { createStoreHydrator, HYDRATE_ACTION } from './storeHydrator'
 import { chainsSlice } from './chainsSlice'
 import { sessionSlice } from './sessionSlice'
+import { balancesSlice } from '~/store/balancesSlice'
 import { getPreloadedState, persistState } from './persistStore'
 
 const rootReducer = combineReducers({
   [chainsSlice.name]: chainsSlice.reducer,
   [sessionSlice.name]: sessionSlice.reducer,
+  [balancesSlice.name]: balancesSlice.reducer,
 })
 
 const persistedSlices: (keyof PreloadedState<RootState>)[] = [sessionSlice.name]
