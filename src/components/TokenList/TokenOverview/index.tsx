@@ -54,7 +54,7 @@ interface Props {
   ticker: string
 }
 
-const labels = ['holders', 'latest transactions']
+const labels = ['holders', 'transactions']
 
 const TokenOverview = ({ fetchToken, fetchHolders, fetchTransactions, ticker }: Props) => {
   const [tokenData, error, loading] = useAsync(async () => {
@@ -109,8 +109,12 @@ const TokenOverview = ({ fetchToken, fetchHolders, fetchTransactions, ticker }: 
         {error ? <Typography>An error occurred when during loading token...</Typography> : null}
       </Paper>
       <ContentTabs navItems={labels}>
-        <HoldersTable ticker={ticker ?? ''} fetchHolders={fetchHolders} totalHolders={tokenData?.holders} />
-        <TransactionsTable ticker={ticker ?? ''} fetchTransactions={fetchTransactions} />
+        <HoldersTable ticker={ticker ?? ''} fetchHolders={fetchHolders} totalHolders={tokenData?.holders ?? 0} />
+        <TransactionsTable
+          ticker={ticker ?? ''}
+          fetchTransactions={fetchTransactions}
+          totalTransactions={tokenData?.transactions ?? 0}
+        />
       </ContentTabs>
     </>
   )

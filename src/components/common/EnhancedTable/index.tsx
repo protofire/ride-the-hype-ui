@@ -1,4 +1,4 @@
-import type { ChangeEvent, ReactNode } from 'react'
+import type { ChangeEvent, ReactNode, SetStateAction } from 'react'
 import React, { useState } from 'react'
 import Box from '@mui/material/Box'
 import Table from '@mui/material/Table'
@@ -16,7 +16,6 @@ import classNames from 'classnames'
 
 import css from './styles.module.css'
 import { Collapse } from '@mui/material'
-import type { onDemandFetchOption } from '~/components/TokenList/HoldersTable'
 
 type EnhancedCell = {
   content: ReactNode
@@ -109,6 +108,14 @@ export type EnhancedTableProps = {
   onDemandPagination: onDemandFetchOption
 }
 
+export type onDemandFetchOption = {
+  pageSize: number
+  page: number
+  setPage: (value: SetStateAction<number>) => void
+  setPageSize: (value: SetStateAction<number>) => void
+  totalHolders: number
+}
+
 const pageSizes = [10, 25, 100]
 
 function EnhancedTable({ rows, headCells, mobileVariant, onDemandPagination }: EnhancedTableProps) {
@@ -131,7 +138,10 @@ function EnhancedTable({ rows, headCells, mobileVariant, onDemandPagination }: E
   }
 
   const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>) => {
-    if (onDemandPagination) onDemandPagination.setPageSize(parseInt(event.target.value, 10))
+    if (onDemandPagination) {
+      onDemandPagination.setPageSize(parseInt(event.target.value, 10))
+      onDemandPagination.setPage(0)
+    }
     setRowsPerPage(parseInt(event.target.value, 10))
     setPage(0)
   }

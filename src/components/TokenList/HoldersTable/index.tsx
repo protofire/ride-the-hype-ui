@@ -5,7 +5,6 @@ import css from './styles.module.css'
 import type { EnhancedTableProps } from '~/components/common/EnhancedTable'
 import EnhancedTable from '~/components/common/EnhancedTable'
 import type { TokenHolder } from '~/services/indexer-api/types'
-import type { SetStateAction } from 'react'
 import { useState } from 'react'
 import useAsync from '~/hooks/useAsync'
 import EthHashInfo from '~/components/common/EthHashInfo'
@@ -42,14 +41,6 @@ const headCells = [
     label: 'Amount',
   },
 ]
-
-export interface onDemandFetchOption {
-  pageSize: number
-  page: number
-  setPage: (value: SetStateAction<number>) => void
-  setPageSize: (value: SetStateAction<number>) => void
-  totalHolders: number
-}
 
 interface Props {
   fetchHolders: (ticker: string, page: number, limit: number) => Promise<TokenHolder[]> | undefined
