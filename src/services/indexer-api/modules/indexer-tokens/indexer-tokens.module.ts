@@ -29,9 +29,6 @@ export class IndexerTokensModule {
     const address = await z.string().parseAsync(walletAddress)
     const response = await this.client.get(`api/v1/users/${address}/balances`, { params })
 
-    // TODO: restore passing data after this method is implemented on BE
-    console.log('[getUserHoldings]: ', response.data)
-
     return Insc20BalanceSchema.array().parseAsync(response.data)
   }
 
