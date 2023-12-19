@@ -52,7 +52,7 @@ const CopyButton = ({
         className={className}
         disabled={!isCopyEnabled}
       >
-        {children ?? <SvgIcon component={CopyIcon} inheritViewBox color="border" fontSize="small" />}
+        {children ?? <SvgIcon component={CopyIcon} inheritViewBox fontSize="small" />}
       </IconButton>
     </Tooltip>
   )
