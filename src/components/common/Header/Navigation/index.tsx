@@ -9,6 +9,7 @@ import type { LinkProps } from 'next/link'
 import Link from 'next/link'
 import type { ReactElement } from 'react'
 import css from './styles.module.css'
+import { Tooltip } from '@mui/material'
 
 const getSubdirectory = (pathname: string): string => {
   return pathname.split('/')[1]
@@ -40,13 +41,14 @@ const Navigation = () => {
 
   return (
     <List className={css.list}>
-      {navItems.map((item) => {
+      {navItems.map((item, i) => {
         const isSelected = currentSubdirectory === getSubdirectory(item.href)
 
         return (
-          <ListItem key={item.href} disablePadding>
-            <NavListItemButton selected={isSelected} href={{ pathname: item.href }}>
-              {/* {item.icon && (
+          <Tooltip key={i} title="Coming Soon" disableHoverListener={item.href !== ''}>
+            <ListItem disablePadding>
+              <NavListItemButton disabled={!item.href} selected={isSelected} href={{ pathname: item.href }}>
+                {/* {item.icon && (
                 <ListItemIcon
                   className={css.icon}
                   sx={{
@@ -63,9 +65,10 @@ const Navigation = () => {
                 </ListItemIcon>
               )} */}
 
-              <ListItemText primaryTypographyProps={{ variant: 'body2', fontWeight: 700 }}>{item.label}</ListItemText>
-            </NavListItemButton>
-          </ListItem>
+                <ListItemText primaryTypographyProps={{ variant: 'body2', fontWeight: 700 }}>{item.label}</ListItemText>
+              </NavListItemButton>
+            </ListItem>
+          </Tooltip>
         )
       })}
     </List>
