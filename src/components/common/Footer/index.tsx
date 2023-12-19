@@ -6,9 +6,9 @@ import ExternalLink from '../ExternalLink'
 import TelegramIcon from '~/public/images/telegram.svg'
 import TwitterIcon from '~/public/images/x-twitter.svg'
 import SvgIcon from '@mui/material/SvgIcon'
-import { SOCIALS } from '~/config/constants'
+// import { SOCIALS } from '~/config/constants'
 import { useTheme } from '@mui/material/styles'
-import { Box, Stack, useMediaQuery } from '@mui/material'
+import { Stack, useMediaQuery } from '@mui/material'
 
 const footerPages = [AppRoutes.allInscriptions.index, AppRoutes.create.index]
 

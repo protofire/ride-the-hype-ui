@@ -17,7 +17,6 @@ const ConnectWalletButton = ({ onConnect }: { onConnect?: () => void }): React.R
       // size="small"
       disableElevation
       fullWidth
-      sx={{ fontSize: ['12px', '13px']}}
     >
       CONNECT
     </Button>
