@@ -59,7 +59,7 @@ export const MintInsc20Form = () => {
         op: 'mint',
         tick: data[FormField.tick],
         amt: data[FormField.amount],
-        nonce: (+new Date()).toString(),
+        //nonce: (+new Date()).toString(),
       }
 
       const dataHex = toHex('data:,' + JSON.stringify(txData))

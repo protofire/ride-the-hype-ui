@@ -56,7 +56,7 @@ const MintInsc20Modal = ({ open, onClose, tick, maxAmount }: Props) => {
         op: 'mint',
         tick,
         amt: data.amount,
-        nonce: (+new Date()).toString(),
+        //nonce: (+new Date()).toString(),
       }
 
       const dataHex = toHex('data:,' + JSON.stringify(txData))
