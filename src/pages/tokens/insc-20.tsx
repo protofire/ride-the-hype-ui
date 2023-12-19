@@ -1,7 +1,7 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 
-import AllTokensHeader from '~/components/AllTokensHeader'
+// import AllTokensHeader from '~/components/AllTokensHeader'
 import Insc20List from '~/components/insc-20/Insc20List'
 
 const Insc20TokensPage: NextPage = () => {
@@ -11,7 +11,7 @@ const Insc20TokensPage: NextPage = () => {
         <title>View All IRC-20s</title>
       </Head>
 
-      <AllTokensHeader />
+      {/* <AllTokensHeader /> */}
 
       <main>
         <Insc20List />

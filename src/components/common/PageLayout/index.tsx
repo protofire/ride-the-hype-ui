@@ -7,6 +7,7 @@ import SideDrawer from './SideDrawer'
 import Header from '~/components/common/Header'
 import useDebounce from '~/hooks/useDebounce'
 import Footer from '../Footer'
+import MessageHeader from '../Header/MessageHeader.tsx/messageHeader'
 
 const PageLayout = ({ children }: { pathname: string; children: ReactElement }): ReactElement => {
   const router = useRouter()
@@ -17,11 +18,11 @@ const PageLayout = ({ children }: { pathname: string; children: ReactElement }):
   useEffect(() => {
     setNoSidebar(!router.isReady)
   }, [router])
-
   return (
     <>
       <header className={css.header}>
         <Header onMenuToggle={noSidebar ? undefined : setSidebarOpen} />
+        <MessageHeader />
       </header>
 
       {!noSidebar && <SideDrawer isOpen={isSidebarOpen} onToggle={setSidebarOpen} />}

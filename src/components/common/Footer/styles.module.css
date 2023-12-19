@@ -1,5 +1,5 @@
 .container {
-  padding: var(--space-1);
+  padding: var(--space-2);
   font-size: 13px;
   background-color: var(--color-text-disabled);
 }

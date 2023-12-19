@@ -2,7 +2,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 
 import { TokenList } from '~/components/TokenList'
-import WalletHeader from '~/components/wallet/WalletHeader'
+// import WalletHeader from '~/components/wallet/WalletHeader'
 
 const OwnableInsc20Page: NextPage = () => {
   return (
@@ -11,7 +11,7 @@ const OwnableInsc20Page: NextPage = () => {
         <title>View your tokens</title>
       </Head>
 
-      <WalletHeader />
+      {/* <WalletHeader /> */}
 
       <main>
         <TokenList />

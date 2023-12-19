@@ -8,7 +8,8 @@
   z-index: 2;
   width: 100%;
   position: sticky !important;
-  top: calc(var(--header-height));
+  /* TODO: apply message header height to vars */
+  top: calc(var(--header-height) + 20px); 
   border-bottom: 1px solid var(--color-border-main);
 }
 

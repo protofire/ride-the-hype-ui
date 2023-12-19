@@ -2,7 +2,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useCallback } from 'react'
 import { IndexerApiService } from '~/services/indexer-api'
-import TokenHeader from '~/components/TokenHeader'
+// import TokenHeader from '~/components/TokenHeader'
 import { useSearchParams } from 'next/navigation'
 import TokenOverview from '~/components/TokenList/TokenOverview'
 
@@ -30,7 +30,7 @@ const TokenInfoPage: NextPage = () => {
       <Head>
         <title>{ticker} Token Overview</title>
       </Head>
-      <TokenHeader ticker={ticker ?? ''} />
+      {/* <TokenHeader ticker={ticker ?? ''} /> */}
 
       <main>
         <TokenOverview

@@ -1,7 +1,7 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useSearchParams } from 'next/navigation'
-import InscriptionHeader from '~/components/InscriptionHeader'
+// import InscriptionHeader from '~/components/InscriptionHeader'
 import TransactionOverview from '~/components/TransactionList/TransactionOverview'
 import { IndexerApiService } from '~/services/indexer-api'
 import { useCallback } from 'react'
@@ -25,7 +25,7 @@ const InscriptionPage: NextPage = () => {
       <Head>
         <title>Inscription Overview</title>
       </Head>
-      <InscriptionHeader />
+      {/* <InscriptionHeader /> */}
       <main>
         <TransactionOverview hash={hash ?? ''} fetchTransaction={fetchTransaction} fetchToken={fetchToken} />
       </main>

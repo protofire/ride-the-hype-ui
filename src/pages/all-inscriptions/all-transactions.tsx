@@ -1,7 +1,7 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 
-import AllInscriptionsHeader from '~/components/AllInscriptionsHeader'
+// import AllInscriptionsHeader from '~/components/AllInscriptionsHeader'
 import { TransactionList } from '~/components/TransactionList'
 
 const LatestTransactionsPage: NextPage = () => {
@@ -11,7 +11,7 @@ const LatestTransactionsPage: NextPage = () => {
         <title>Latest Inscriptions</title>
       </Head>
 
-      <AllInscriptionsHeader />
+      {/* <AllInscriptionsHeader /> */}
 
       <main>
         <TransactionList />
