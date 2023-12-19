@@ -12,7 +12,7 @@ import ModalDialog from '~/components/common/ModalDialog'
 import type { Insc20, Insc20Balance } from '~/services/indexer-api/types'
 import { useCurrentChain } from '~/hooks/useChains'
 import { getAssertedChainSigner } from '~/utils/wallets'
-import { ZERO_ADDRESS } from '~/config/constants'
+//import { ZERO_ADDRESS } from '~/config/constants'
 import useOnboard from '~/hooks/wallets/useOnboard'
 import CheckWallet from '~/components/common/CheckWallet'
 
@@ -62,7 +62,7 @@ const MintInsc20Modal = ({ open, onClose, tick, maxAmount }: Props) => {
       const dataHex = toHex('data:,' + JSON.stringify(txData))
 
       const tx = await signer.sendTransaction({
-        to: ZERO_ADDRESS,
+        to: signer.getAddress(),
         value: 0,
         data: dataHex,
       })

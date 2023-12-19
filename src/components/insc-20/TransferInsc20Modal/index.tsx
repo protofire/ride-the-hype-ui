@@ -13,7 +13,7 @@ import { useCurrentChain } from '~/hooks/useChains'
 import css from './styles.module.css'
 import { getAssertedChainSigner } from '~/utils/wallets'
 import { toHex } from 'web3-utils'
-import { ZERO_ADDRESS } from '~/config/constants'
+//import { ZERO_ADDRESS } from '~/config/constants'
 import useOnboard from '~/hooks/wallets/useOnboard'
 import { useState } from 'react'
 import { Box, CircularProgress } from '@mui/material'
@@ -69,7 +69,7 @@ const TransferInsc20Modal = ({ open, onClose, tick, maxAmount }: Props) => {
       const dataHex = toHex('data:,' + JSON.stringify(txData))
 
       const tx = await signer.sendTransaction({
-        to: ZERO_ADDRESS,
+        to: signer.getAddress(),
         value: 0,
         data: dataHex,
       })

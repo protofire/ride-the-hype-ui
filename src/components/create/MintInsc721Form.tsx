@@ -8,7 +8,7 @@ import { Button } from '@mui/material'
 import { useCurrentChain } from '~/hooks/useChains'
 import useOnboard from '~/hooks/wallets/useOnboard'
 import { getAssertedChainSigner } from '~/utils/wallets'
-import { ZERO_ADDRESS } from '~/config/constants'
+//import { ZERO_ADDRESS } from '~/config/constants'
 import type { TransactionResponse } from '@ethersproject/abstract-provider'
 import EthHashInfo from '~/components/common/EthHashInfo'
 import { Insc721FileUpload } from '~/components/insc-721/Insc721FileUpload'
@@ -73,7 +73,7 @@ export const MintInsc721Form = () => {
         const dataHex = toHex('data:,' + JSON.stringify(txData))
 
         const tx = await signer.sendTransaction({
-          to: ZERO_ADDRESS,
+          to: signer.getAddress(),
           value: 0,
           data: dataHex,
         })

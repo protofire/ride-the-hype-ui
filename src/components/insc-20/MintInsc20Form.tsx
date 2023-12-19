@@ -14,7 +14,7 @@ import { useCurrentChain } from '~/hooks/useChains'
 import useOnboard from '~/hooks/wallets/useOnboard'
 import InfoIcon from '~/public/images/info.svg'
 import { getAssertedChainSigner } from '~/utils/wallets'
-import { ZERO_ADDRESS } from '~/config/constants'
+//import { ZERO_ADDRESS } from '~/config/constants'
 import type { TransactionResponse } from '@ethersproject/abstract-provider'
 import EthHashInfo from '~/components/common/EthHashInfo'
 
@@ -65,7 +65,7 @@ export const MintInsc20Form = () => {
       const dataHex = toHex('data:,' + JSON.stringify(txData))
 
       const tx = await signer.sendTransaction({
-        to: ZERO_ADDRESS,
+        to: signer.getAddress(),
         value: 0,
         data: dataHex,
       })
