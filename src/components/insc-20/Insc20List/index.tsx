@@ -1,3 +1,4 @@
+import type { ChangeEvent } from 'react'
 import { useEffect, useState } from 'react'
 import Paper from '@mui/material/Paper'
 import Skeleton from '@mui/material/Skeleton'
@@ -5,6 +6,7 @@ import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import RefreshIcon from '@mui/icons-material/Refresh'
+import { FormControl, FormControlLabel, Radio, RadioGroup } from '@mui/material'
 import LinearProgress from '@mui/material/LinearProgress'
 import type { Insc20 } from '~/services/indexer-api/types'
 import useAsync from '~/hooks/useAsync'
@@ -12,6 +14,7 @@ import type { EnhancedTableProps } from '~/components/common/EnhancedTable'
 import EnhancedTable from '~/components/common/EnhancedTable'
 import { AppRoutes } from '~/config/routes'
 import { IndexerApiService } from '~/services/indexer-api'
+import { Insc20Filter } from '~/types'
 
 import { MintButton } from './MintButton'
 import css from './styles.module.css'
@@ -24,7 +27,7 @@ const skeletonCells: EnhancedTableProps['rows'][0]['cells'] = {
     content: (
       <div className={css.token}>
         <Typography>
-          <Skeleton width="80px" height="60px" />
+          <Skeleton width="80px" height="40px" />
         </Typography>
       </div>
     ),
@@ -33,7 +36,7 @@ const skeletonCells: EnhancedTableProps['rows'][0]['cells'] = {
     rawValue: '',
     content: (
       <Typography>
-        <Skeleton width="132px" height="60px" />
+        <Skeleton width="132px" height="40px" />
       </Typography>
     ),
   },
@@ -41,7 +44,7 @@ const skeletonCells: EnhancedTableProps['rows'][0]['cells'] = {
     rawValue: '0.00%',
     content: (
       <Typography>
-        <Skeleton width="132px" height="60px" />
+        <Skeleton width="132px" height="40px" />
       </Typography>
     ),
   },
@@ -49,7 +52,7 @@ const skeletonCells: EnhancedTableProps['rows'][0]['cells'] = {
     rawValue: '',
     content: (
       <Typography>
-        <Skeleton width="90px" height="60px" />
+        <Skeleton width="90px" height="40px" />
       </Typography>
     ),
   },
@@ -57,7 +60,7 @@ const skeletonCells: EnhancedTableProps['rows'][0]['cells'] = {
     rawValue: '',
     content: (
       <Typography>
-        <Skeleton width="90px" height="60px" />
+        <Skeleton width="90px" height="40px" />
       </Typography>
     ),
   },
@@ -67,7 +70,7 @@ const skeletonCells: EnhancedTableProps['rows'][0]['cells'] = {
     content: <div></div>,
   },
 }
-const skeletonRows: EnhancedTableProps['rows'] = Array(25).fill({ cells: skeletonCells })
+const skeletonRows: EnhancedTableProps['rows'] = Array(5).fill({ cells: skeletonCells })
 
 const headCells = [
   {
@@ -109,15 +112,22 @@ const Insc20List = () => {
   const [hasMore, setHasMore] = useState(false)
   const [page, setPage] = useState(1)
 
+  const [filter, setFilter] = useState<Insc20Filter>(Insc20Filter.ALL)
+
   const [newTokens, error, loading] = useAsync(async () => {
     const indexerApiService = IndexerApiService.getInstance()
-    const data = await indexerApiService.tokensModule.getAllInsc20({ page, limit: PAGE_SIZE, order: 'desc' })
+    const data = await indexerApiService.tokensModule.getAllInsc20({
+      page,
+      limit: PAGE_SIZE,
+      order: 'desc',
+      mintingStatus: filter,
+    })
 
     setHasMore(!(data && data.length < PAGE_SIZE))
 
     return data
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, counter])
+  }, [page, counter, filter])
 
   // Add new tokens to the accumulated list
   useEffect(() => {
@@ -131,6 +141,18 @@ const Insc20List = () => {
     setHasMore(true)
     setPage(1)
     setCounter((prevState) => prevState + 1)
+  }
+
+  useEffect(() => {
+    if (filter) {
+      setTokens([])
+      setPage(1)
+      setHasMore(true)
+    }
+  }, [filter])
+
+  const handleChangeFilter = (event: ChangeEvent<HTMLInputElement>) => {
+    setFilter(event.target.value as Insc20Filter)
   }
 
   const rows = loading
@@ -191,7 +213,21 @@ const Insc20List = () => {
 
   return (
     <Paper sx={{ padding: 4, maxWidth: '1200px', m: '1rem auto' }}>
-      <div className={css.refreshContainer}>
+      <div className={css.actionButtonsContainer}>
+        <FormControl>
+          <RadioGroup
+            row
+            sx={{ ml: '1rem' }}
+            name="actions-radio-buttons-group"
+            value={filter}
+            onChange={handleChangeFilter}
+          >
+            <FormControlLabel value={Insc20Filter.ALL} control={<Radio />} label="All" />
+            <FormControlLabel value={Insc20Filter.IN_PROGRESS} control={<Radio />} label="In progress" />
+            <FormControlLabel value={Insc20Filter.COMPLETED} control={<Radio />} label="Completed" />
+          </RadioGroup>
+        </FormControl>
+
         <Button variant="text" onClick={refresh} size="small" endIcon={<RefreshIcon />}>
           Refresh
         </Button>
