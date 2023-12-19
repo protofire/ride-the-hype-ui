@@ -39,6 +39,11 @@ export const navItems: NavItem[] = [
     icon: <SvgIcon component={CreateIcon} inheritViewBox />,
     href: AppRoutes.create.index,
   },
+  {
+    label: 'Marketplace',
+    icon: <SvgIcon component={CreateIcon} inheritViewBox />,
+    href: '',
+  },
 ]
 
 export const allInscriptionsNavItems: NavItem[] = [
