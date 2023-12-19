@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import css from './styles.module.css'
 import { AppRoutes } from '~/config/routes'
 import ExternalLink from '../ExternalLink'
-import TelegramIcon from '~/public/images/telegram.svg'
+//import TelegramIcon from '~/public/images/telegram.svg'
 import TwitterIcon from '~/public/images/x-twitter.svg'
 import SvgIcon from '@mui/material/SvgIcon'
 // import { SOCIALS } from '~/config/constants'
@@ -25,15 +25,15 @@ const Footer = (): ReactElement | null => {
     <>
       <footer className={css.container}>
         <Stack direction="row" justifyContent="center" alignItems="center" spacing={2}>
-          <ExternalLink href={''} noIcon>
+          {/* <ExternalLink href={''} noIcon>
             <SvgIcon component={TelegramIcon} inheritViewBox />
-          </ExternalLink>
-          <ExternalLink href={''} noIcon>
+          </ExternalLink> */}
+          <ExternalLink href={'https://twitter.com/optiscriptions'} noIcon>
             <SvgIcon component={TwitterIcon} inheritViewBox />
           </ExternalLink>
-          <ExternalLink color={'#000'} href="https://protofire.io/" noIcon sx={{ textDecoration: 'underline' }}>
+          {/* <ExternalLink color={'#000'} href="https://protofire.io/" noIcon sx={{ textDecoration: 'underline' }}>
             Supported by Protofire.io
-          </ExternalLink>
+          </ExternalLink> */}
         </Stack>
       </footer>
     </>
