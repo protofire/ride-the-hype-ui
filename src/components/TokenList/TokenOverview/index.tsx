@@ -19,7 +19,11 @@ const listProperties = [
   },
   {
     id: 'maxMint',
-    label: 'Max Mint',
+    label: 'Max per Mint',
+  },
+  {
+    id: 'holdLimit',
+    label: 'Max Mint per Address',
   },
   {
     id: 'progress',
