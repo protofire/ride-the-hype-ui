@@ -4,14 +4,6 @@
   background-color: var(--color-text-disabled);
 }
 
-.topSection {
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 20px; 
-  background-image: url('/images/common/footer-tech-bg.png'); 
-}
-
 .container ul {
   display: flex;
   flex-wrap: wrap;
