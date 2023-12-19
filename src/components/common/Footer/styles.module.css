@@ -7,6 +7,15 @@
   display: flex;
 }
 
+.icon{
+  color: black;
+  font-size: 36px;
+}
+
+.icon:hover{
+  color: var(--color-primary-main);
+}
+
 @media (max-width: 599.95px) {
   .container li:not(:last-of-type):after {
     visibility: hidden;
