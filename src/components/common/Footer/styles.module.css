@@ -1,33 +1,10 @@
 .container {
-  padding: var(--space-2);
+  padding: var(--space-2) var(--space-1) var(--space-1) var(--space-2);
   font-size: 13px;
   background-color: var(--color-text-disabled);
-}
-
-.container ul {
-  display: flex;
-  flex-wrap: wrap;
-  list-style: none;
-  margin: 0;
-  padding: 0;
+  align-items: center;
   justify-content: center;
-  row-gap: 0.2em;
-  column-gap: var(--space-2);
-  align-items: baseline;
-}
-
-.container li {
-  padding: 0;
-  margin: 0;
-}
-
-.container li:not(:last-of-type):after {
-  margin-left: var(--space-2);
-}
-
-.container li a:not([href]) {
-  text-decoration: none;
-  pointer-events: none;
+  display: flex;
 }
 
 @media (max-width: 599.95px) {

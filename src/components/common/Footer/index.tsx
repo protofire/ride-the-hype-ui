@@ -17,14 +17,14 @@ const Footer = (): ReactElement | null => {
   const { breakpoints } = useTheme()
   const isSmallScreen = useMediaQuery(breakpoints.down('md'))
 
-  if (!footerPages.some((path) => router.pathname.startsWith(path)) || isSmallScreen) {
+  if (/*!footerPages.some((path) => router.pathname.startsWith(path)) || */ isSmallScreen) {
     return null
   }
 
   return (
     <>
       <footer className={css.container}>
-        <Stack direction="row" justifyContent="center" alignItems="center" spacing={2}>
+        <Stack direction="row" justifyContent="center" alignItems="center" spacing={4}>
           <ExternalLink href={SOCIALS.TELEGRAM} color={'#000'} noIcon>
             <SvgIcon component={TelegramIcon} inheritViewBox />
           </ExternalLink>

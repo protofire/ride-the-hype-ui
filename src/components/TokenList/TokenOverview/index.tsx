@@ -1,4 +1,4 @@
-import { List, ListItem, ListItemText, Skeleton, Typography } from '@mui/material'
+import { ButtonGroup, List, ListItem, ListItemText, Skeleton, Typography } from '@mui/material'
 import Paper from '@mui/material/Paper'
 import EthHashInfo from '~/components/common/EthHashInfo'
 import ContentTabs from '~/components/common/NavTabs/ContentTabs'
@@ -6,6 +6,7 @@ import useAsync from '~/hooks/useAsync'
 import type { Insc20, TokenHolder, Transaction } from '~/services/indexer-api/types'
 import HoldersTable from '../HoldersTable'
 import TransactionsTable from '../TransactionsTable'
+import { MintButton } from '~/components/insc-20/Insc20List/MintButton'
 
 const listProperties = [
   {
@@ -37,10 +38,11 @@ const listProperties = [
     id: 'createdAt',
     label: 'Deploy Time',
   },
-  // {
-  //   id: 'holders',
-  //   label: 'Holders',
-  // },
+  {
+    id: 'mintAction',
+    label: 'Actions',
+    action: true,
+  },
   // {
   //   id: 'transactions',
   //   label: 'Transactions',
@@ -61,6 +63,7 @@ const TokenOverview = ({ fetchToken, fetchHolders, fetchTransactions, ticker }: 
     if (!!fetchToken && !!ticker) {
       try {
         const data = await fetchToken(ticker)
+        data.createdAt = new Date(Number(data.createdAt) * 1000).toLocaleString()
         return data
       } catch (e) {
         console.log(e)
@@ -82,18 +85,24 @@ const TokenOverview = ({ fetchToken, fetchHolders, fetchTransactions, ticker }: 
                 <Skeleton width="50%" />
               ) : tokenData ? (
                 <>
-                  <Typography fontFamily={'Inter'} variant="body1">
+                  <Typography fontFamily={'Inter'}>
                     {property.id === 'progress' ? (
                       `${Math.round((Number(tokenData.totalSupply) / Number(tokenData.maxSupply)) * 100)}%`
-                    ) : property.id === 'createdAt' ? (
-                      new Date(Number(tokenData[property.id]) * 1000).toLocaleString()
                     ) : property.link === true ? (
                       <EthHashInfo
                         address={tokenData['creatorAddress']}
+                        shortAddress={false}
                         showPrefix={false}
                         hasExplorer
+                        showCopyButton
                         avatarSize={0}
                       />
+                    ) : property.action === true ? (
+                      <>
+                        <ButtonGroup>
+                          <MintButton insc20={tokenData} />
+                        </ButtonGroup>
+                      </>
                     ) : (
                       tokenData[property.id as keyof Insc20]
                     )}
@@ -105,7 +114,7 @@ const TokenOverview = ({ fetchToken, fetchHolders, fetchTransactions, ticker }: 
             </ListItem>
           ))}
         </List>
-        {/* <Button fullWidth>Mint</Button> */}
+
         {error ? <Typography>An error occurred when during loading token...</Typography> : null}
       </Paper>
       <ContentTabs navItems={labels}>
