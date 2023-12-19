@@ -14,10 +14,10 @@
   gap: var(--space-1);
 }
 
-.refreshContainer {
+.actionButtonsContainer {
     display: flex;
-    justify-content: flex-end;
-    margin-top: -1rem;
+    justify-content: space-between;
+    margin-bottom: 1rem;
 }
 
 @media (max-width: 599.95px) {
