@@ -73,7 +73,7 @@ export const CreateInsc20Form = () => {
         max: data[FormField.totalSupply],
         lim: data[FormField.limitPerMint],
         wlim: data[FormField.limitPerAddress],
-        dec: '8',
+        dec: '0',
         //nonce: (+new Date()).toString(),
         desc: data[FormField.description],
       }
