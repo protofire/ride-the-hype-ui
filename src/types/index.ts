@@ -39,3 +39,9 @@ export declare type ChainInfo = {
   disabledWallets: string[]
   features: FEATURES[]
 }
+
+export enum Insc20Filter {
+  ALL = 'all',
+  IN_PROGRESS = 'inProgress',
+  COMPLETED = 'completed',
+}
