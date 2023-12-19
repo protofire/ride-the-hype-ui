@@ -8,7 +8,7 @@ const MintPage: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Mint an Inscription - IRC-20</title>
+        <title>Mint an Inscription - OSC-20</title>
       </Head>
 
       <Insc20Header />

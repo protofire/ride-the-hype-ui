@@ -7,7 +7,7 @@ const CreateInsc20Page: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Create an Inscription - IRC-20</title>
+        <title>Create an Inscription - OSC-20</title>
       </Head>
 
       <CreateHeader />

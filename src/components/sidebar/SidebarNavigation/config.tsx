@@ -43,7 +43,7 @@ export const navItems: NavItem[] = [
 
 export const allInscriptionsNavItems: NavItem[] = [
   {
-    label: 'IRC-20',
+    label: 'OSC-20',
     href: AppRoutes.allInscriptions.allInsc20,
     featureName: FEATURES.INSC20,
   },
@@ -56,7 +56,7 @@ export const allInscriptionsNavItems: NavItem[] = [
 
 export const createNavItems = [
   {
-    label: 'IRC-20',
+    label: 'OSC-20',
     href: AppRoutes.create.insc20,
     featureName: FEATURES.INSC20,
   },
@@ -96,7 +96,7 @@ export const insc721NavItems = [
 
 export const walletNavItems = [
   {
-    label: 'IRC-20',
+    label: 'OSC-20',
     href: AppRoutes.wallet.ownableInsc20,
     featureName: FEATURES.INSC20,
   },

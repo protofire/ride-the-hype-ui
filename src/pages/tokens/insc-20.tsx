@@ -8,7 +8,7 @@ const Insc20TokensPage: NextPage = () => {
   return (
     <>
       <Head>
-        <title>View All IRC-20s</title>
+        <title>View All OSC-20</title>
       </Head>
 
       <AllTokensHeader />
