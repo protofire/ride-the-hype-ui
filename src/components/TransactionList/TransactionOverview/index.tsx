@@ -74,7 +74,7 @@ const TransactionOverview = ({ fetchTransaction, fetchToken, hash }: Props) => {
   return (
     <Grid component={Paper} container sx={{ padding: 1, maxWidth: '1200px', m: '1rem auto' }} direction="row">
       <Grid item md={4} xs={12}>
-        <Typography margin={'1rem'} variant="h3">
+        <Typography color="primary" margin={'1rem'} variant="h3">
           {`Inscription #${txData?.id} `}
         </Typography>
         <div className={css.jsonInscriptionItem}>
@@ -82,11 +82,11 @@ const TransactionOverview = ({ fetchTransaction, fetchToken, hash }: Props) => {
         </div>
       </Grid>
       <Grid item md={8} xs={12}>
-        <Typography margin={'1rem'} variant="h3">
+        <Typography color="primary" margin={'1rem'} variant="h3">
           <Link href={`/token?ticker=${txData?.tick} `}>{`$${txData?.tick}`}</Link>
         </Typography>
         <Box className={css.infoItem}>
-          <Typography color={'#FFF'} marginBottom={'1rem'} variant="h5">
+          <Typography color={'primary'} marginBottom={'1rem'} variant="h5">
             {'Token Data'}
           </Typography>
           <Grid container direction="row">
@@ -97,7 +97,7 @@ const TransactionOverview = ({ fetchTransaction, fetchToken, hash }: Props) => {
                     key={i}
                     primary={prop.label}
                     secondary={
-                      <Typography color="secondary" fontFamily={'Inter'}>
+                      <Typography color="#fff" fontFamily={'Inter'}>
                         {tokenLoading ? (
                           <Skeleton />
                         ) : tokenError || !tokenData ? (
@@ -112,7 +112,7 @@ const TransactionOverview = ({ fetchTransaction, fetchToken, hash }: Props) => {
               )
             })}
           </Grid>
-          <Typography color={'#FFF'} marginY={'1rem'} variant="h5">
+          <Typography color={'primary'} marginY={'1rem'} variant="h5">
             {'Event Data'}
           </Typography>
           <Grid marginY={'1rem'} container direction="row">
@@ -122,7 +122,7 @@ const TransactionOverview = ({ fetchTransaction, fetchToken, hash }: Props) => {
                   <ListItemText
                     primary={prop.label}
                     secondary={
-                      <Typography color="secondary" fontFamily={'Inter'}>
+                      <Typography color="#fff" fontFamily={'Inter'}>
                         {loading ? (
                           <Skeleton />
                         ) : !txData || error ? (

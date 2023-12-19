@@ -1,7 +1,7 @@
 .container {
   padding: var(--space-1);
   font-size: 13px;
-  background-color: #FDF700;
+  background-color: var(--color-text-disabled);
 }
 
 .topSection {

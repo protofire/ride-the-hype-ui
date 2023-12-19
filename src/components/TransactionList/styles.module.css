@@ -13,7 +13,7 @@
 
 .infoItem{
   border-radius: 0.5rem;
-  background: var(--color-background-main);
+  background: var(--color-text-secondary);
   padding: 1rem;
   margin: 2rem;
   /* height: '100%' */
@@ -22,7 +22,7 @@
 }
 
 .jsonInscriptionItem {
-  background: var(--color-background-main);
+  background: var(--color-text-secondary);
   border-radius: 0.5rem;
   padding: 1rem;
   margin: 2rem;
@@ -52,24 +52,22 @@
 }
 
 .jsonItem {
-  background: var(--color-background-default);
+  background: var(--color-text-disabled);
   border-radius: 0.5rem;
   padding: 1rem;
-  color: #fff;
   width: 250px;
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
   height: 15rem;
 }
 
 .jsonItem pre {
-  background: var(--color-background-main);
-  border: 1px solid #333;
+  background: var(--color-text-secondary);
   overflow: auto;
   margin: 0;
   border-radius: 0.5rem;
   font-size: 0.8rem;
   height: 75%;
   margin-bottom: 0.5rem;
+  color: #fff;
 }
 
 .jsonItem > *::-webkit-scrollbar {

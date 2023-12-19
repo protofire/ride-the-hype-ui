@@ -1,6 +1,6 @@
 import type { Dispatch, SetStateAction } from 'react'
 import { type ReactElement } from 'react'
-import { IconButton, Paper, Stack, Typography } from '@mui/material'
+import { IconButton, Paper } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
 import classnames from 'classnames'
 import css from './styles.module.css'
@@ -35,12 +35,7 @@ const Header = ({ onMenuToggle }: HeaderProps): ReactElement => {
 
       <div className={classnames(css.element, css.hideMobile, css.logo)}>
         <Link href={AppRoutes.allInscriptions.index} passHref>
-          <Stack direction="row" alignItems="center" gap={1}>
-            <Logo alt="Logo" />
-            <Typography fontFamily={'Inter'} color="white">
-              IOSCRIPTIONS
-            </Typography>
-          </Stack>
+          <Logo alt="Logo" />
         </Link>
       </div>
 

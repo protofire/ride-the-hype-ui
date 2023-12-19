@@ -71,7 +71,7 @@ const TokenOverview = ({ fetchToken, fetchHolders, fetchTransactions, ticker }: 
   return (
     <>
       <Paper sx={{ padding: 8, maxWidth: '1200px', m: '1rem auto' }}>
-        <Typography color="secondary" textAlign={'center'} variant="h2">
+        <Typography color="primary" textAlign={'center'} variant="h2">
           {'$' + ticker}
         </Typography>
         <List disablePadding>
@@ -82,7 +82,7 @@ const TokenOverview = ({ fetchToken, fetchHolders, fetchTransactions, ticker }: 
                 <Skeleton width="50%" />
               ) : tokenData ? (
                 <>
-                  <Typography color="secondary" fontFamily={'Inter'} fontSize={'18px'} variant="body2">
+                  <Typography fontFamily={'Inter'} variant="body1">
                     {property.id === 'progress' ? (
                       `${Math.round((Number(tokenData.totalSupply) / Number(tokenData.maxSupply)) * 100)}%`
                     ) : property.id === 'createdAt' ? (

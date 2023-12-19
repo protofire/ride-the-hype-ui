@@ -23,17 +23,13 @@ const Footer = (): ReactElement | null => {
 
   return (
     <>
-      <Box className={css.topSection} />
       <footer className={css.container}>
         <Stack direction="row" justifyContent="center" alignItems="center" spacing={2}>
-          <ExternalLink href={SOCIALS.TELEGRAM} noIcon>
-            <SvgIcon component={TelegramIcon} inheritViewBox fontSize="medium" sx={{ mr: 0.5 }} />
+          <ExternalLink href={''} noIcon>
+            <SvgIcon component={TelegramIcon} inheritViewBox />
           </ExternalLink>
-          <ExternalLink href={SOCIALS.TWITTER} noIcon>
-            <SvgIcon component={TwitterIcon} inheritViewBox fontSize="medium" sx={{ mr: 0.5 }} />
-          </ExternalLink>
-          <ExternalLink color={'#000'} href="https://ecosystem.iotex.io/" noIcon sx={{ textDecoration: 'underline' }}>
-            IoTeX Ecosystem
+          <ExternalLink href={''} noIcon>
+            <SvgIcon component={TwitterIcon} inheritViewBox />
           </ExternalLink>
           <ExternalLink color={'#000'} href="https://protofire.io/" noIcon sx={{ textDecoration: 'underline' }}>
             Supported by Protofire.io

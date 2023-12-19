@@ -12,12 +12,12 @@ const ConnectWalletButton = ({ onConnect }: { onConnect?: () => void }): React.R
   return (
     <Button
       onClick={handleConnect}
-      color="secondary"
+      color="primary"
       variant="contained"
       // size="small"
       disableElevation
       fullWidth
-      sx={{ fontSize: ['12px', '13px'], color: 'black' }}
+      sx={{ fontSize: ['12px', '13px']}}
     >
       CONNECT
     </Button>

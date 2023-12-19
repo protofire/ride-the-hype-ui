@@ -1,9 +1,9 @@
-// import lightPalette from '~/styles/theme/lightPalette'
-import darkPalette from '~/styles/theme/darkPalette'
+import lightPalette from '~/styles/theme/lightPalette'
+// import darkPalette from '~/styles/theme/darkPalette'
 import spacings from '../src/styles/spacings.js'
 
 const cssVars: string[] = []
-Object.entries(darkPalette).forEach(([key, value]) => {
+Object.entries(lightPalette).forEach(([key, value]) => {
   Object.entries(value).forEach(([subKey, color]) => {
     cssVars.push(`  --color-${key}-${subKey}: ${color};`)
   })
@@ -12,7 +12,7 @@ Object.entries(darkPalette).forEach(([key, value]) => {
 Object.entries(spacings).forEach(([key, space]) => cssVars.push(`  --space-${key}: ${space}px;`))
 
 const darkColorVars: string[] = []
-Object.entries(darkPalette).forEach(([key, value]) => {
+Object.entries(lightPalette).forEach(([key, value]) => {
   Object.entries(value).forEach(([subKey, color]) => {
     darkColorVars.push(`  --color-${key}-${subKey}: ${color};`)
   })

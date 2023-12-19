@@ -58,7 +58,9 @@ declare module '@mui/material/Button' {
 }
 
 const createCustomTheme = (mode?: PaletteMode): Theme => {
-  const isDarkMode = mode === 'dark'
+  // const isDarkMode = mode === 'dark'
+  //TODO: temporary use only one mode
+  const isDarkMode = false
   const colors = isDarkMode ? darkPalette : palette
   const shadowColor = colors.primary.light
 

@@ -1,6 +1,6 @@
 import type { TypographyOptions } from '@mui/material/styles/createTypography'
 
-const safeFontFamily = 'Audiowide, Inter, sans-serif'
+const safeFontFamily = 'Inter, Audiowide, sans-serif'
 
 const typography: TypographyOptions = {
   fontFamily: safeFontFamily,
