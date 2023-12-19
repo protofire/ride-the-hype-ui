@@ -7,7 +7,7 @@ import TelegramIcon from '~/public/images/telegram.svg'
 import TwitterIcon from '~/public/images/x-twitter.svg'
 import SvgIcon from '@mui/material/SvgIcon'
 import { useTheme } from '@mui/material/styles'
-import { Stack, useMediaQuery } from '@mui/material'
+import { Avatar, Stack, useMediaQuery } from '@mui/material'
 import { SOCIALS } from '~/config/constants'
 
 const footerPages = [AppRoutes.allInscriptions.index, AppRoutes.create.index]
@@ -25,11 +25,15 @@ const Footer = (): ReactElement | null => {
     <>
       <footer className={css.container}>
         <Stack direction="row" justifyContent="center" alignItems="center" spacing={4}>
-          <ExternalLink href={SOCIALS.TELEGRAM} color={'#000'} noIcon>
-            <SvgIcon component={TelegramIcon} inheritViewBox />
+          <ExternalLink href={SOCIALS.TELEGRAM} noIcon>
+            <Avatar sx={{ bgcolor: 'black' }} alt="telegram">
+              <SvgIcon component={TelegramIcon} inheritViewBox />
+            </Avatar>
           </ExternalLink>
           <ExternalLink href={SOCIALS.TWITTER} noIcon>
-            <SvgIcon component={TwitterIcon} inheritViewBox />
+            <Avatar sx={{ bgcolor: 'black' }} alt="twitter">
+              <SvgIcon component={TwitterIcon} inheritViewBox />
+            </Avatar>
           </ExternalLink>
           {/* <ExternalLink color={'#000'} href="https://protofire.io/" noIcon sx={{ textDecoration: 'underline' }}>
             Supported by Protofire.io
