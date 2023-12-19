@@ -6,35 +6,35 @@
 
 import type { ChainInfo } from '~/types'
 import { FEATURES } from '~/types'
-import { IS_PRODUCTION } from '~/config/constants'
+//import { IS_PRODUCTION } from '~/config/constants'
 
 // Define the chains configuration
 const chainsConfiguration: ChainInfo[] = [
   {
-    chainId: '1261120',
-    chainName: 'zKatana',
-    description: 'Astar zkEVM Testnet zKatana',
-    shortName: 'azktn',
-    inscriptionPrefix: 'zktt',
+    chainId: '10',
+    chainName: 'OP Mainnet',
+    description: 'Optimism Mainnet',
+    shortName: 'oeth',
+    inscriptionPrefix: 'osc',
     features: [FEATURES.INSC20, FEATURES.CUSTOM_INSC],
     nativeCurrency: {
       name: 'Ether',
       symbol: 'ETH',
       decimals: 18,
-      logoUri: 'https://safe-astar-static-assets.s3.amazonaws.com/chains/1261120/currency_logo.png',
+      logoUri: 'https://assets.coingecko.com/coins/images/279/standard/ethereum.png?1696501628',
     },
     blockExplorerUriTemplate: {
-      address: 'https://zkatana.blockscout.com/address/{{address}}',
-      txHash: 'https://zkatana.blockscout.com/tx/{{txHash}}',
-      api: 'https://zkatana.blockscout.com/api?module={{module}}&action={{action}}&address={{address}}&apiKey={{apiKey}}',
+      address: 'https://optimistic.etherscan.io/address/{{address}}',
+      txHash: 'https://optimistic.etherscan.io/tx/{{txHash}}',
+      api: 'https://optimistic.etherscan.io/api?module={{module}}&action={{action}}&address={{address}}&apiKey={{apiKey}}',
     },
     disabledWallets: ['trust', 'coinbase', 'ledger', 'trezor', 'keystone', 'walletConnect_v2', 'NONE'],
     ensRegistryAddress: null,
     publicRpcUri: {
-      value: 'https://rpc.zkatana.gelato.digital',
+      value: 'https://mainnet.optimism.io',
     },
     rpcUri: {
-      value: 'https://rpc.zkatana.gelato.digital',
+      value: 'https://mainnet.optimism.io',
     },
     theme: {
       textColor: '#ffffff',
@@ -72,69 +72,6 @@ const chainsConfiguration: ChainInfo[] = [
       backgroundColor: '#000000',
     },
   },
-  ...(IS_PRODUCTION
-    ? [
-        {
-          chainId: '4689',
-          chainName: 'IoTeX',
-          shortName: 'iotx',
-          inscriptionPrefix: 'io',
-          features: [FEATURES.INSC20, FEATURES.CUSTOM_INSC],
-          description: 'IoTeX Mainnet',
-          rpcUri: {
-            value: 'https://babel-api.mainnet.iotex.io',
-          },
-          publicRpcUri: {
-            value: 'https://babel-api.mainnet.iotex.io',
-          },
-          blockExplorerUriTemplate: {
-            address: 'https://iotexscan.io/address/{{address}}',
-            txHash: 'https://iotexscan.io/tx/{{txHash}}',
-          },
-          nativeCurrency: {
-            name: 'IOTX',
-            symbol: 'IOTX',
-            decimals: 18,
-            logoUri: 'https://safe-iotex-static-assets-us-east-1.s3.amazonaws.com/chains/4689/currency_logo.png',
-          },
-          theme: {
-            textColor: '#ffffff',
-            backgroundColor: '#43c9ba',
-          },
-          disabledWallets: ['trust', 'coinbase', 'ledger', 'trezor', 'keystone', 'walletConnect_v2', 'NONE'],
-        },
-      ]
-    : [
-        {
-          chainId: '4690',
-          chainName: 'IoTeX Testnet',
-          shortName: 'iotxtest',
-          inscriptionPrefix: 'iott',
-          features: [FEATURES.INSC20, FEATURES.CUSTOM_INSC],
-          description: 'IoTeX Testnet',
-          rpcUri: {
-            value: 'https://babel-api.testnet.iotex.io',
-          },
-          publicRpcUri: {
-            value: 'https://babel-api.testnet.iotex.io',
-          },
-          blockExplorerUriTemplate: {
-            address: 'https://testnet.iotexscan.io/address/{{address}}',
-            txHash: 'https://testnet.iotexscan.io/tx/{{txHash}}',
-          },
-          nativeCurrency: {
-            name: 'IOTX',
-            symbol: 'IOTX',
-            decimals: 18,
-            logoUri: 'https://safe-iotex-static-assets-us-east-1.s3.amazonaws.com/chains/4690/currency_logo.png',
-          },
-          theme: {
-            textColor: '#ffffff',
-            backgroundColor: '#000000',
-          },
-          disabledWallets: ['trust', 'coinbase', 'ledger', 'trezor', 'keystone', 'walletConnect_v2', 'NONE'],
-        },
-      ]),
 ]
 
 // Create a map of chain short names to chain IDs
