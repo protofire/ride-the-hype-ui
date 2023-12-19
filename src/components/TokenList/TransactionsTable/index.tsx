@@ -151,7 +151,7 @@ const TransactionsTable = ({ fetchTransactions, ticker, totalTransactions }: Pro
           rawValue: item.hash,
           content: (
             <Typography fontFamily={'Inter'}>
-              <EthHashInfo address={item.hash} showPrefix={false} hasExplorer avatarSize={0} />
+              <EthHashInfo showCopyButton address={item.hash} showPrefix={false} hasExplorer avatarSize={0} />
             </Typography>
           ),
         },
@@ -159,7 +159,7 @@ const TransactionsTable = ({ fetchTransactions, ticker, totalTransactions }: Pro
           rawValue: item.from,
           content: (
             <Typography fontFamily={'Inter'}>
-              <EthHashInfo address={item.from} showPrefix={false} hasExplorer avatarSize={0} />
+              <EthHashInfo showCopyButton address={item.from} showPrefix={false} hasExplorer avatarSize={0} />
             </Typography>
           ),
         },
@@ -167,7 +167,7 @@ const TransactionsTable = ({ fetchTransactions, ticker, totalTransactions }: Pro
           rawValue: toValue,
           content: (
             <Typography fontFamily={'Inter'}>
-              <EthHashInfo address={toValue} showPrefix={false} hasExplorer avatarSize={0} />
+              <EthHashInfo showCopyButton address={toValue} showPrefix={false} hasExplorer avatarSize={0} />
             </Typography>
           ),
         },

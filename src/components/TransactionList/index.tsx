@@ -13,6 +13,7 @@ import { IndexerApiService } from '~/services/indexer-api'
 
 import css from './styles.module.css'
 import EthHashInfo from '~/components/common/EthHashInfo'
+import Link from 'next/link'
 
 const PAGE_SIZE = 12
 
@@ -83,14 +84,16 @@ export const TransactionList = () => {
       >
         <div className={css.gridContainer}>
           {inscriptions.map((item, index) => (
-            <div key={index} className={css.jsonItem}>
-              <pre>{JSON.stringify(item.data, null, 2)}</pre>
+            <Link key={index} href={`/inscription?hash=${item.hash}`}>
+              <div className={css.jsonItem}>
+                <pre>{JSON.stringify(item.data, null, 2)}</pre>
 
-              <EthHashInfo address={item.hash} showCopyButton hasExplorer />
-              <Typography fontSize="0.6rem" mt="0.25rem">
-                Created at {new Date(Number(item.createdAt) * 1000).toLocaleString()}
-              </Typography>
-            </div>
+                <EthHashInfo address={item.hash} showCopyButton hasExplorer />
+                <Typography fontSize="0.6rem" mt="0.25rem">
+                  Created at {new Date(Number(item.createdAt) * 1000).toLocaleString()}
+                </Typography>
+              </div>
+            </Link>
           ))}
         </div>
       </InfiniteScroll>
