@@ -5,6 +5,9 @@ export const AppRoutes = {
     allInsc721: '/all-inscriptions/all-insc-721',
     allInsc20: '/all-inscriptions/all-insc-20',
   },
+  inscription: {
+    index: '/inscription',
+  },
   tokens: {
     index: '/tokens',
     allInsc721: '/tokens/insc-721',

@@ -2,10 +2,10 @@ import type { ReactElement, ReactNode } from 'react'
 import PageHeader from '~/components/common/PageHeader'
 import css from '~/components/common/PageHeader/styles.module.css'
 
-const TokenHeader = ({ children, ticker }: { children?: ReactNode; ticker: string }): ReactElement => {
+const InscriptionHeader = ({ children }: { children?: ReactNode }): ReactElement => {
   return (
     <PageHeader
-      title={ticker + ' Token Overview'}
+      title={'Inscription Overview'}
       action={
         <div className={css.pageHeader}>
           <div className={css.navWrapper}>{null}</div>
@@ -16,4 +16,4 @@ const TokenHeader = ({ children, ticker }: { children?: ReactNode; ticker: strin
   )
 }
 
-export default TokenHeader
+export default InscriptionHeader
