@@ -84,7 +84,7 @@ const SrcEthHashInfo = ({
           )}
 
           {hasExplorer && ExplorerButtonProps && (
-            <Box color="border.main">
+            <Box>
               <ExplorerButton {...ExplorerButtonProps} onClick={stopPropagation} />
             </Box>
           )}
