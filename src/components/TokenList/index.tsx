@@ -47,7 +47,7 @@ export const TokenList = () => {
 
       {!loading && balances.insc20s.length === 0 ? (
         <Paper sx={{ padding: 4, maxWidth: '1200px', m: '1rem auto', textAlign: 'center' }}>
-          <Typography>You don&apos;t have any IRC-20 yet</Typography>
+          <Typography>You don&apos;t have any OSC-20 yet</Typography>
         </Paper>
       ) : null}
 

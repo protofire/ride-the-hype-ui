@@ -151,7 +151,7 @@ export const CreateInsc20Form = () => {
                 <Tooltip
                   placement="top"
                   arrow
-                  title="Once your irc-20 supply reaches this figure, new mints won't be indexed"
+                  title="Once your orc-20 supply reaches this figure, new mints won't be indexed"
                 >
                   <span>
                     <SvgIcon
