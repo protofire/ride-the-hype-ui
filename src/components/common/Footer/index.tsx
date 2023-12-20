@@ -1,4 +1,4 @@
-import type { ReactElement } from 'react'
+import { type ReactElement, useState } from 'react'
 import { useRouter } from 'next/router'
 import css from './styles.module.css'
 import { AppRoutes } from '~/config/routes'
@@ -17,7 +17,7 @@ const Footer = (): ReactElement | null => {
   const router = useRouter()
   const { breakpoints } = useTheme()
   const isSmallScreen = useMediaQuery(breakpoints.down('md'))
-  const isScrollable = false
+  const [isScrollable, setIsScrollable] = useState(true)
 
   if (/*!footerPages.some((path) => router.pathname.startsWith(path)) || */ isSmallScreen) {
     return null
