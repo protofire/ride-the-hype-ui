@@ -1,4 +1,4 @@
-import { ButtonGroup, List, ListItem, ListItemText, Skeleton, Typography } from '@mui/material'
+import { Box, List, ListItem, ListItemText, Skeleton, Typography } from '@mui/material'
 import Paper from '@mui/material/Paper'
 import EthHashInfo from '~/components/common/EthHashInfo'
 import ContentTabs from '~/components/common/NavTabs/ContentTabs'
@@ -103,9 +103,13 @@ const TokenOverview = ({ fetchToken, fetchHolders, fetchTransactions, ticker }: 
                       />
                     ) : property.action === true ? (
                       <>
-                        <ButtonGroup>
-                          <MintButton insc20={tokenData} />
-                        </ButtonGroup>
+                        <Box display="flex" flexDirection="row" gap={1} alignItems="center">
+                          {Math.round((Number(tokenData.totalSupply) / Number(tokenData.maxSupply)) * 100) !== 100 ? (
+                            <MintButton insc20={tokenData} />
+                          ) : (
+                            <Typography color="error">Fully minted</Typography>
+                          )}
+                        </Box>
                       </>
                     ) : (
                       tokenData[property.id as keyof Insc20]
