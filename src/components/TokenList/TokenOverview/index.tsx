@@ -1,4 +1,4 @@
-import { Box, List, ListItem, ListItemText, Skeleton, Typography } from '@mui/material'
+import { Box, List, ListItem, ListItemText, Skeleton, Stack, Tooltip, Typography } from '@mui/material'
 import Paper from '@mui/material/Paper'
 import EthHashInfo from '~/components/common/EthHashInfo'
 import ContentTabs from '~/components/common/NavTabs/ContentTabs'
@@ -7,6 +7,8 @@ import type { Insc20, TokenHolder, Transaction } from '~/services/indexer-api/ty
 import HoldersTable from '../HoldersTable'
 import TransactionsTable from '../TransactionsTable'
 import { MintButton } from '~/components/insc-20/Insc20List/MintButton'
+import { KNOWN_BADGES, BADGE_CONFIG } from '~/config/badgeConfig'
+import Image from 'next/image'
 
 const listProperties = [
   {
@@ -78,9 +80,18 @@ const TokenOverview = ({ fetchToken, fetchHolders, fetchTransactions, ticker }: 
   return (
     <>
       <Paper sx={{ padding: 8, maxWidth: '1200px', m: '1rem auto' }}>
-        <Typography color="primary" textAlign={'center'} variant="h2">
-          {'$' + ticker}
-        </Typography>
+        <Stack direction="row" alignItems="center" justifyContent="center" spacing={1}>
+          <Typography color="primary" textAlign={'center'} variant="h2">
+            {'$' + ticker}
+          </Typography>
+          {KNOWN_BADGES[ticker] &&
+            KNOWN_BADGES[ticker].map((badge, i) => (
+              <Tooltip key={i} title={BADGE_CONFIG[badge].description}>
+                <Image width={30} src={BADGE_CONFIG[badge].icon} alt={''} />
+              </Tooltip>
+            ))}
+        </Stack>
+
         <List disablePadding>
           {listProperties.map((property) => (
             <ListItem key={property.id} sx={{ py: 1, px: 0 }}>
