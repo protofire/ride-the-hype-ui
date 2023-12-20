@@ -16,6 +16,7 @@ export const DEFAULT_INDEXER_API_BASE_URL = process.env.NEXT_PUBLIC_INDEXER_API_
 export const SOCIALS = {
   TWITTER: 'https://twitter.com/optiscriptions',
   TELEGRAM: 'https://t.me/optiscriptions',
+  DOCS: 'https://docs.optiscriptions.io',
 }
 
 // Magic numbers

@@ -6,6 +6,8 @@ import css from './styles.module.css'
 import SideDrawer from './SideDrawer'
 import Header from '~/components/common/Header'
 import useDebounce from '~/hooks/useDebounce'
+// import Footer from '../Footer'
+import FloatingButtonsFooter from '../Footer/FloatingButtonsFooter'
 import Footer from '../Footer'
 
 const PageLayout = ({ children }: { pathname: string; children: ReactElement }): ReactElement => {

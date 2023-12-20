@@ -1,0 +1,20 @@
+.fabContainer {
+    position: fixed;
+    bottom: var(--space-3);
+    right: var(--space-2);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    z-index: 2;
+  }
+  
+  .icon{
+    color: var(--color-secondary-dark);
+    margin-bottom: var(--space-1);
+    fill: currentColor;
+    font-size: 32px;
+  }
+
+  .icon:hover{
+    color: var(--color-primary-main);
+  }
