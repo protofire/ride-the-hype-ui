@@ -124,7 +124,7 @@ export type onDemandFetchOption = {
   totalHolders: number
 }
 
-const pageSizes = [10, 25, 100]
+const pageSizes = [10, 15, 25, 100]
 
 function EnhancedTable({
   rows,
@@ -137,7 +137,7 @@ function EnhancedTable({
   const [orderBy, setOrderBy] = useState<string>(defaultSortField || '')
   const [page, setPage] = useState<number>(0)
   const [rowsPerPage, setRowsPerPage] = useState<number>(
-    onDemandPagination ? onDemandPagination.pageSize : pageSizes[2],
+    onDemandPagination ? onDemandPagination.pageSize : pageSizes[1],
   )
 
   const handleRequestSort = (property: string) => {
