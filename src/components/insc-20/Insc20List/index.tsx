@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import RefreshIcon from '@mui/icons-material/Refresh'
-import { FormControl, FormControlLabel, Radio, RadioGroup } from '@mui/material'
+import { FormControl, FormControlLabel, Radio, RadioGroup, Stack } from '@mui/material'
 import LinearProgress from '@mui/material/LinearProgress'
 import type { Insc20 } from '~/services/indexer-api/types'
 import useAsync from '~/hooks/useAsync'
@@ -18,6 +18,10 @@ import { Insc20Filter } from '~/types'
 
 import { MintButton } from './MintButton'
 import css from './styles.module.css'
+import { BADGE_CONFIG, KNOWN_BADGES } from '~/config/badgeConfig'
+import { Tooltip } from '@mui/material'
+
+import Image from 'next/image'
 
 const PAGE_SIZE = 100
 
@@ -167,7 +171,17 @@ const Insc20List = () => {
           cells: {
             tick: {
               rawValue: item.tick,
-              content: <Typography>{item.tick}</Typography>,
+              content: (
+                <Stack direction="row" alignContent={'center'} alignItems={'center'} spacing={1}>
+                  <Typography>{item.tick}</Typography>
+                  {KNOWN_BADGES[item.tick] &&
+                    KNOWN_BADGES[item.tick].map((badge, i) => (
+                      <Tooltip key={i} title={BADGE_CONFIG[badge].description}>
+                        <Image width={20} src={BADGE_CONFIG[badge].icon} alt={''} />
+                      </Tooltip>
+                    ))}
+                </Stack>
+              ),
             },
             createdAt: {
               rawValue: createdAtDate.getTime(),
