@@ -236,7 +236,7 @@ const Insc20List = () => {
       {error ? <Typography>An error occurred during loading tokens...</Typography> : null}
 
       <div className={css.container}>
-        <EnhancedTable rows={rows} headCells={headCells} />
+        <EnhancedTable rows={rows} headCells={headCells} defaultSortField="holders" />
       </div>
     </Paper>
   )
