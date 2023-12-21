@@ -18,6 +18,7 @@ import { Insc20Filter } from '~/types'
 
 import { MintButton } from './MintButton'
 import css from './styles.module.css'
+import type { Badge } from '~/config/badgeConfig'
 import { BADGE_CONFIG, KNOWN_BADGES } from '~/config/badgeConfig'
 import { Tooltip } from '@mui/material'
 
@@ -120,16 +121,23 @@ const Insc20List = () => {
 
   const [newTokens, error, loading] = useAsync(async () => {
     const indexerApiService = IndexerApiService.getInstance()
-    const data = await indexerApiService.tokensModule.getAllInsc20({
-      page,
-      limit: PAGE_SIZE,
-      order: 'desc',
-      mintingStatus: filter,
-    })
+    let finalData: Insc20[] = []
+    let i = 1
+    let loadedAll = false
 
-    setHasMore(!(data && data.length < PAGE_SIZE))
+    while (!loadedAll) {
+      const data = await indexerApiService.tokensModule.getAllInsc20({
+        page: i, //TODO: switch to state when server side rendering will be available
+        limit: PAGE_SIZE,
+        order: 'desc',
+        mintingStatus: filter,
+      })
+      finalData = [...finalData, ...data]
+      i++
+      loadedAll = data && data.length < PAGE_SIZE
+    }
 
-    return data
+    return finalData
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, counter, filter])
 
@@ -174,12 +182,19 @@ const Insc20List = () => {
               content: (
                 <Stack direction="row" alignContent={'center'} alignItems={'center'} spacing={1}>
                   <Typography>{item.tick}</Typography>
+                  {/* Known badges */}
                   {KNOWN_BADGES[item.tick] &&
                     KNOWN_BADGES[item.tick].map((badge, i) => (
                       <Tooltip key={i} title={BADGE_CONFIG[badge].description}>
                         <Image width={20} src={BADGE_CONFIG[badge].icon} alt={''} />
                       </Tooltip>
                     ))}
+                  {/* Auto badges */}
+                  {BADGE_CONFIG[item.badge as Badge] && (
+                    <Tooltip title={BADGE_CONFIG[item.badge as Badge].description}>
+                      <Image width={20} src={BADGE_CONFIG[item.badge as Badge].icon} alt={''} />
+                    </Tooltip>
+                  )}
                 </Stack>
               ),
             },

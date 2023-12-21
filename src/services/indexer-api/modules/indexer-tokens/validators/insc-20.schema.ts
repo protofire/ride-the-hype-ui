@@ -12,4 +12,7 @@ export const Insc20Schema = z.object({
   createdAt: z.string(), // Date
   holders: z.number(),
   transactions: z.number(),
+  transactionsLast24h: z.number().optional(),
+  transactionsLast1h: z.number().optional(),
+  badge: z.string().optional(),
 })
