@@ -1,4 +1,4 @@
-import { Box, List, ListItem, ListItemText, Skeleton, Stack, Typography } from '@mui/material'
+import { Box, LinearProgress, List, ListItem, ListItemText, Skeleton, Stack, Typography } from '@mui/material'
 import Paper from '@mui/material/Paper'
 import EthHashInfo from '~/components/common/EthHashInfo'
 import ContentTabs from '~/components/common/NavTabs/ContentTabs'
@@ -70,7 +70,11 @@ const TokenOverview = ({ fetchToken, fetchHolders, fetchTransactions, ticker }: 
       try {
         const data = await fetchToken(ticker)
         data.createdAt = new Date(Number(data.createdAt) * 1000).toLocaleString()
-        return data
+        const updatedObject = {
+          ...data,
+          progress: (Number(data.totalSupply) / Number(data.maxSupply)) * 100,
+        }
+        return updatedObject
       } catch (e) {
         console.log(e)
       }
@@ -109,7 +113,10 @@ const TokenOverview = ({ fetchToken, fetchHolders, fetchTransactions, ticker }: 
                 <>
                   <Typography fontFamily={'Inter'}>
                     {property.id === 'progress' ? (
-                      `${Math.round((Number(tokenData.totalSupply) / Number(tokenData.maxSupply)) * 100)}%`
+                      <Stack>
+                        <Typography>{`${tokenData.progress.toFixed(2)}%`}</Typography>
+                        <LinearProgress variant="determinate" value={tokenData.progress} />
+                      </Stack>
                     ) : property.link === true ? (
                       <EthHashInfo
                         address={tokenData['creatorAddress']}
@@ -144,7 +151,12 @@ const TokenOverview = ({ fetchToken, fetchHolders, fetchTransactions, ticker }: 
         {error ? <Typography>An error occurred when during loading token...</Typography> : null}
       </Paper>
       <ContentTabs navItems={labels}>
-        <HoldersTable ticker={ticker ?? ''} fetchHolders={fetchHolders} totalHolders={tokenData?.holders ?? 0} />
+        <HoldersTable
+          ticker={ticker ?? ''}
+          fetchHolders={fetchHolders}
+          totalHolders={tokenData?.holders ?? 0}
+          maxSupply={tokenData?.maxSupply ?? 0}
+        />
         <TransactionsTable
           ticker={ticker ?? ''}
           fetchTransactions={fetchTransactions}
