@@ -196,14 +196,14 @@ const Insc20List = () => {
                   {KNOWN_BADGES[item.tick] &&
                     KNOWN_BADGES[item.tick].map((badge, i) => (
                       <Tooltip key={i} title={BADGE_CONFIG[badge].description}>
-                        <Image width={20} src={BADGE_CONFIG[badge].icon} alt={''} />
+                        <Image width={40} src={BADGE_CONFIG[badge].icon} alt={''} />
                       </Tooltip>
                     ))}
                   {/* Auto badges */}
                   {item?.badges &&
                     item?.badges.map((badge, i) => (
                       <Tooltip key={i} title={BADGE_CONFIG[badge as Badge].description}>
-                        <Image width={20} src={BADGE_CONFIG[badge as Badge].icon} alt={''} />
+                        <Image width={40} src={BADGE_CONFIG[badge as Badge].icon} alt={''} />
                       </Tooltip>
                     ))}
                   {/* {BADGE_CONFIG[item.badge as Badge] && (

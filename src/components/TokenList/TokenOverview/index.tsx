@@ -93,7 +93,7 @@ const TokenOverview = ({ fetchToken, fetchHolders, fetchTransactions, ticker }: 
           {KNOWN_BADGES[ticker] &&
             KNOWN_BADGES[ticker].map((badge, i) => (
               <Tooltip key={i} title={BADGE_CONFIG[badge].description}>
-                <Image width={30} src={BADGE_CONFIG[badge].icon} alt={''} />
+                <Image width={40} src={BADGE_CONFIG[badge].icon} alt={''} />
               </Tooltip>
             ))}
 
@@ -101,7 +101,7 @@ const TokenOverview = ({ fetchToken, fetchHolders, fetchTransactions, ticker }: 
           {tokenData?.badges &&
             tokenData?.badges.map((badge, i) => (
               <Tooltip key={i} title={BADGE_CONFIG[badge as Badge].description}>
-                <Image width={30} src={BADGE_CONFIG[badge as Badge].icon} alt={''} />
+                <Image width={40} src={BADGE_CONFIG[badge as Badge].icon} alt={''} />
               </Tooltip>
             ))}
         </Stack>
