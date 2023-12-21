@@ -111,17 +111,21 @@ const headCells = [
   },
 ]
 
+type EnhancedInsc20 = Insc20 & {
+  badges: string[]
+}
+
 const Insc20List = () => {
   const [counter, setCounter] = useState<number>(0)
-  const [tokens, setTokens] = useState([] as Insc20[])
+  // const [tokens, setTokens] = useState([] as Insc20[])
   const [hasMore, setHasMore] = useState(false)
   const [page, setPage] = useState(1)
 
   const [filter, setFilter] = useState<Insc20Filter>(Insc20Filter.ALL)
 
-  const [newTokens, error, loading] = useAsync(async () => {
+  const [tokens, error, loading] = useAsync(async () => {
     const indexerApiService = IndexerApiService.getInstance()
-    let finalData: Insc20[] = []
+    let finalData: EnhancedInsc20[] | [] = []
     let i = 1
     let loadedAll = false
 
@@ -132,7 +136,13 @@ const Insc20List = () => {
         order: 'desc',
         mintingStatus: filter,
       })
-      finalData = [...finalData, ...data]
+      const dataWithBadges: EnhancedInsc20[] | [] = data
+        ? data.map((token) => ({
+            ...token,
+            badges: token.badge ? token.badge?.split(',') : [],
+          }))
+        : []
+      finalData = [...finalData, ...dataWithBadges]
       i++
       loadedAll = data && data.length < PAGE_SIZE
     }
@@ -142,14 +152,14 @@ const Insc20List = () => {
   }, [page, counter, filter])
 
   // Add new tokens to the accumulated list
-  useEffect(() => {
-    if (newTokens && newTokens.length > 0) {
-      setTokens((prev) => prev.concat(newTokens))
-    }
-  }, [newTokens])
+  // useEffect(() => {
+  //   if (newTokens && newTokens.length > 0) {
+  //     setTokens((prev) => prev.concat(newTokens))
+  //   }
+  // }, [newTokens])
 
   const refresh = () => {
-    setTokens([])
+    // setTokens([])
     setHasMore(true)
     setPage(1)
     setCounter((prevState) => prevState + 1)
@@ -157,7 +167,7 @@ const Insc20List = () => {
 
   useEffect(() => {
     if (filter) {
-      setTokens([])
+      // setTokens([])
       setPage(1)
       setHasMore(true)
     }
@@ -190,11 +200,17 @@ const Insc20List = () => {
                       </Tooltip>
                     ))}
                   {/* Auto badges */}
-                  {BADGE_CONFIG[item.badge as Badge] && (
+                  {item?.badges &&
+                    item?.badges.map((badge, i) => (
+                      <Tooltip key={i} title={BADGE_CONFIG[badge as Badge].description}>
+                        <Image width={20} src={BADGE_CONFIG[badge as Badge].icon} alt={''} />
+                      </Tooltip>
+                    ))}
+                  {/* {BADGE_CONFIG[item.badge as Badge] && (
                     <Tooltip title={BADGE_CONFIG[item.badge as Badge].description}>
                       <Image width={20} src={BADGE_CONFIG[item.badge as Badge].icon} alt={''} />
                     </Tooltip>
-                  )}
+                  )} */}
                 </Stack>
               ),
             },

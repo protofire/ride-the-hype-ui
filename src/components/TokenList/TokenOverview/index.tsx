@@ -74,6 +74,7 @@ const TokenOverview = ({ fetchToken, fetchHolders, fetchTransactions, ticker }: 
         const updatedObject = {
           ...data,
           progress: (Number(data.totalSupply) / Number(data.maxSupply)) * 100,
+          badges: data.badge ? data.badge?.split(',') : [],
         }
         return updatedObject
       } catch (e) {
@@ -97,11 +98,12 @@ const TokenOverview = ({ fetchToken, fetchHolders, fetchTransactions, ticker }: 
             ))}
 
           {/* Auto badges */}
-          {BADGE_CONFIG[tokenData?.badge as Badge] && (
-            <Tooltip title={BADGE_CONFIG[tokenData?.badge as Badge].description}>
-              <Image width={30} src={BADGE_CONFIG[tokenData?.badge as Badge].icon} alt={''} />
-            </Tooltip>
-          )}
+          {tokenData?.badges &&
+            tokenData?.badges.map((badge, i) => (
+              <Tooltip key={i} title={BADGE_CONFIG[badge as Badge].description}>
+                <Image width={30} src={BADGE_CONFIG[badge as Badge].icon} alt={''} />
+              </Tooltip>
+            ))}
         </Stack>
 
         <List disablePadding>
