@@ -21,6 +21,14 @@ const skeletonCells: EnhancedTableProps['rows'][0]['cells'] = {
       </Typography>
     ),
   },
+  percentage: {
+    rawValue: '',
+    content: (
+      <Typography>
+        <Skeleton width="90px" height="60px" />
+      </Typography>
+    ),
+  },
   amount: {
     rawValue: '',
     content: (

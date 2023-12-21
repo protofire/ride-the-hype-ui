@@ -1,4 +1,4 @@
-import { Box, LinearProgress, List, ListItem, ListItemText, Skeleton, Stack, Typography } from '@mui/material'
+import { Box, LinearProgress, List, ListItem, ListItemText, Skeleton, Stack, Tooltip, Typography } from '@mui/material'
 import Paper from '@mui/material/Paper'
 import EthHashInfo from '~/components/common/EthHashInfo'
 import ContentTabs from '~/components/common/NavTabs/ContentTabs'
@@ -7,8 +7,9 @@ import type { Insc20, TokenHolder, Transaction } from '~/services/indexer-api/ty
 import HoldersTable from '../HoldersTable'
 import TransactionsTable from '../TransactionsTable'
 import { MintButton } from '~/components/insc-20/Insc20List/MintButton'
-// import { KNOWN_BADGES, BADGE_CONFIG, Badge } from '~/config/badgeConfig'
-// import Image from 'next/image'
+import type { Badge } from '~/config/badgeConfig'
+import { BADGE_CONFIG, KNOWN_BADGES } from '~/config/badgeConfig'
+import Image from 'next/image'
 
 const listProperties = [
   {
@@ -88,19 +89,19 @@ const TokenOverview = ({ fetchToken, fetchHolders, fetchTransactions, ticker }: 
           <Typography color="primary" textAlign={'center'} variant="h2">
             {'$' + ticker}
           </Typography>
-          {/* {KNOWN_BADGES[ticker] &&
+          {KNOWN_BADGES[ticker] &&
             KNOWN_BADGES[ticker].map((badge, i) => (
               <Tooltip key={i} title={BADGE_CONFIG[badge].description}>
                 <Image width={30} src={BADGE_CONFIG[badge].icon} alt={''} />
               </Tooltip>
-            ))} */}
+            ))}
 
           {/* Auto badges */}
-          {/* {BADGE_CONFIG[tokenData?.badge as Badge] && (
+          {BADGE_CONFIG[tokenData?.badge as Badge] && (
             <Tooltip title={BADGE_CONFIG[tokenData?.badge as Badge].description}>
-              <Image width={20} src={BADGE_CONFIG[tokenData?.badge as Badge].icon} alt={''} />
+              <Image width={30} src={BADGE_CONFIG[tokenData?.badge as Badge].icon} alt={''} />
             </Tooltip>
-          )} */}
+          )}
         </Stack>
 
         <List disablePadding>
