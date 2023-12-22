@@ -37,7 +37,13 @@ export const CreateCustomForm = () => {
       [FormField.text]: '',
     },
   })
-  const { register, handleSubmit, setValue, watch } = formMethods
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors },
+  } = formMethods
 
   const text = watch(FormField.text)
 
@@ -91,7 +97,9 @@ export const CreateCustomForm = () => {
               </Typography>
 
               <TextField
-                {...register(FormField.text)}
+                {...register(FormField.text, { required: 'Text can not be empty' })}
+                error={!!errors.text}
+                helperText={errors.text?.message}
                 variant="outlined"
                 type="text"
                 placeholder="4 characters like 'abcd'..."
