@@ -23,6 +23,7 @@ import { BADGE_CONFIG, KNOWN_BADGES } from '~/config/badgeConfig'
 import { Tooltip } from '@mui/material'
 
 import Image from 'next/image'
+import EthHashInfo from '~/components/common/EthHashInfo'
 
 const PAGE_SIZE = 100
 
@@ -180,7 +181,7 @@ const Insc20List = () => {
   const rows = loading
     ? skeletonRows
     : (tokens || []).map((item) => {
-        const progressValue = (Number(item.totalSupply) / Number(item.maxSupply)) * 100
+        const progressValue = item.progress ? +(+item.progress * 100).toFixed(2) : 0
         const createdAtDate = new Date(Number(item.createdAt) * 1000)
 
         return {
@@ -226,7 +227,9 @@ const Insc20List = () => {
                     <LinearProgress variant="determinate" value={progressValue} />
                   </Box>
                   <Box minWidth={35}>
-                    <Typography variant="body2" color="textSecondary">{`${Math.round(progressValue)}%`}</Typography>
+                    <Typography variant="body2" color="textSecondary">
+                      {`${progressValue}%`}
+                    </Typography>
                   </Box>
                 </Box>
               ),
@@ -247,7 +250,10 @@ const Insc20List = () => {
                   {progressValue !== 100 ? (
                     <MintButton insc20={item} />
                   ) : (
-                    <Typography color="error">Fully minted</Typography>
+                    <Typography color="error">
+                      Fully minted at
+                      {item.completedTx && <EthHashInfo address={item.completedTx} hasExplorer avatarSize={0} />}
+                    </Typography>
                   )}
                 </Box>
               ),

@@ -44,16 +44,24 @@ const listProperties = [
   {
     id: 'createdAt',
     label: 'Deploy Time',
+    date: true,
+  },
+  {
+    id: 'completedTx',
+    label: 'Completed Tx Hash',
+    link: true,
+    nullable: true,
+  },
+  {
+    id: 'completedAt',
+    label: 'Completed At',
+    nullable: true,
   },
   {
     id: 'mintAction',
     label: 'Actions',
     action: true,
   },
-  // {
-  //   id: 'transactions',
-  //   label: 'Transactions',
-  // },
 ]
 
 interface Props {
@@ -71,9 +79,10 @@ const TokenOverview = ({ fetchToken, fetchHolders, fetchTransactions, ticker }: 
       try {
         const data = await fetchToken(ticker)
         data.createdAt = new Date(Number(data.createdAt) * 1000).toLocaleString()
+        data.completedAt = data.completedAt ? new Date(Number(data.completedAt) * 1000).toLocaleString() : null
         const updatedObject = {
           ...data,
-          progress: (Number(data.totalSupply) / Number(data.maxSupply)) * 100,
+          progress: data.progress ? +(+data.progress * 100).toFixed(2) : 0,
           badges: data.badge ? data.badge?.split(',') : [],
         }
         return updatedObject
@@ -107,48 +116,53 @@ const TokenOverview = ({ fetchToken, fetchHolders, fetchTransactions, ticker }: 
         </Stack>
 
         <List disablePadding>
-          {listProperties.map((property) => (
-            <ListItem key={property.id} sx={{ py: 1, px: 0 }}>
-              <ListItemText primary={property.label} />
-              {loading ? (
-                <Skeleton width="50%" />
-              ) : tokenData ? (
-                <>
-                  <Typography fontFamily={'Inter'}>
-                    {property.id === 'progress' ? (
-                      <Stack>
-                        <Typography>{`${tokenData.progress.toFixed(2)}%`}</Typography>
-                        <LinearProgress variant="determinate" value={tokenData.progress} />
-                      </Stack>
-                    ) : property.link === true ? (
-                      <EthHashInfo
-                        address={tokenData['creatorAddress']}
-                        shortAddress={false}
-                        showPrefix={false}
-                        hasExplorer
-                        showCopyButton
-                        avatarSize={0}
-                      />
-                    ) : property.action === true ? (
-                      <>
-                        <Box display="flex" flexDirection="row" gap={1} alignItems="center">
-                          {Math.round((Number(tokenData.totalSupply) / Number(tokenData.maxSupply)) * 100) !== 100 ? (
-                            <MintButton insc20={tokenData} />
-                          ) : (
-                            <Typography color="error">Fully minted</Typography>
-                          )}
-                        </Box>
-                      </>
-                    ) : (
-                      tokenData[property.id as keyof Insc20]
-                    )}
-                  </Typography>
-                </>
-              ) : (
-                <Typography color="secondary">No data available</Typography>
-              )}
-            </ListItem>
-          ))}
+          {listProperties.map((property) => {
+            if (property.nullable && tokenData && !tokenData[property.id as keyof Insc20]) {
+              return null
+            }
+            return (
+              <ListItem key={property.id} sx={{ py: 1, px: 0 }}>
+                <ListItemText primary={property.label} />
+                {loading ? (
+                  <Skeleton width="50%" />
+                ) : tokenData ? (
+                  <>
+                    <Typography fontFamily={'Inter'}>
+                      {property.id === 'progress' ? (
+                        <Stack>
+                          <Typography>{`${tokenData.progress.toFixed(2)}%`}</Typography>
+                          <LinearProgress variant="determinate" value={tokenData.progress} />
+                        </Stack>
+                      ) : property.link === true ? (
+                        <EthHashInfo
+                          address={(tokenData[property.id as keyof Insc20] ?? '0x0') as string}
+                          shortAddress={false}
+                          showPrefix={false}
+                          hasExplorer
+                          showCopyButton
+                          avatarSize={0}
+                        />
+                      ) : property.action === true ? (
+                        <>
+                          <Box display="flex" flexDirection="row" gap={1} alignItems="center">
+                            {tokenData.progress !== 100 ? (
+                              <MintButton insc20={tokenData} />
+                            ) : (
+                              <Typography color="error">Fully minted</Typography>
+                            )}
+                          </Box>
+                        </>
+                      ) : (
+                        tokenData[property.id as keyof Insc20]
+                      )}
+                    </Typography>
+                  </>
+                ) : (
+                  <Typography color="secondary">No data available</Typography>
+                )}
+              </ListItem>
+            )
+          })}
         </List>
 
         {error ? <Typography>An error occurred when during loading token...</Typography> : null}

@@ -10,6 +10,9 @@ export const Insc20Schema = z.object({
   totalSupply: z.string(),
   creatorAddress: z.string(),
   createdAt: z.string(), // Date
+  progress: z.number().nullable(),
+  completedAt: z.string().nullable(),
+  completedTx: z.string().nullable(),
   holders: z.number(),
   transactions: z.number(),
   transactionsLast24h: z.number().optional(),
