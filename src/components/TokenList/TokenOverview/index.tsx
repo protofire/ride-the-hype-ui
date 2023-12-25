@@ -1,4 +1,4 @@
-import { Box, List, ListItem, ListItemText, Skeleton, Stack, Tooltip, Typography } from '@mui/material'
+import { Box, LinearProgress, List, ListItem, ListItemText, Skeleton, Stack, Tooltip, Typography } from '@mui/material'
 import Paper from '@mui/material/Paper'
 import EthHashInfo from '~/components/common/EthHashInfo'
 import ContentTabs from '~/components/common/NavTabs/ContentTabs'
@@ -7,7 +7,8 @@ import type { Insc20, TokenHolder, Transaction } from '~/services/indexer-api/ty
 import HoldersTable from '../HoldersTable'
 import TransactionsTable from '../TransactionsTable'
 import { MintButton } from '~/components/insc-20/Insc20List/MintButton'
-import { KNOWN_BADGES, BADGE_CONFIG } from '~/config/badgeConfig'
+import type { Badge } from '~/config/badgeConfig'
+import { BADGE_CONFIG, KNOWN_BADGES } from '~/config/badgeConfig'
 import Image from 'next/image'
 
 const listProperties = [
@@ -43,16 +44,24 @@ const listProperties = [
   {
     id: 'createdAt',
     label: 'Deploy Time',
+    date: true,
+  },
+  {
+    id: 'completedTx',
+    label: 'Completed Tx Hash',
+    link: true,
+    nullable: true,
+  },
+  {
+    id: 'completedAt',
+    label: 'Completed At',
+    nullable: true,
   },
   {
     id: 'mintAction',
     label: 'Actions',
     action: true,
   },
-  // {
-  //   id: 'transactions',
-  //   label: 'Transactions',
-  // },
 ]
 
 interface Props {
@@ -70,7 +79,13 @@ const TokenOverview = ({ fetchToken, fetchHolders, fetchTransactions, ticker }: 
       try {
         const data = await fetchToken(ticker)
         data.createdAt = new Date(Number(data.createdAt) * 1000).toLocaleString()
-        return data
+        data.completedAt = data.completedAt ? new Date(Number(data.completedAt) * 1000).toLocaleString() : null
+        const updatedObject = {
+          ...data,
+          progress: data.progress ? +(+data.progress * 100).toFixed(2) : 0,
+          badges: data.badge ? data.badge?.split(',') : [],
+        }
+        return updatedObject
       } catch (e) {
         console.log(e)
       }
@@ -87,57 +102,78 @@ const TokenOverview = ({ fetchToken, fetchHolders, fetchTransactions, ticker }: 
           {KNOWN_BADGES[ticker] &&
             KNOWN_BADGES[ticker].map((badge, i) => (
               <Tooltip key={i} title={BADGE_CONFIG[badge].description}>
-                <Image width={30} src={BADGE_CONFIG[badge].icon} alt={''} />
+                <Image width={40} src={BADGE_CONFIG[badge].icon} alt={''} />
+              </Tooltip>
+            ))}
+
+          {/* Auto badges */}
+          {tokenData?.badges &&
+            tokenData?.badges.map((badge, i) => (
+              <Tooltip key={i} title={BADGE_CONFIG[badge as Badge].description}>
+                <Image width={40} src={BADGE_CONFIG[badge as Badge].icon} alt={''} />
               </Tooltip>
             ))}
         </Stack>
 
         <List disablePadding>
-          {listProperties.map((property) => (
-            <ListItem key={property.id} sx={{ py: 1, px: 0 }}>
-              <ListItemText primary={property.label} />
-              {loading ? (
-                <Skeleton width="50%" />
-              ) : tokenData ? (
-                <>
-                  <Typography fontFamily={'Inter'}>
-                    {property.id === 'progress' ? (
-                      `${Math.round((Number(tokenData.totalSupply) / Number(tokenData.maxSupply)) * 100)}%`
-                    ) : property.link === true ? (
-                      <EthHashInfo
-                        address={tokenData['creatorAddress']}
-                        shortAddress={false}
-                        showPrefix={false}
-                        hasExplorer
-                        showCopyButton
-                        avatarSize={0}
-                      />
-                    ) : property.action === true ? (
-                      <>
-                        <Box display="flex" flexDirection="row" gap={1} alignItems="center">
-                          {Math.round((Number(tokenData.totalSupply) / Number(tokenData.maxSupply)) * 100) !== 100 ? (
-                            <MintButton insc20={tokenData} />
-                          ) : (
-                            <Typography color="error">Fully minted</Typography>
-                          )}
-                        </Box>
-                      </>
-                    ) : (
-                      tokenData[property.id as keyof Insc20]
-                    )}
-                  </Typography>
-                </>
-              ) : (
-                <Typography color="secondary">No data available</Typography>
-              )}
-            </ListItem>
-          ))}
+          {listProperties.map((property) => {
+            if (property.nullable && tokenData && !tokenData[property.id as keyof Insc20]) {
+              return null
+            }
+            return (
+              <ListItem key={property.id} sx={{ py: 1, px: 0 }}>
+                <ListItemText primary={property.label} />
+                {loading ? (
+                  <Skeleton width="50%" />
+                ) : tokenData ? (
+                  <>
+                    <Typography fontFamily={'Inter'}>
+                      {property.id === 'progress' ? (
+                        <Stack>
+                          <Typography>{`${tokenData.progress.toFixed(2)}%`}</Typography>
+                          <LinearProgress variant="determinate" value={tokenData.progress} />
+                        </Stack>
+                      ) : property.link === true ? (
+                        <EthHashInfo
+                          address={(tokenData[property.id as keyof Insc20] ?? '0x0') as string}
+                          shortAddress={false}
+                          showPrefix={false}
+                          hasExplorer
+                          showCopyButton
+                          avatarSize={0}
+                        />
+                      ) : property.action === true ? (
+                        <>
+                          <Box display="flex" flexDirection="row" gap={1} alignItems="center">
+                            {tokenData.progress !== 100 ? (
+                              <MintButton insc20={tokenData} />
+                            ) : (
+                              <Typography color="error">Fully minted</Typography>
+                            )}
+                          </Box>
+                        </>
+                      ) : (
+                        tokenData[property.id as keyof Insc20]
+                      )}
+                    </Typography>
+                  </>
+                ) : (
+                  <Typography color="secondary">No data available</Typography>
+                )}
+              </ListItem>
+            )
+          })}
         </List>
 
         {error ? <Typography>An error occurred when during loading token...</Typography> : null}
       </Paper>
       <ContentTabs navItems={labels}>
-        <HoldersTable ticker={ticker ?? ''} fetchHolders={fetchHolders} totalHolders={tokenData?.holders ?? 0} />
+        <HoldersTable
+          ticker={ticker ?? ''}
+          fetchHolders={fetchHolders}
+          totalHolders={tokenData?.holders ?? 0}
+          maxSupply={tokenData?.maxSupply ?? 0}
+        />
         <TransactionsTable
           ticker={ticker ?? ''}
           fetchTransactions={fetchTransactions}

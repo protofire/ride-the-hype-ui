@@ -50,7 +50,14 @@ export const CreateInsc20Form = () => {
       [FormField.description]: '',
     },
   })
-  const { register, handleSubmit, setValue, watch } = formMethods
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    getValues,
+    formState: { errors },
+  } = formMethods
 
   const tick = watch(FormField.tick)
   const totalSupply = watch(FormField.totalSupply)
@@ -98,6 +105,10 @@ export const CreateInsc20Form = () => {
     setValue(name, '')
   }
 
+  const tokenAmountHigher = (prop: string, amount: number, prop2: string, amount2: number) => {
+    return amount > amount2 || `${prop} amount can not be lower than ${prop2}`
+  }
+
   return (
     <Paper sx={{ padding: 4, maxWidth: '900px', m: '1rem auto' }}>
       <Grid container direction="row" justifyContent="space-between" spacing={3} mb={2}>
@@ -128,7 +139,9 @@ export const CreateInsc20Form = () => {
               </Typography>
 
               <TextField
-                {...register(FormField.tick)}
+                {...register(FormField.tick, { required: 'Tick can not be empty' })}
+                error={!!errors.tick}
+                helperText={errors.tick?.message}
                 variant="outlined"
                 type="text"
                 placeholder="4 characters like 'abcd'..."
@@ -166,7 +179,18 @@ export const CreateInsc20Form = () => {
               </Typography>
 
               <TextField
-                {...register(FormField.totalSupply)}
+                {...register(FormField.totalSupply, {
+                  required: 'Total supply can not be empty',
+                  validate: (value) =>
+                    tokenAmountHigher(
+                      '"Total supply"',
+                      +value,
+                      '"Max limit per address"',
+                      +getValues().limitPerAddress,
+                    ),
+                })}
+                error={!!errors.totalSupply}
+                helperText={errors.totalSupply?.message}
                 variant="outlined"
                 type="number"
                 InputProps={{
@@ -199,9 +223,13 @@ export const CreateInsc20Form = () => {
               </Typography>
 
               <TextField
-                {...register(FormField.limitPerMint)}
+                {...register(FormField.limitPerMint, {
+                  required: 'Limit per mint can not be empty',
+                })}
                 variant="outlined"
                 type="number"
+                error={!!errors.limitPerMint}
+                helperText={errors.limitPerMint?.message}
                 InputProps={{
                   endAdornment: limitPerMint ? (
                     <InputAdornment position="end">
@@ -236,9 +264,15 @@ export const CreateInsc20Form = () => {
               </Typography>
 
               <TextField
-                {...register(FormField.limitPerAddress)}
+                {...register(FormField.limitPerAddress, {
+                  required: 'Limit per address can not be empty',
+                  validate: (value) =>
+                    tokenAmountHigher('"Max limit per address"', +value, '"Limit per Mint"', +getValues().limitPerMint),
+                })}
                 variant="outlined"
                 type="number"
+                error={!!errors.limitPerAddress}
+                helperText={errors.limitPerAddress?.message}
                 InputProps={{
                   endAdornment: limitPerAddress ? (
                     <InputAdornment position="end">

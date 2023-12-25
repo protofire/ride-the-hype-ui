@@ -27,6 +27,9 @@ export const MintButton = ({ insc20 }: { insc20: Insc20 }): ReactElement => {
         onClose={() => setMintModalOpen(false)}
         tick={insc20.tick}
         maxAmount={insc20.maxMint}
+        maxMintPerAddress={insc20.holdLimit}
+        maxSupply={insc20.maxSupply}
+        totalSupply={insc20.totalSupply}
       />
     </>
   )
