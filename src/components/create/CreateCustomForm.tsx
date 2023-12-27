@@ -14,7 +14,7 @@ import { useCurrentChain } from '~/hooks/useChains'
 import useOnboard from '~/hooks/wallets/useOnboard'
 import InfoIcon from '~/public/images/info.svg'
 import { getAssertedChainSigner } from '~/utils/wallets'
-import { ZERO_ADDRESS } from '~/config/constants'
+//import { ZERO_ADDRESS } from '~/config/constants'
 import type { TransactionResponse } from '@ethersproject/abstract-provider'
 import EthHashInfo from '~/components/common/EthHashInfo'
 
@@ -37,7 +37,13 @@ export const CreateCustomForm = () => {
       [FormField.text]: '',
     },
   })
-  const { register, handleSubmit, setValue, watch } = formMethods
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors },
+  } = formMethods
 
   const text = watch(FormField.text)
 
@@ -48,7 +54,7 @@ export const CreateCustomForm = () => {
     }
     try {
       const signer = await getAssertedChainSigner(onboard, chain?.chainId)
-      const tx = await signer.sendTransaction({ to: ZERO_ADDRESS, value: 0, data: toHex(text.trim()) })
+      const tx = await signer.sendTransaction({ to: signer.getAddress(), value: 0, data: toHex(text.trim()) })
       setTx(tx)
       // TODO: add loading
       await tx.wait()
@@ -91,7 +97,9 @@ export const CreateCustomForm = () => {
               </Typography>
 
               <TextField
-                {...register(FormField.text)}
+                {...register(FormField.text, { required: 'Text can not be empty' })}
+                error={!!errors.text}
+                helperText={errors.text?.message}
                 variant="outlined"
                 type="text"
                 placeholder="4 characters like 'abcd'..."

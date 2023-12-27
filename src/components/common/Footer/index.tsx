@@ -9,15 +9,21 @@ import SvgIcon from '@mui/material/SvgIcon'
 import { SOCIALS } from '~/config/constants'
 import { useTheme } from '@mui/material/styles'
 import { Box, Stack, useMediaQuery } from '@mui/material'
+import Link from 'next/link'
 
 const footerPages = [AppRoutes.allInscriptions.index, AppRoutes.create.index]
+
+const socials = [
+  { label: 'Telegram', link: SOCIALS.TELEGRAM, icon: <TelegramIcon /> },
+  { label: 'Twitter', link: SOCIALS.TWITTER, icon: <TwitterIcon /> },
+]
 
 const Footer = (): ReactElement | null => {
   const router = useRouter()
   const { breakpoints } = useTheme()
   const isSmallScreen = useMediaQuery(breakpoints.down('md'))
 
-  if (!footerPages.some((path) => router.pathname.startsWith(path)) || isSmallScreen) {
+  if (/*!footerPages.some((path) => router.pathname.startsWith(path)) ||*/ isSmallScreen) {
     return null
   }
 
@@ -25,13 +31,19 @@ const Footer = (): ReactElement | null => {
     <>
       <Box className={css.topSection} />
       <footer className={css.container}>
-        <Stack direction="row" justifyContent="center" alignItems="center" spacing={2}>
-          <ExternalLink href={SOCIALS.TELEGRAM} noIcon>
-            <SvgIcon component={TelegramIcon} inheritViewBox fontSize="medium" sx={{ mr: 0.5 }} />
-          </ExternalLink>
-          <ExternalLink href={SOCIALS.TWITTER} noIcon>
-            <SvgIcon component={TwitterIcon} inheritViewBox fontSize="medium" sx={{ mr: 0.5 }} />
-          </ExternalLink>
+        <Stack direction="row" justifyContent="center" alignContent="center" alignItems="center" spacing={2}>
+          {socials.map((s, i) => (
+            <SvgIcon
+              key={i}
+              component={Link}
+              href={s.link}
+              target="blank"
+              inheritViewBox
+              sx={{ mr: 0.5, color: '#000' }}
+            >
+              <div className={css.icon}>{s.icon}</div>
+            </SvgIcon>
+          ))}
           <ExternalLink color={'#000'} href="https://ecosystem.iotex.io/" noIcon sx={{ textDecoration: 'underline' }}>
             IoTeX Ecosystem
           </ExternalLink>

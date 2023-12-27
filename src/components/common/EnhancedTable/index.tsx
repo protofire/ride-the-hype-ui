@@ -113,6 +113,7 @@ export type EnhancedTableProps = {
   headCells: EnhancedHeadCell[]
   mobileVariant?: boolean
   onDemandPagination?: onDemandFetchOption
+  defaultSortField?: string
 }
 
 export type onDemandFetchOption = {
@@ -123,14 +124,20 @@ export type onDemandFetchOption = {
   totalHolders: number
 }
 
-const pageSizes = [10, 25, 100]
+const pageSizes = [10, 15, 25, 100]
 
-function EnhancedTable({ rows, headCells, mobileVariant, onDemandPagination }: EnhancedTableProps) {
-  const [order, setOrder] = useState<'asc' | 'desc'>('asc')
-  const [orderBy, setOrderBy] = useState<string>('')
+function EnhancedTable({
+  rows,
+  headCells,
+  mobileVariant,
+  onDemandPagination,
+  defaultSortField = '',
+}: EnhancedTableProps) {
+  const [order, setOrder] = useState<'asc' | 'desc'>('desc')
+  const [orderBy, setOrderBy] = useState<string>(defaultSortField || '')
   const [page, setPage] = useState<number>(0)
   const [rowsPerPage, setRowsPerPage] = useState<number>(
-    onDemandPagination ? onDemandPagination.pageSize : pageSizes[2],
+    onDemandPagination ? onDemandPagination.pageSize : pageSizes[1],
   )
 
   const handleRequestSort = (property: string) => {

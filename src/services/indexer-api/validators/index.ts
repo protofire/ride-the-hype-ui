@@ -7,7 +7,7 @@ export const IndexerApiStatusSchema = z.object({
 })
 
 export const TransactionSchema = z.object({
-  id: z.number(),
+  id: z.string(),
   hash: z.string(),
   protocol: z.string(),
   tick: z.string(),

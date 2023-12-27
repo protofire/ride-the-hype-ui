@@ -8,11 +8,20 @@ import type { TokenHolder } from '~/services/indexer-api/types'
 import { useState } from 'react'
 import useAsync from '~/hooks/useAsync'
 import EthHashInfo from '~/components/common/EthHashInfo'
+import { Box, LinearProgress } from '@mui/material'
 
 const INITIAL_PAGE_SIZE = 10
 
 const skeletonCells: EnhancedTableProps['rows'][0]['cells'] = {
   address: {
+    rawValue: '',
+    content: (
+      <Typography>
+        <Skeleton width="90px" height="60px" />
+      </Typography>
+    ),
+  },
+  percentage: {
     rawValue: '',
     content: (
       <Typography>
@@ -37,6 +46,10 @@ const headCells = [
     label: 'Holder',
   },
   {
+    id: 'percentage',
+    label: 'Percentage',
+  },
+  {
     id: 'amount',
     label: 'Amount',
   },
@@ -46,9 +59,10 @@ interface Props {
   fetchHolders: (ticker: string, page: number, limit: number) => Promise<TokenHolder[]> | undefined
   ticker: string
   totalHolders: number
+  maxSupply: number | string
 }
 
-const HoldersTable = ({ fetchHolders, ticker, totalHolders }: Props) => {
+const HoldersTable = ({ fetchHolders, ticker, totalHolders, maxSupply }: Props) => {
   // const [holders, setHolders] = useState([] as TokenHolder[])
   const [hasMore, setHasMore] = useState(false)
   const [page, setPage] = useState(0)
@@ -58,12 +72,18 @@ const HoldersTable = ({ fetchHolders, ticker, totalHolders }: Props) => {
     if (!!fetchHolders && totalHolders > 0) {
       try {
         const data = await fetchHolders(ticker, page + 1, pageSize) //in API page starts from 1, while in front-end - from 0
-        return data
+        const dataWithPercentage = data
+          ? data.map((holder) => ({
+              ...holder,
+              percentage: (Number(holder.amount) / Number(maxSupply)) * 100,
+            }))
+          : []
+        return dataWithPercentage
       } catch (e) {
         console.log(e)
       }
     }
-  }, [fetchHolders, page, pageSize, ticker, totalHolders])
+  }, [fetchHolders, maxSupply, page, pageSize, ticker, totalHolders])
 
   // // Add new tokens to the accumulated list
   // useEffect(() => {
@@ -92,6 +112,19 @@ const HoldersTable = ({ fetchHolders, ticker, totalHolders }: Props) => {
                     avatarSize={0}
                   />
                 </Typography>
+              ),
+            },
+            percentage: {
+              rawValue: item.percentage,
+              content: (
+                <Box display="flex" alignItems="center">
+                  <Box width="100%" mr={1}>
+                    <LinearProgress variant="determinate" value={item.percentage} />
+                  </Box>
+                  <Box minWidth={35}>
+                    <Typography variant="body2" color="textSecondary">{`${item.percentage.toFixed(2)}%`}</Typography>
+                  </Box>
+                </Box>
               ),
             },
             amount: {

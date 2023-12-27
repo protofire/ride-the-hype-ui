@@ -2,10 +2,15 @@ import type { ReactElement } from 'react'
 import { SidebarList, SidebarListItemButton, SidebarListItemText } from '~/components/sidebar/SidebarList'
 import { ListItem } from '@mui/material'
 import { SOCIALS } from '~/config/constants'
-import TwitterIcon from '~/public/images/x-twitter.svg'
 import SvgIcon from '@mui/material/SvgIcon'
 import TelegramIcon from '~/public/images/telegram.svg'
+import TwitterIcon from '~/public/images/x-twitter.svg'
 // import DebugToggle from '../DebugToggle'
+
+const socials = [
+  { label: 'Telegram', link: SOCIALS.TELEGRAM, icon: TelegramIcon },
+  { label: 'Twitter', link: SOCIALS.TWITTER, icon: TwitterIcon },
+]
 
 const SidebarFooter = (): ReactElement => {
   return (
@@ -15,24 +20,18 @@ const SidebarFooter = (): ReactElement => {
       {/*    <DebugToggle />*/}
       {/*  </ListItem>*/}
       {/*)}*/}
-
-      <ListItem disablePadding>
-        <a target="_blank" rel="noopener noreferrer" href={SOCIALS.TWITTER} style={{ width: '100%' }}>
-          <SidebarListItemButton>
-            <SvgIcon component={TwitterIcon} inheritViewBox fontSize="small" sx={{ mr: 1 }} />
-            <SidebarListItemText bold>Twitter</SidebarListItemText>
-          </SidebarListItemButton>
-        </a>
-      </ListItem>
-
-      <ListItem disablePadding>
-        <a target="_blank" rel="noopener noreferrer" href={SOCIALS.TELEGRAM} style={{ width: '100%' }}>
-          <SidebarListItemButton>
-            <SvgIcon component={TelegramIcon} inheritViewBox fontSize="medium" sx={{ mr: 1 }} />
-            <SidebarListItemText bold>Telegram</SidebarListItemText>
-          </SidebarListItemButton>
-        </a>
-      </ListItem>
+      {socials.map((s, i) => (
+        <ListItem key={i} disablePadding>
+          <a target="_blank" rel="noopener noreferrer" href={s.link} style={{ width: '100%' }}>
+            <SidebarListItemButton>
+              <SvgIcon component={s.icon} inheritViewBox />
+              <SidebarListItemText bold sx={{ ml: 2 }}>
+                {s.label}
+              </SidebarListItemText>
+            </SidebarListItemButton>
+          </a>
+        </ListItem>
+      ))}
     </SidebarList>
   )
 }
