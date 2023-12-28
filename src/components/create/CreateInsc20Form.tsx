@@ -14,7 +14,7 @@ import { useCurrentChain } from '~/hooks/useChains'
 import useOnboard from '~/hooks/wallets/useOnboard'
 import InfoIcon from '~/public/images/info.svg'
 import { getAssertedChainSigner } from '~/utils/wallets'
-import { ZERO_ADDRESS } from '~/config/constants'
+//import { ZERO_ADDRESS } from '~/config/constants'
 import type { TransactionResponse } from '@ethersproject/abstract-provider'
 import EthHashInfo from '~/components/common/EthHashInfo'
 
@@ -50,7 +50,14 @@ export const CreateInsc20Form = () => {
       [FormField.description]: '',
     },
   })
-  const { register, handleSubmit, setValue, watch } = formMethods
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    getValues,
+    formState: { errors },
+  } = formMethods
 
   const tick = watch(FormField.tick)
   const totalSupply = watch(FormField.totalSupply)
@@ -73,15 +80,15 @@ export const CreateInsc20Form = () => {
         max: data[FormField.totalSupply],
         lim: data[FormField.limitPerMint],
         wlim: data[FormField.limitPerAddress],
-        dec: '8',
-        nonce: (+new Date()).toString(),
+        dec: '0',
+        //nonce: (+new Date()).toString(),
         desc: data[FormField.description],
       }
 
       const dataHex = toHex('data:,' + JSON.stringify(txData))
 
       const tx = await signer.sendTransaction({
-        to: ZERO_ADDRESS,
+        to: signer.getAddress(),
         value: 0,
         data: dataHex,
       })
@@ -96,6 +103,10 @@ export const CreateInsc20Form = () => {
 
   const onReset = (name: FormField) => {
     setValue(name, '')
+  }
+
+  const tokenAmountHigher = (prop: string, amount: number, prop2: string, amount2: number) => {
+    return amount > amount2 || `${prop} amount can not be lower than ${prop2}`
   }
 
   return (
@@ -128,7 +139,9 @@ export const CreateInsc20Form = () => {
               </Typography>
 
               <TextField
-                {...register(FormField.tick)}
+                {...register(FormField.tick, { required: 'Tick can not be empty' })}
+                error={!!errors.tick}
+                helperText={errors.tick?.message}
                 variant="outlined"
                 type="text"
                 placeholder="4 characters like 'abcd'..."
@@ -151,7 +164,7 @@ export const CreateInsc20Form = () => {
                 <Tooltip
                   placement="top"
                   arrow
-                  title="Once your irc-20 supply reaches this figure, new mints won't be indexed"
+                  title="Once your orc-20 supply reaches this figure, new mints won't be indexed"
                 >
                   <span>
                     <SvgIcon
@@ -166,7 +179,18 @@ export const CreateInsc20Form = () => {
               </Typography>
 
               <TextField
-                {...register(FormField.totalSupply)}
+                {...register(FormField.totalSupply, {
+                  required: 'Total supply can not be empty',
+                  validate: (value) =>
+                    tokenAmountHigher(
+                      '"Total supply"',
+                      +value,
+                      '"Max limit per address"',
+                      +getValues().limitPerAddress,
+                    ),
+                })}
+                error={!!errors.totalSupply}
+                helperText={errors.totalSupply?.message}
                 variant="outlined"
                 type="number"
                 InputProps={{
@@ -199,9 +223,13 @@ export const CreateInsc20Form = () => {
               </Typography>
 
               <TextField
-                {...register(FormField.limitPerMint)}
+                {...register(FormField.limitPerMint, {
+                  required: 'Limit per mint can not be empty',
+                })}
                 variant="outlined"
                 type="number"
+                error={!!errors.limitPerMint}
+                helperText={errors.limitPerMint?.message}
                 InputProps={{
                   endAdornment: limitPerMint ? (
                     <InputAdornment position="end">
@@ -236,9 +264,15 @@ export const CreateInsc20Form = () => {
               </Typography>
 
               <TextField
-                {...register(FormField.limitPerAddress)}
+                {...register(FormField.limitPerAddress, {
+                  required: 'Limit per address can not be empty',
+                  validate: (value) =>
+                    tokenAmountHigher('"Max limit per address"', +value, '"Limit per Mint"', +getValues().limitPerMint),
+                })}
                 variant="outlined"
                 type="number"
+                error={!!errors.limitPerAddress}
+                helperText={errors.limitPerAddress?.message}
                 InputProps={{
                   endAdornment: limitPerAddress ? (
                     <InputAdornment position="end">

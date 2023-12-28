@@ -5,14 +5,23 @@ import css from './styles.module.css'
 import type { EnhancedTableProps } from '~/components/common/EnhancedTable'
 import EnhancedTable from '~/components/common/EnhancedTable'
 import type { TokenHolder } from '~/services/indexer-api/types'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import useAsync from '~/hooks/useAsync'
 import EthHashInfo from '~/components/common/EthHashInfo'
+import { Box, LinearProgress } from '@mui/material'
 
-const PAGE_SIZE = 10
+const INITIAL_PAGE_SIZE = 10
 
 const skeletonCells: EnhancedTableProps['rows'][0]['cells'] = {
   address: {
+    rawValue: '',
+    content: (
+      <Typography>
+        <Skeleton width="90px" height="60px" />
+      </Typography>
+    ),
+  },
+  percentage: {
     rawValue: '',
     content: (
       <Typography>
@@ -29,12 +38,16 @@ const skeletonCells: EnhancedTableProps['rows'][0]['cells'] = {
     ),
   },
 }
-const skeletonRows: EnhancedTableProps['rows'] = Array(25).fill({ cells: skeletonCells })
+const skeletonRows: EnhancedTableProps['rows'] = Array(INITIAL_PAGE_SIZE).fill({ cells: skeletonCells })
 
 const headCells = [
   {
     id: 'holder',
     label: 'Holder',
+  },
+  {
+    id: 'percentage',
+    label: 'Percentage',
   },
   {
     id: 'amount',
@@ -45,33 +58,40 @@ const headCells = [
 interface Props {
   fetchHolders: (ticker: string, page: number, limit: number) => Promise<TokenHolder[]> | undefined
   ticker: string
+  totalHolders: number
+  maxSupply: number | string
 }
 
-const HoldersTable = ({ fetchHolders, ticker }: Props) => {
-  const [holders, setHolders] = useState([] as TokenHolder[])
+const HoldersTable = ({ fetchHolders, ticker, totalHolders, maxSupply }: Props) => {
+  // const [holders, setHolders] = useState([] as TokenHolder[])
   const [hasMore, setHasMore] = useState(false)
-  const [page, setPage] = useState(1)
+  const [page, setPage] = useState(0)
+  const [pageSize, setPageSize] = useState(INITIAL_PAGE_SIZE)
 
-  const [newHolders, error, loading] = useAsync(async () => {
-    if (!!fetchHolders) {
+  const [holders, error, loading] = useAsync(async () => {
+    if (!!fetchHolders && totalHolders > 0) {
       try {
-        const data = await fetchHolders(ticker, page, PAGE_SIZE)
-
-        setHasMore(!(data && data.length < PAGE_SIZE))
-
-        return data
+        const data = await fetchHolders(ticker, page + 1, pageSize) //in API page starts from 1, while in front-end - from 0
+        const dataWithPercentage = data
+          ? data.map((holder) => ({
+              ...holder,
+              percentage: (Number(holder.amount) / Number(maxSupply)) * 100,
+            }))
+          : []
+        return dataWithPercentage
       } catch (e) {
         console.log(e)
       }
     }
-  }, [fetchHolders, page, ticker])
+  }, [fetchHolders, maxSupply, page, pageSize, ticker, totalHolders])
 
-  // Add new tokens to the accumulated list
-  useEffect(() => {
-    if (newHolders && newHolders.length > 0) {
-      setHolders((prev) => prev.concat(newHolders))
-    }
-  }, [newHolders])
+  // // Add new tokens to the accumulated list
+  // useEffect(() => {
+  //   if (newHolders && newHolders.length > 0) {
+  //     // setHolders((prev) => prev.concat(newHolders))
+  //     setHolders(newHolders)
+  //   }
+  // }, [newHolders])
 
   const rows = loading
     ? skeletonRows
@@ -94,6 +114,19 @@ const HoldersTable = ({ fetchHolders, ticker }: Props) => {
                 </Typography>
               ),
             },
+            percentage: {
+              rawValue: item.percentage,
+              content: (
+                <Box display="flex" alignItems="center">
+                  <Box width="100%" mr={1}>
+                    <LinearProgress variant="determinate" value={item.percentage} />
+                  </Box>
+                  <Box minWidth={35}>
+                    <Typography variant="body2" color="textSecondary">{`${item.percentage.toFixed(2)}%`}</Typography>
+                  </Box>
+                </Box>
+              ),
+            },
             amount: {
               rawValue: item.amount,
               content: <Typography fontFamily={'Inter'}>{item.amount}</Typography>,
@@ -107,7 +140,17 @@ const HoldersTable = ({ fetchHolders, ticker }: Props) => {
       {error ? <Typography>An error occurred during loading tokens...</Typography> : null}
 
       <div className={css.container}>
-        <EnhancedTable rows={rows} headCells={headCells} />
+        <EnhancedTable
+          rows={rows}
+          headCells={headCells}
+          onDemandPagination={{
+            pageSize: pageSize,
+            page: page,
+            setPage: setPage,
+            setPageSize: setPageSize,
+            totalHolders: totalHolders,
+          }}
+        />
       </div>
     </Paper>
   )

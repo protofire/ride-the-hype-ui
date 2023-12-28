@@ -2,15 +2,15 @@ import z from 'zod'
 import type { Axios } from 'axios'
 
 import type { PaginationQuery, Transaction } from '~/services/indexer-api/types'
+import { TransactionSchema } from '~/services/indexer-api/validators'
 
 import { Insc20BalanceSchema, Insc20Schema, TokenHolderSchema } from './validators'
-import type { Insc20, Insc20Balance, TokenHolder } from './types'
-import { TransactionSchema } from '../../validators'
+import type { Insc20, Insc20Balance, TokenHolder, Insc20QueryFilter } from './types'
 
 export class IndexerTokensModule {
   constructor(private client: Axios) {}
 
-  public async getAllInsc20(params?: PaginationQuery): Promise<Insc20[]> {
+  public async getAllInsc20(params?: Insc20QueryFilter): Promise<Insc20[]> {
     const response = await this.client.get('api/v1/tokens', {
       params,
     })
@@ -28,9 +28,6 @@ export class IndexerTokensModule {
   public async getUserHoldings(walletAddress: string, params?: PaginationQuery): Promise<Insc20Balance[]> {
     const address = await z.string().parseAsync(walletAddress)
     const response = await this.client.get(`api/v1/users/${address}/balances`, { params })
-
-    // TODO: restore passing data after this method is implemented on BE
-    console.log('[getUserHoldings]: ', response.data)
 
     return Insc20BalanceSchema.array().parseAsync(response.data)
   }

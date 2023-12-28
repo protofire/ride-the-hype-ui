@@ -32,6 +32,7 @@ declare namespace NodeJS {
     NEXT_PUBLIC_IS_PRODUCTION?: string
     NEXT_PUBLIC_WC_PROJECT_ID?: string
     NEXT_PUBLIC_INDEXER_API_BASE_URL?: string
+    NEXT_PUBLIC_POLLING_INTERVAL_MS?: string
   }
 }
 

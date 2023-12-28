@@ -10,7 +10,15 @@ export const MintButton = ({ insc20 }: { insc20: Insc20 }): ReactElement => {
 
   return (
     <>
-      <Button variant="contained" color="primary" size="small" onClick={() => setMintModalOpen(true)}>
+      <Button
+        variant="contained"
+        color="primary"
+        size="small"
+        onClick={(e) => {
+          e.preventDefault()
+          setMintModalOpen(true)
+        }}
+      >
         Mint
       </Button>
 
@@ -19,6 +27,9 @@ export const MintButton = ({ insc20 }: { insc20: Insc20 }): ReactElement => {
         onClose={() => setMintModalOpen(false)}
         tick={insc20.tick}
         maxAmount={insc20.maxMint}
+        maxMintPerAddress={insc20.holdLimit}
+        maxSupply={insc20.maxSupply}
+        totalSupply={insc20.totalSupply}
       />
     </>
   )

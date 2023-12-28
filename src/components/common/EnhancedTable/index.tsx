@@ -1,5 +1,7 @@
-import type { ChangeEvent, ReactNode } from 'react'
+import type { ChangeEvent, ReactNode, SetStateAction } from 'react'
 import React, { useState } from 'react'
+import Link from 'next/link'
+import type { Url } from 'next/dist/shared/lib/router/router'
 import Box from '@mui/material/Box'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
@@ -28,6 +30,7 @@ type EnhancedRow = {
   collapsed?: boolean
   key?: string
   cells: Record<string, EnhancedCell>
+  href?: string
 }
 
 type EnhancedHeadCell = {
@@ -101,19 +104,41 @@ function EnhancedTableHead(props: EnhancedTableHeadProps) {
   )
 }
 
+function ConditionalLink(props: { href?: Url; children?: React.ReactNode }) {
+  return props.href ? <Link href={props.href}>{props.children}</Link> : <>{props.children}</>
+}
+
 export type EnhancedTableProps = {
   rows: EnhancedRow[]
   headCells: EnhancedHeadCell[]
   mobileVariant?: boolean
+  onDemandPagination?: onDemandFetchOption
+  defaultSortField?: string
 }
 
-const pageSizes = [10, 25, 100]
+export type onDemandFetchOption = {
+  pageSize: number
+  page: number
+  setPage: (value: SetStateAction<number>) => void
+  setPageSize: (value: SetStateAction<number>) => void
+  totalHolders: number
+}
 
-function EnhancedTable({ rows, headCells, mobileVariant }: EnhancedTableProps) {
-  const [order, setOrder] = useState<'asc' | 'desc'>('asc')
-  const [orderBy, setOrderBy] = useState<string>('')
+const pageSizes = [10, 15, 25, 100]
+
+function EnhancedTable({
+  rows,
+  headCells,
+  mobileVariant,
+  onDemandPagination,
+  defaultSortField = '',
+}: EnhancedTableProps) {
+  const [order, setOrder] = useState<'asc' | 'desc'>('desc')
+  const [orderBy, setOrderBy] = useState<string>(defaultSortField || '')
   const [page, setPage] = useState<number>(0)
-  const [rowsPerPage, setRowsPerPage] = useState<number>(pageSizes[2])
+  const [rowsPerPage, setRowsPerPage] = useState<number>(
+    onDemandPagination ? onDemandPagination.pageSize : pageSizes[1],
+  )
 
   const handleRequestSort = (property: string) => {
     const isAsc = orderBy === property && order === 'asc'
@@ -122,17 +147,21 @@ function EnhancedTable({ rows, headCells, mobileVariant }: EnhancedTableProps) {
   }
 
   const handleChangePage = (_: any, newPage: number) => {
+    if (onDemandPagination) onDemandPagination.setPage(newPage) //setting page in parent component to fetch new data
     setPage(newPage)
   }
 
   const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>) => {
+    if (onDemandPagination) {
+      onDemandPagination.setPageSize(parseInt(event.target.value, 10))
+      onDemandPagination.setPage(0)
+    }
     setRowsPerPage(parseInt(event.target.value, 10))
     setPage(0)
   }
 
   const orderedRows = orderBy ? rows.slice().sort(getComparator(order, orderBy)) : rows
-  const pagedRows = orderedRows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-
+  const pagedRows = onDemandPagination ? rows : orderedRows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
   return (
     <Box sx={{ width: '100%' }}>
       <TableContainer component={Paper} sx={{ width: '100%', mb: 2 }}>
@@ -155,9 +184,11 @@ function EnhancedTable({ rows, headCells, mobileVariant }: EnhancedTableProps) {
                         [css.collapsedCell]: row.collapsed,
                       })}
                     >
-                      <Collapse key={index} in={!row.collapsed} enter={false}>
-                        {cell.content}
-                      </Collapse>
+                      <ConditionalLink href={row.href}>
+                        <Collapse key={index} in={!row.collapsed} enter={false}>
+                          {cell.content}
+                        </Collapse>
+                      </ConditionalLink>
                     </TableCell>
                   ))}
                 </TableRow>
@@ -172,13 +203,25 @@ function EnhancedTable({ rows, headCells, mobileVariant }: EnhancedTableProps) {
         </Table>
       </TableContainer>
 
-      {rows.length > pagedRows.length && (
+      {rows.length > pagedRows.length && !onDemandPagination && (
         <TablePagination
           rowsPerPageOptions={pageSizes}
           component="div"
           count={rows.length}
           rowsPerPage={rowsPerPage}
           page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      )}
+
+      {onDemandPagination && (
+        <TablePagination
+          rowsPerPageOptions={pageSizes}
+          component="div"
+          count={onDemandPagination.totalHolders}
+          rowsPerPage={onDemandPagination.pageSize}
+          page={onDemandPagination.page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />

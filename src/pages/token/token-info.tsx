@@ -5,11 +5,6 @@ import { IndexerApiService } from '~/services/indexer-api'
 import TokenHeader from '~/components/TokenHeader'
 import { useSearchParams } from 'next/navigation'
 import TokenOverview from '~/components/TokenList/TokenOverview'
-import ContentTabs from '~/components/common/NavTabs/ContentTabs'
-import HoldersTable from '~/components/TokenList/HoldersTable'
-import TransactionsTable from '~/components/TokenList/TransactionsTable'
-
-const labels = ['holders', 'transactions']
 
 const TokenInfoPage: NextPage = () => {
   const searchParams = useSearchParams()
@@ -38,11 +33,12 @@ const TokenInfoPage: NextPage = () => {
       <TokenHeader ticker={ticker ?? ''} />
 
       <main>
-        <TokenOverview ticker={ticker ?? ''} fetchToken={fetchToken} />
-        <ContentTabs navItems={labels}>
-          <HoldersTable ticker={ticker ?? ''} fetchHolders={fetchHolders} />
-          <TransactionsTable ticker={ticker ?? ''} fetchTransactions={fetchTransactions} />
-        </ContentTabs>
+        <TokenOverview
+          ticker={ticker ?? ''}
+          fetchToken={fetchToken}
+          fetchHolders={fetchHolders}
+          fetchTransactions={fetchTransactions}
+        />
       </main>
     </>
   )
