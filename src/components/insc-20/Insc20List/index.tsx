@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import RefreshIcon from '@mui/icons-material/Refresh'
-import { FormControl, FormControlLabel, Radio, RadioGroup } from '@mui/material'
+import { FormControl, FormControlLabel, Radio, RadioGroup, Stack } from '@mui/material'
 import LinearProgress from '@mui/material/LinearProgress'
 import type { Insc20 } from '~/services/indexer-api/types'
 import useAsync from '~/hooks/useAsync'
@@ -18,6 +18,11 @@ import { Insc20Filter } from '~/types'
 
 import { MintButton } from './MintButton'
 import css from './styles.module.css'
+// import type { Badge } from '~/config/badgeConfig'
+// import { BADGE_CONFIG, KNOWN_BADGES } from '~/config/badgeConfig'
+// import { Tooltip } from '@mui/material'
+// import Image from 'next/image'
+import EthHashInfo from '~/components/common/EthHashInfo'
 
 const PAGE_SIZE = 100
 
@@ -106,38 +111,55 @@ const headCells = [
   },
 ]
 
+type EnhancedInsc20 = Insc20 & {
+  badges: string[]
+}
+
 const Insc20List = () => {
   const [counter, setCounter] = useState<number>(0)
-  const [tokens, setTokens] = useState([] as Insc20[])
+  // const [tokens, setTokens] = useState([] as Insc20[])
   const [hasMore, setHasMore] = useState(false)
   const [page, setPage] = useState(1)
 
   const [filter, setFilter] = useState<Insc20Filter>(Insc20Filter.ALL)
 
-  const [newTokens, error, loading] = useAsync(async () => {
+  const [tokens, error, loading] = useAsync(async () => {
     const indexerApiService = IndexerApiService.getInstance()
-    const data = await indexerApiService.tokensModule.getAllInsc20({
-      page,
-      limit: PAGE_SIZE,
-      order: 'desc',
-      mintingStatus: filter,
-    })
+    let finalData: EnhancedInsc20[] | [] = []
+    let i = 1
+    let loadedAll = false
 
-    setHasMore(!(data && data.length < PAGE_SIZE))
+    while (!loadedAll) {
+      const data = await indexerApiService.tokensModule.getAllInsc20({
+        page: i, //TODO: switch to state when server side rendering will be available
+        limit: PAGE_SIZE,
+        order: 'desc',
+        mintingStatus: filter,
+      })
+      const dataWithBadges: EnhancedInsc20[] | [] = data
+        ? data.map((token) => ({
+            ...token,
+            badges: token.badge ? token.badge?.split(',') : [],
+          }))
+        : []
+      finalData = [...finalData, ...dataWithBadges]
+      i++
+      loadedAll = data && data.length < PAGE_SIZE
+    }
 
-    return data
+    return finalData
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, counter, filter])
 
   // Add new tokens to the accumulated list
-  useEffect(() => {
-    if (newTokens && newTokens.length > 0) {
-      setTokens((prev) => prev.concat(newTokens))
-    }
-  }, [newTokens])
+  // useEffect(() => {
+  //   if (newTokens && newTokens.length > 0) {
+  //     setTokens((prev) => prev.concat(newTokens))
+  //   }
+  // }, [newTokens])
 
   const refresh = () => {
-    setTokens([])
+    // setTokens([])
     setHasMore(true)
     setPage(1)
     setCounter((prevState) => prevState + 1)
@@ -145,7 +167,7 @@ const Insc20List = () => {
 
   useEffect(() => {
     if (filter) {
-      setTokens([])
+      // setTokens([])
       setPage(1)
       setHasMore(true)
     }
@@ -158,7 +180,7 @@ const Insc20List = () => {
   const rows = loading
     ? skeletonRows
     : (tokens || []).map((item) => {
-        const progressValue = (Number(item.totalSupply) / Number(item.maxSupply)) * 100
+        const progressValue = item.progress ? +(+item.progress * 100).toFixed(2) : 0
         const createdAtDate = new Date(Number(item.createdAt) * 1000)
 
         return {
@@ -167,7 +189,25 @@ const Insc20List = () => {
           cells: {
             tick: {
               rawValue: item.tick,
-              content: <Typography>{item.tick}</Typography>,
+              content: (
+                <Stack direction="row" alignContent={'center'} alignItems={'center'} spacing={1}>
+                  <Typography>{item.tick}</Typography>
+                  {/* Known badges */}
+                  {/* {KNOWN_BADGES[item.tick] &&
+                    KNOWN_BADGES[item.tick].map((badge, i) => (
+                      <Tooltip key={i} title={BADGE_CONFIG[badge].description}>
+                        <Image width={40} src={BADGE_CONFIG[badge].icon} alt={''} />
+                      </Tooltip>
+                    ))} */}
+                  {/* Auto badges */}
+                  {/* {item?.badges &&
+                    item?.badges.map((badge, i) => (
+                      <Tooltip key={i} title={BADGE_CONFIG[badge as Badge].description}>
+                        <Image width={40} src={BADGE_CONFIG[badge as Badge].icon} alt={''} />
+                      </Tooltip>
+                    ))} */}
+                </Stack>
+              ),
             },
             createdAt: {
               rawValue: createdAtDate.getTime(),
@@ -181,7 +221,9 @@ const Insc20List = () => {
                     <LinearProgress variant="determinate" value={progressValue} />
                   </Box>
                   <Box minWidth={35}>
-                    <Typography variant="body2" color="textSecondary">{`${Math.round(progressValue)}%`}</Typography>
+                    <Typography variant="body2" color="textSecondary">
+                      {`${progressValue}%`}
+                    </Typography>
                   </Box>
                 </Box>
               ),
@@ -202,7 +244,10 @@ const Insc20List = () => {
                   {progressValue !== 100 ? (
                     <MintButton insc20={item} />
                   ) : (
-                    <Typography color="error">Fully minted</Typography>
+                    <Typography color="error">
+                      Fully minted at
+                      {item.completedTx && <EthHashInfo address={item.completedTx} hasExplorer avatarSize={0} />}
+                    </Typography>
                   )}
                 </Box>
               ),
@@ -236,7 +281,7 @@ const Insc20List = () => {
       {error ? <Typography>An error occurred during loading tokens...</Typography> : null}
 
       <div className={css.container}>
-        <EnhancedTable rows={rows} headCells={headCells} />
+        <EnhancedTable rows={rows} headCells={headCells} defaultSortField="holders" />
       </div>
     </Paper>
   )
