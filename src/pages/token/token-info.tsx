@@ -2,9 +2,9 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useCallback } from 'react'
 import { IndexerApiService } from '~/services/indexer-api'
-import TokenHeader from '~/components/TokenHeader'
 import { useSearchParams } from 'next/navigation'
 import TokenOverview from '~/components/TokenList/TokenOverview'
+import GeneralHeader from '~/components/GeneralHeader'
 
 const TokenInfoPage: NextPage = () => {
   const searchParams = useSearchParams()
@@ -30,7 +30,7 @@ const TokenInfoPage: NextPage = () => {
       <Head>
         <title>{ticker} Token Overview</title>
       </Head>
-      <TokenHeader ticker={ticker ?? ''} />
+      <GeneralHeader title={ticker + ' Token Overview'} navItems={[]} />
 
       <main>
         <TokenOverview
