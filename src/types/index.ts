@@ -22,6 +22,7 @@ export enum FEATURES {
   INSC20 = 'INSC20',
   INSC721 = 'INSC721',
   CUSTOM_INSC = 'CUSTOM_INSC',
+  LIST = 'LIST',
 }
 
 export declare type ChainInfo = {

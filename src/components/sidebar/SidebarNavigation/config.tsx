@@ -75,6 +75,11 @@ export const createNavItems = [
     href: AppRoutes.create.custom,
     featureName: FEATURES.CUSTOM_INSC,
   },
+  {
+    label: 'List',
+    href: AppRoutes.create.list,
+    featureName: FEATURES.LIST,
+  },
 ]
 
 export const insc20NavItems = [

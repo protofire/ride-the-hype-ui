@@ -47,7 +47,7 @@ const chainsConfiguration: ChainInfo[] = [
     description: 'Hardhat localhost',
     shortName: 'hardhat',
     inscriptionPrefix: 'hrd',
-    features: [FEATURES.INSC20, FEATURES.CUSTOM_INSC],
+    features: [FEATURES.INSC20, FEATURES.CUSTOM_INSC, FEATURES.LIST],
     nativeCurrency: {
       name: 'Ether',
       symbol: 'ETH',

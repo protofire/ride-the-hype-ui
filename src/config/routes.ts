@@ -21,6 +21,7 @@ export const AppRoutes = {
     insc20: '/create/insc-20',
     index: '/create',
     custom: '/create/custom',
+    list: '/create/list',
   },
   insc20: {
     transfer: '/insc-20/transfer',
