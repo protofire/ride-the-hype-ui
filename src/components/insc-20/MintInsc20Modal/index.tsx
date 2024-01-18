@@ -48,7 +48,7 @@ const MintInsc20Modal = ({ open, onClose, tick, maxAmount, maxMintPerAddress, ma
   const [userBalance, balanceDataError, balanceDataLoading] = useAsync(async () => {
     if (!!tick && !!wallet?.address && open) {
       try {
-        const indexerApiService = IndexerApiService.getInstance()
+        const indexerApiService = IndexerApiService.getInstance(currentChain)
         const data = await indexerApiService.tokensModule.getUserHoldings(wallet.address, {
           page,
           limit,
@@ -60,7 +60,7 @@ const MintInsc20Modal = ({ open, onClose, tick, maxAmount, maxMintPerAddress, ma
         console.log(e)
       }
     }
-  }, [open, tick, wallet])
+  }, [open, tick, wallet, currentChain])
 
   const {
     register,

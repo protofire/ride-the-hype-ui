@@ -7,16 +7,18 @@ import Paper from '@mui/material/Paper'
 import Image from 'next/image'
 import Grid from '@mui/material/Grid'
 import EthHashInfo from '~/components/common/EthHashInfo'
+import { useCurrentChain } from '~/hooks/useChains'
 
 const MIMETYPE_JSON = 'application/json'
 const INPUT_HEADER = `data:${MIMETYPE_JSON};base64,`
 
 const Inscription = () => {
   const router = useRouter()
+  const currentChain = useCurrentChain()
   const [inscriptionDetails, error, loading] = useAsync(async () => {
     if (!router.query.id || !(typeof router.query.id === 'string')) return undefined
 
-    const indexerApiService = IndexerApiService.getInstance()
+    const indexerApiService = IndexerApiService.getInstance(currentChain)
     const tx = await indexerApiService.getTransaction(router.query.id)
     const insc = await indexerApiService.getInscriptionByHash(router.query.id)
 
@@ -26,7 +28,7 @@ const Inscription = () => {
       ...insc,
       tx,
     }
-  }, [router.query.id])
+  }, [currentChain, router.query.id])
 
   const json = useMemo(() => {
     if (inscriptionDetails?.contentType === MIMETYPE_JSON) {
