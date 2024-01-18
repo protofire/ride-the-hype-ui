@@ -68,10 +68,10 @@ const chainsConfiguration: ChainInfo[] = [
     disabledWallets: ['trust', 'coinbase', 'ledger', 'trezor', 'keystone', 'walletConnect_v2', 'NONE'],
     ensRegistryAddress: null,
     publicRpcUri: {
-      value: 'https://mainnet.optimism.io',
+      value: 'https://sepolia.optimism.io',
     },
     rpcUri: {
-      value: 'https://mainnet.optimism.io',
+      value: 'https://sepolia.optimism.io',
     },
     theme: {
       textColor: '#ffffff',
