@@ -32,7 +32,7 @@ type ListInsc20FormData = {
 }
 
 const MOCK_SALT = 772957950
-const MOCK_LISTING_ID = '0x44eb21956b03df43fc5b3003cc851287c035383edeb2a128cb3e7b1dda3b9c67'
+const MOCK_LISTING_ID = '0x6e00d7d8de50be189729a519a9332bfa77d82fc3ad1de0570394e985444cd72e'
 
 const ListInsc20Modal = ({ open, onClose, tick, tokenData }: Props) => {
   const currentChain = useCurrentChain()
