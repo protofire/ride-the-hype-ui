@@ -10,11 +10,13 @@ import type { Insc20, Insc20Balance } from '~/services/indexer-api/types'
 import { useCurrentChain } from '~/hooks/useChains'
 
 import css from './styles.module.css'
-//import { ZERO_ADDRESS } from '~/config/constants'
 import useOnboard from '~/hooks/wallets/useOnboard'
 import { useState } from 'react'
 import { Box, CircularProgress, ListItem, ListItemText, MenuItem, Select, Typography } from '@mui/material'
 import { TokenDataCard } from '~/components/TokenList/TokenDataCard'
+import { marketplaceDomainEIP712, marketplaceTypesEIP712 } from '~/utils/signing'
+import { getAssertedChainSigner } from '~/utils/wallets'
+import type { MarketplaceOrder } from '~/services/indexer-api/modules/marketplace/types'
 
 interface Props {
   open: boolean
@@ -29,11 +31,16 @@ type ListInsc20FormData = {
   expiration: number
 }
 
-// TODO: implement batch transfer
+const MOCK_SALT = 772957950
+const MOCK_LISTING_ID = '0x44eb21956b03df43fc5b3003cc851287c035383edeb2a128cb3e7b1dda3b9c67'
+
 const ListInsc20Modal = ({ open, onClose, tick, tokenData }: Props) => {
   const currentChain = useCurrentChain()
   const onboard = useOnboard()
   const [loading, setLoading] = useState<boolean>(false)
+  const chainId = currentChain?.chainId
+
+  const domain = marketplaceDomainEIP712(chainId ?? '1337')
 
   const {
     register,
@@ -45,10 +52,34 @@ const ListInsc20Modal = ({ open, onClose, tick, tokenData }: Props) => {
   } = useForm<ListInsc20FormData>({ defaultValues: { amount: 0 }, mode: 'onChange' })
 
   const onSubmit: SubmitHandler<ListInsc20FormData> = async (data, __) => {
-    console.log(data)
     if (!onboard || !currentChain) {
       console.log('Please check you wallet')
       return
+    }
+
+    try {
+      console.log(data)
+      const signer = await getAssertedChainSigner(onboard, currentChain?.chainId)
+      const address = await signer.getAddress()
+      const listingDateUnix = Math.floor(Date.now() / 1000)
+
+      const mockMessage: MarketplaceOrder = {
+        seller: address,
+        creator: process.env.MARKETPLACE_CONTRACT || '0x0669a33d90fd01d5f26f9fae04bcea81c190557e',
+        listId: MOCK_LISTING_ID,
+        ticker: tick,
+        amount: data.amount.toString(),
+        price: data.price.toString(),
+        listingTime: listingDateUnix,
+        expirationTime: +listingDateUnix + +data.expiration,
+        creatorFeeRate: 200,
+        salt: MOCK_SALT,
+      }
+
+      const signature = await signer._signTypedData(domain, marketplaceTypesEIP712, mockMessage)
+      console.log(signature)
+    } catch (e) {
+      console.error(e)
     }
   }
 

@@ -30,3 +30,24 @@ export const MarketplaceTokenSchema = z.object({
   price: z.number(),
   amount: z.number(),
 })
+
+export const MarketplaceOrderSchema = z.object({
+  seller: z.string(),
+  creator: z.string(),
+  listId: z.string(),
+  ticker: z.string(),
+  amount: z.string(),
+  price: z.string(),
+  listingTime: z.number(),
+  expirationTime: z.number(),
+  creatorFeeRate: z.number(),
+  salt: z.number(),
+  extraParams: z.string().optional(),
+})
+
+export const MarketplaceOrderPayloadSchema = z.object({
+  order: MarketplaceOrderSchema,
+  v: z.number(),
+  r: z.string(),
+  s: z.string(),
+})

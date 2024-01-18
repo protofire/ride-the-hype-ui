@@ -7,6 +7,9 @@ import { TransactionSchema } from '~/services/indexer-api/validators'
 import { Insc20BalanceSchema, Insc20Schema, TokenHolderSchema } from './validators'
 import type { Insc20, Insc20Balance, TokenHolder, Insc20QueryFilter } from './types'
 
+import type { MarketplaceOrder, MarketplaceOrderPayload } from '../marketplace/types'
+import { MarketplaceOrderPayloadSchema } from '../marketplace/validators/marketplace.schema'
+
 export class IndexerTokensModule {
   constructor(private client: Axios) {}
 
@@ -48,5 +51,10 @@ export class IndexerTokensModule {
     })
 
     return TransactionSchema.array().parseAsync(response.data)
+  }
+
+  public async signOrder(order: MarketplaceOrder): Promise<MarketplaceOrderPayload> {
+    const response = await this.client.post('api/v1/orders/sign', order)
+    return MarketplaceOrderPayloadSchema.parseAsync(response.data)
   }
 }
