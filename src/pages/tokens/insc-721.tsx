@@ -5,12 +5,17 @@ import AllTokensHeader from '~/components/AllTokensHeader'
 import { useCallback } from 'react'
 import { IndexerApiService } from '~/services/indexer-api'
 import { Insc721List } from '~/components/insc-721/Insc721List'
+import { useCurrentChain } from '~/hooks/useChains'
 
 const AllInsc721Page: NextPage = () => {
-  const fetchInscriptions = useCallback((page: number, limit: number) => {
-    const api = IndexerApiService.getInstance()
-    return api.getInscriptions({ page, limit, order: 'desc' })
-  }, [])
+  const currentChain = useCurrentChain()
+  const fetchInscriptions = useCallback(
+    (page: number, limit: number) => {
+      const api = IndexerApiService.getInstance(currentChain)
+      return api.getInscriptions({ page, limit, order: 'desc' })
+    },
+    [currentChain],
+  )
 
   return (
     <>

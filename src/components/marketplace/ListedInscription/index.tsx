@@ -16,6 +16,7 @@ import EthHashInfo from '~/components/common/EthHashInfo'
 import Link from 'next/link'
 import { ButtonGroup, IconButton, Stack } from '@mui/material'
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
+import { useCurrentChain } from '~/hooks/useChains'
 
 const PAGE_SIZE = 12
 
@@ -24,16 +25,17 @@ export const ListedScroll = ({ ticker }: { ticker: string }) => {
   const [inscriptions, setInscriptions] = useState([] as Transaction[])
   const [hasMore, setHasMore] = useState(false)
   const [page, setPage] = useState(1)
+  const currentChain = useCurrentChain()
 
   const [newInscriptions, error, loading] = useAsync(async () => {
-    const indexerApiService = IndexerApiService.getInstance()
+    const indexerApiService = IndexerApiService.getInstance(currentChain)
     const data = await indexerApiService.getTransactions({ page, limit: PAGE_SIZE, order: 'desc' })
 
     setHasMore(!(data && data.length < PAGE_SIZE))
 
     return data
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, counter])
+  }, [page, counter, currentChain])
 
   // Add new inscriptions to the accumulated list
   useEffect(() => {

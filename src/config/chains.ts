@@ -40,6 +40,46 @@ const chainsConfiguration: ChainInfo[] = [
       textColor: '#ffffff',
       backgroundColor: '#000000',
     },
+    apiUri: {
+      value:
+        process.env.NEXT_PUBLIC_IS_PRODUCTION === 'true'
+          ? 'https://api.optiscriptions.io/'
+          : 'https://api.stg.optiscriptions.io',
+    },
+  },
+  {
+    chainId: '11155420',
+    chainName: 'OP Sepolia Testnet',
+    description: 'OP Sepolia Testnet',
+    shortName: 'opsep',
+    inscriptionPrefix: 'osc',
+    features: [FEATURES.INSC20, FEATURES.CUSTOM_INSC],
+    nativeCurrency: {
+      name: 'Ether',
+      symbol: 'ETH',
+      decimals: 18,
+      logoUri: 'https://assets.coingecko.com/coins/images/279/standard/ethereum.png?1696501628',
+    },
+    blockExplorerUriTemplate: {
+      address: 'https://sepolia-optimism.etherscan.io/address/{{address}}',
+      txHash: 'https://sepolia-optimism.etherscan.io/tx/{{txHash}}',
+      api: 'https://sepolia-optimism.etherscan.io/api?module={{module}}&action={{action}}&address={{address}}&apiKey={{apiKey}}',
+    },
+    disabledWallets: ['trust', 'coinbase', 'ledger', 'trezor', 'keystone', 'walletConnect_v2', 'NONE'],
+    ensRegistryAddress: null,
+    publicRpcUri: {
+      value: 'https://mainnet.optimism.io',
+    },
+    rpcUri: {
+      value: 'https://mainnet.optimism.io',
+    },
+    theme: {
+      textColor: '#ffffff',
+      backgroundColor: '#000000',
+    },
+    apiUri: {
+      value: 'https://api-test.stg.optiscriptions.io/',
+    },
   },
   {
     chainId: '1337',
@@ -70,6 +110,9 @@ const chainsConfiguration: ChainInfo[] = [
     theme: {
       textColor: '#ffffff',
       backgroundColor: '#000000',
+    },
+    apiUri: {
+      value: 'http://localhost:3000',
     },
   },
 ]

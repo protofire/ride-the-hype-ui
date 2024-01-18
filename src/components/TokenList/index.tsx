@@ -84,7 +84,7 @@ export const TokenList = () => {
               }
               const signature = await signer._signTypedData(domain, marketplaceTypesEIP712, mockMessage)
 
-              const indexerApiService = IndexerApiService.getInstance()
+              const indexerApiService = IndexerApiService.getInstance(currentChain)
               const r = signature.slice(0, 66)
               const s = '0x' + signature.slice(66, 130)
               const v = '0x' + signature.slice(130, 132)
