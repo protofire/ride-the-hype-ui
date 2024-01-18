@@ -8,6 +8,10 @@ export const AppRoutes = {
   inscription: {
     index: '/inscription',
   },
+  marketplace: {
+    index: '/marketplace',
+    token: '/marketplace/token',
+  },
   tokens: {
     index: '/tokens',
     allInsc721: '/tokens/insc-721',

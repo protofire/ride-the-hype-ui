@@ -42,7 +42,7 @@ export const navItems: NavItem[] = [
   {
     label: 'Marketplace',
     icon: <SvgIcon component={CreateIcon} inheritViewBox />,
-    href: '',
+    href: AppRoutes.marketplace.index,
   },
 ]
 
@@ -75,6 +75,17 @@ export const createNavItems = [
     href: AppRoutes.create.custom,
     featureName: FEATURES.CUSTOM_INSC,
   },
+]
+
+export const marketplaceNavItems = [
+  {
+    label: 'Tokens',
+    href: AppRoutes.marketplace.index,
+  },
+  // {
+  //   label: 'Inscriptions',
+  //   href: AppRoutes.marketplace.index,
+  // },
 ]
 
 export const insc20NavItems = [
