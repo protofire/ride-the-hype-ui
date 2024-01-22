@@ -4,7 +4,7 @@ import TextField from '@mui/material/TextField'
 import DialogActions from '@mui/material/DialogActions'
 import Button from '@mui/material/Button'
 import DialogContent from '@mui/material/DialogContent'
-import { toHex } from 'web3-utils'
+import { toHex, toWei } from 'web3-utils'
 
 import ModalDialog from '~/components/common/ModalDialog'
 import type { Insc20, Insc20Balance } from '~/services/indexer-api/types'
@@ -17,9 +17,10 @@ import { Box, CircularProgress, ListItem, ListItemText, MenuItem, Select, Typogr
 import { TokenDataCard } from '~/components/TokenList/TokenDataCard'
 import { marketplaceDomainEIP712, marketplaceTypesEIP712 } from '~/utils/signing'
 import { getAssertedChainSigner } from '~/utils/wallets'
-import type { MarketplaceOrder } from '~/services/indexer-api/modules/marketplace/types'
+import type { MarketplaceOrder, MarketplaceOrderPayload } from '~/services/indexer-api/modules/marketplace/types'
 import type { TransactionResponse } from '@ethersproject/abstract-provider'
 import { ZERO_ADDRESS } from '~/config/constants'
+import { IndexerApiService } from '~/services/indexer-api'
 
 interface Props {
   open: boolean
@@ -53,9 +54,10 @@ const ListInsc20Modal = ({ open, onClose, tick, tokenData }: Props) => {
     reset,
     getValues,
     watch,
-  } = useForm<ListInsc20FormData>({ defaultValues: { amount: 0 }, mode: 'onChange' })
+  } = useForm<ListInsc20FormData>()
 
   const onSubmit: SubmitHandler<ListInsc20FormData> = async (data, __) => {
+    setLoading(true)
     if (!onboard || !currentChain) {
       console.log('Please check you wallet')
       return
@@ -66,20 +68,6 @@ const ListInsc20Modal = ({ open, onClose, tick, tokenData }: Props) => {
       const address = await signer.getAddress()
       const listingDateUnix = Math.floor(Date.now() / 1000)
 
-      const mockMessage: MarketplaceOrder = {
-        seller: address,
-        creator: currentChain?.marketplace || ZERO_ADDRESS,
-        listId: MOCK_LISTING_ID,
-        ticker: tick,
-        amount: data.amount.toString(),
-        price: data.price.toString(),
-        listingTime: listingDateUnix,
-        expirationTime: +listingDateUnix + +data.expiration,
-        creatorFeeRate: 200,
-        salt: MOCK_SALT,
-      }
-
-      const signature = await signer._signTypedData(domain, marketplaceTypesEIP712, mockMessage)
       const txData = {
         p: `${currentChain.inscriptionPrefix}-20`,
         op: 'list',
@@ -97,9 +85,44 @@ const ListInsc20Modal = ({ open, onClose, tick, tokenData }: Props) => {
 
       setTx(tx)
       await tx.wait()
+
+      console.log({ tx })
+
+      const order: MarketplaceOrder = {
+        seller: address,
+        creator: currentChain?.marketplace || ZERO_ADDRESS,
+        listId: tx.hash,
+        ticker: tick,
+        amount: data.amount.toString(),
+        price: toWei(data.price.toString(), 'ether'),
+        listingTime: listingDateUnix,
+        expirationTime: +listingDateUnix + +data.expiration,
+        creatorFeeRate: 200,
+        salt: MOCK_SALT,
+      }
+      const signature = await signer._signTypedData(domain, marketplaceTypesEIP712, order)
+
+      const r = signature.slice(0, 66)
+      const s = '0x' + signature.slice(66, 130)
+      const v = '0x' + signature.slice(130, 132)
+
+      const createOrder: MarketplaceOrderPayload = {
+        order: order,
+        v: +v,
+        r: r,
+        s: s,
+      }
+
+      console.log({ createOrder })
+
+      const indexerApiService = IndexerApiService.getInstance(currentChain)
+      const createOrderResult = await indexerApiService.tokensModule.createOrder(createOrder)
+
+      console.log({ createOrderResult })
     } catch (e) {
       console.error(e)
     }
+    setLoading(false)
   }
 
   const amount = watch('amount')
@@ -121,6 +144,7 @@ const ListInsc20Modal = ({ open, onClose, tick, tokenData }: Props) => {
             <TextField
               required
               label="Amount"
+              defaultValue={tokenData.amount}
               error={errors?.amount?.message !== undefined}
               // helperText={errors?.amount?.type === 'validUrl' && errors?.appUrl?.message}
               autoComplete="off"
@@ -133,9 +157,6 @@ const ListInsc20Modal = ({ open, onClose, tick, tokenData }: Props) => {
             <TextField
               required
               label="Price"
-              defaultValue={0}
-              autoComplete="off"
-              type="number"
               {...register('price', {
                 required: true,
                 valueAsNumber: true,

@@ -57,13 +57,25 @@ export class IndexerTokensModule {
     return TransactionSchema.array().parseAsync(response.data)
   }
 
-  public async signOrder(order: MarketplaceOrder): Promise<MarketplaceOrderPayload> {
-    const response = await this.client.post('api/v1/orders/sign', order)
-    return MarketplaceOrderPayloadSchema.parseAsync(response.data)
+  public async signOrder(order: MarketplaceOrder): Promise<any> {
+    try {
+      const response = await this.client.post('api/v1/orders/sign', JSON.stringify(order), {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      return MarketplaceOrderPayloadSchema.parseAsync(response.data)
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   public async createOrder(order: MarketplaceOrderPayload): Promise<MarketplaceOrderCreatePayload> {
-    const response = await this.client.post('api/v1/orders/create', order)
+    const response = await this.client.post('api/v1/orders/create', JSON.stringify(order), {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
     return MarketplaceCreateOrderPayloadSchema.parseAsync(response.data)
   }
 }

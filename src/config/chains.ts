@@ -80,7 +80,7 @@ const chainsConfiguration: ChainInfo[] = [
     apiUri: {
       value: 'https://api-test.stg.optiscriptions.io/',
     },
-    marketplace: '0x0669a33D90FD01d5f26f9FAe04BcEa81c190557e',
+    marketplace: '0x83ce3BE37bB624eb7D0077590cE5cBe73846109a',
   },
   {
     chainId: '1337',
