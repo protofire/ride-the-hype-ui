@@ -1,9 +1,9 @@
-export const marketplaceDomainEIP712 = (chainId: string) => {
+export const marketplaceDomainEIP712 = (chainId: string, marketplace?: string) => {
   return {
     name: 'OSC20Market',
     version: '1.0',
     chainId: chainId,
-    verifyingContract: process.env.MARKETPLACE_CONTRACT || '0x0669a33d90fd01d5f26f9fae04bcea81c190557e',
+    verifyingContract: marketplace || '0x0669a33d90fd01d5f26f9fae04bcea81c190557e',
   }
 }
 

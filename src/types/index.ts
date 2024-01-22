@@ -43,6 +43,7 @@ export declare type ChainInfo = {
   disabledWallets: string[]
   features: FEATURES[]
   apiUri: ApiUri
+  marketplace?: string
 }
 
 export enum Insc20Filter {

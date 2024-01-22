@@ -46,8 +46,12 @@ export const MarketplaceOrderSchema = z.object({
 })
 
 export const MarketplaceOrderPayloadSchema = z.object({
-  order: MarketplaceOrderSchema,
-  v: z.number(),
-  r: z.string(),
-  s: z.string(),
+  order: MarketplaceOrderSchema.optional(),
+  v: z.number().optional(),
+  r: z.string().optional(),
+  s: z.string().optional(),
+})
+
+export const MarketplaceCreateOrderPayloadSchema = z.object({
+  listId: z.string().optional(),
 })

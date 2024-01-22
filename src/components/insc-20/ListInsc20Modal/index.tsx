@@ -4,6 +4,7 @@ import TextField from '@mui/material/TextField'
 import DialogActions from '@mui/material/DialogActions'
 import Button from '@mui/material/Button'
 import DialogContent from '@mui/material/DialogContent'
+import { toHex } from 'web3-utils'
 
 import ModalDialog from '~/components/common/ModalDialog'
 import type { Insc20, Insc20Balance } from '~/services/indexer-api/types'
@@ -17,6 +18,8 @@ import { TokenDataCard } from '~/components/TokenList/TokenDataCard'
 import { marketplaceDomainEIP712, marketplaceTypesEIP712 } from '~/utils/signing'
 import { getAssertedChainSigner } from '~/utils/wallets'
 import type { MarketplaceOrder } from '~/services/indexer-api/modules/marketplace/types'
+import type { TransactionResponse } from '@ethersproject/abstract-provider'
+import { ZERO_ADDRESS } from '~/config/constants'
 
 interface Props {
   open: boolean
@@ -39,8 +42,9 @@ const ListInsc20Modal = ({ open, onClose, tick, tokenData }: Props) => {
   const onboard = useOnboard()
   const [loading, setLoading] = useState<boolean>(false)
   const chainId = currentChain?.chainId
+  const [tx, setTx] = useState<TransactionResponse | undefined>()
 
-  const domain = marketplaceDomainEIP712(chainId ?? '1337')
+  const domain = marketplaceDomainEIP712(chainId ?? '1337', currentChain?.marketplace)
 
   const {
     register,
@@ -58,14 +62,13 @@ const ListInsc20Modal = ({ open, onClose, tick, tokenData }: Props) => {
     }
 
     try {
-      console.log(data)
       const signer = await getAssertedChainSigner(onboard, currentChain?.chainId)
       const address = await signer.getAddress()
       const listingDateUnix = Math.floor(Date.now() / 1000)
 
       const mockMessage: MarketplaceOrder = {
         seller: address,
-        creator: process.env.MARKETPLACE_CONTRACT || '0x0669a33d90fd01d5f26f9fae04bcea81c190557e',
+        creator: currentChain?.marketplace || ZERO_ADDRESS,
         listId: MOCK_LISTING_ID,
         ticker: tick,
         amount: data.amount.toString(),
@@ -77,7 +80,23 @@ const ListInsc20Modal = ({ open, onClose, tick, tokenData }: Props) => {
       }
 
       const signature = await signer._signTypedData(domain, marketplaceTypesEIP712, mockMessage)
-      console.log(signature)
+      const txData = {
+        p: `${currentChain.inscriptionPrefix}-20`,
+        op: 'list',
+        tick: tick,
+        amt: data.amount.toString(),
+      }
+
+      const dataHex = toHex('data:,' + JSON.stringify(txData))
+
+      const tx = await signer.sendTransaction({
+        to: currentChain?.marketplace,
+        value: 0,
+        data: dataHex,
+      })
+
+      setTx(tx)
+      await tx.wait()
     } catch (e) {
       console.error(e)
     }
