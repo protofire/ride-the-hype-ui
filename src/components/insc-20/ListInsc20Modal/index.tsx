@@ -13,7 +13,7 @@ import { useCurrentChain } from '~/hooks/useChains'
 import css from './styles.module.css'
 import useOnboard from '~/hooks/wallets/useOnboard'
 import { useState } from 'react'
-import { Box, CircularProgress, ListItem, ListItemText, MenuItem, Select, Typography } from '@mui/material'
+import { CircularProgress, ListItem, ListItemText, MenuItem, Select, Stack, Typography } from '@mui/material'
 import { TokenDataCard } from '~/components/TokenList/TokenDataCard'
 import { marketplaceDomainEIP712, marketplaceTypesEIP712 } from '~/utils/signing'
 import { getAssertedChainSigner } from '~/utils/wallets'
@@ -35,8 +35,15 @@ type ListInsc20FormData = {
   expiration: number
 }
 
+enum ListingStatus {
+  IDLE = 'idle',
+  SENDING_TX = 'sending transaction',
+  SIGNING_TX = 'signing',
+  INDEXING = 'indexing',
+  COMPLETED = 'completed',
+}
+
 const MOCK_SALT = 772957950
-const MOCK_LISTING_ID = '0x6e00d7d8de50be189729a519a9332bfa77d82fc3ad1de0570394e985444cd72e'
 
 const ListInsc20Modal = ({ open, onClose, tick, tokenData }: Props) => {
   const currentChain = useCurrentChain()
@@ -44,6 +51,7 @@ const ListInsc20Modal = ({ open, onClose, tick, tokenData }: Props) => {
   const [loading, setLoading] = useState<boolean>(false)
   const chainId = currentChain?.chainId
   const [tx, setTx] = useState<TransactionResponse | undefined>()
+  const [status, setStatus] = useState<ListingStatus>(ListingStatus.IDLE)
 
   const domain = marketplaceDomainEIP712(chainId ?? '1337', currentChain?.marketplace)
 
@@ -64,6 +72,7 @@ const ListInsc20Modal = ({ open, onClose, tick, tokenData }: Props) => {
     }
 
     try {
+      setStatus(ListingStatus.SENDING_TX)
       const signer = await getAssertedChainSigner(onboard, currentChain?.chainId)
       const address = await signer.getAddress()
       const listingDateUnix = Math.floor(Date.now() / 1000)
@@ -88,6 +97,7 @@ const ListInsc20Modal = ({ open, onClose, tick, tokenData }: Props) => {
 
       console.log({ tx })
 
+      setStatus(ListingStatus.SIGNING_TX)
       const order: MarketplaceOrder = {
         seller: address,
         creator: currentChain?.marketplace || ZERO_ADDRESS,
@@ -106,6 +116,7 @@ const ListInsc20Modal = ({ open, onClose, tick, tokenData }: Props) => {
       const s = '0x' + signature.slice(66, 130)
       const v = '0x' + signature.slice(130, 132)
 
+      setStatus(ListingStatus.INDEXING)
       const createOrder: MarketplaceOrderPayload = {
         order: order,
         v: +v,
@@ -119,6 +130,8 @@ const ListInsc20Modal = ({ open, onClose, tick, tokenData }: Props) => {
       const createOrderResult = await indexerApiService.tokensModule.createOrder(createOrder)
 
       console.log({ createOrderResult })
+      setStatus(ListingStatus.COMPLETED)
+      handleClose()
     } catch (e) {
       console.error(e)
     }
@@ -190,9 +203,10 @@ const ListInsc20Modal = ({ open, onClose, tick, tokenData }: Props) => {
 
         <DialogActions disableSpacing>
           {loading ? (
-            <Box width="100%" display="flex" justifyContent="center">
+            <Stack width="100%" alignItems="center" justifyContent="center" direction="row" spacing={2}>
               <CircularProgress />
-            </Box>
+              <Typography variant="body2" color="primary">{`${status.toUpperCase()}...`}</Typography>
+            </Stack>
           ) : (
             <>
               <Button onClick={handleClose}>Cancel</Button>

@@ -43,9 +43,10 @@ const headCells = [
 
 interface Props {
   fetchMarketplaceData: (page: number, limit: number) => Promise<Marketplace[]> | undefined
+  fetchMockMarketplaceData?: (page: number, limit: number) => Promise<Marketplace[]> | undefined
 }
 
-const MarketplaceTable = ({ fetchMarketplaceData }: Props) => {
+const MarketplaceTable = ({ fetchMarketplaceData, fetchMockMarketplaceData }: Props) => {
   // const [hasMore, setHasMore] = useState(false)
   const [page, setPage] = useState(1)
   const [showAll, setShowAll] = useState(false)
@@ -57,10 +58,13 @@ const MarketplaceTable = ({ fetchMarketplaceData }: Props) => {
         const data = await fetchMarketplaceData(page, PAGE_SIZE)
         return data
       } catch (e) {
-        console.log(e)
+        if (fetchMockMarketplaceData) {
+          const mock = await fetchMockMarketplaceData(page, PAGE_SIZE)
+          return mock
+        }
       }
     }
-  }, [fetchMarketplaceData, page])
+  }, [fetchMarketplaceData, fetchMockMarketplaceData, page])
 
   const rows = (marketplaceData || []).map((item, i) => {
     return {

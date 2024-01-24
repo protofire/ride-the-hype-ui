@@ -1,16 +1,16 @@
 import { useState } from 'react'
 import Button from '@mui/material/Button'
 
-import type { Insc20Balance } from '~/services/indexer-api/types'
 import TransferInsc20Modal from '~/components/insc-20/TransferInsc20Modal'
 import CheckWallet from '~/components/common/CheckWallet'
 
 import css from './styles.module.css'
 import { IconButton, ListItem, ListItemText, Stack } from '@mui/material'
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
+import type { MarketplaceOrder } from '~/services/indexer-api/modules/marketplace/types'
 
 interface Props {
-  item: Insc20Balance
+  item: MarketplaceOrder
 }
 
 export const MarketplaceTokenListItem = ({ item }: Props) => {
@@ -20,9 +20,9 @@ export const MarketplaceTokenListItem = ({ item }: Props) => {
   const tempETHPrice = 'ETH 0.0062'
   return (
     <>
-      <div className={css.card} key={item.tokenId}>
+      <div className={css.card}>
         <div className={css.cardHeader}>
-          <span className={css.dollar}>{item.tick}</span>
+          <span className={css.dollar}>{item.ticker}</span>
         </div>
         <div className={css.cardBody}>{item.amount.toLocaleString()}</div>
         <ListItem>
@@ -30,7 +30,7 @@ export const MarketplaceTokenListItem = ({ item }: Props) => {
           {tempETHPrice}
         </ListItem>
         <div className={css.cardFooter}>
-          <div className={css.hash}>{`${item.hash.slice(0, 8)}...${item.hash.slice(-8)}`}</div>
+          <div className={css.hash}>{`${item.listId.slice(0, 8)}...${item.listId.slice(-8)}`}</div>
           <div className={css.actions}>
             <CheckWallet>
               {(isOk) => (
@@ -49,7 +49,7 @@ export const MarketplaceTokenListItem = ({ item }: Props) => {
       <TransferInsc20Modal
         open={transferModalOpen}
         onClose={() => setTransferModalOpen(false)}
-        tick={item.tick}
+        tick={item.ticker}
         maxAmount={item.amount}
       />
     </>

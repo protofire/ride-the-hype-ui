@@ -7,11 +7,13 @@ import { TransactionSchema } from '~/services/indexer-api/validators'
 import { Insc20BalanceSchema, Insc20Schema, TokenHolderSchema } from './validators'
 import type { Insc20, Insc20Balance, TokenHolder, Insc20QueryFilter } from './types'
 
-import type { MarketplaceOrderCreatePayload } from '../marketplace/types'
+import type { Marketplace, MarketplaceOrderCreatePayload } from '../marketplace/types'
 import type { MarketplaceOrder, MarketplaceOrderPayload } from '../marketplace/types'
 import {
   MarketplaceCreateOrderPayloadSchema,
   MarketplaceOrderPayloadSchema,
+  MarketplaceOrderSchema,
+  MarketplaceSchema,
 } from '../marketplace/validators/marketplace.schema'
 
 export class IndexerTokensModule {
@@ -77,5 +79,21 @@ export class IndexerTokensModule {
       },
     })
     return MarketplaceCreateOrderPayloadSchema.parseAsync(response.data)
+  }
+
+  public async getMarketplaceData(params?: PaginationQuery): Promise<Marketplace[]> {
+    const response = await this.client.get(`api/v1/marketplace`, {
+      params,
+    })
+
+    return MarketplaceSchema.array().parseAsync(response.data)
+  }
+
+  public async getMarketplaceDataByTick(tick: string, params?: PaginationQuery): Promise<MarketplaceOrder[]> {
+    const response = await this.client.get(`api/v1/marketplace/${tick}?status=listed`, {
+      params,
+    })
+
+    return MarketplaceOrderSchema.array().parseAsync(response.data)
   }
 }

@@ -8,7 +8,9 @@ import ActivityTable from '~/components/marketplace/ActivityTable'
 // import { ListedScroll } from '~/components/marketplace/ListedInscription'
 import { ListedToken } from '~/components/marketplace/ListedToken'
 import { ZERO_ADDRESS } from '~/config/constants'
-import type { MarketplaceActivity, MarketplaceToken } from '~/services/indexer-api/modules/marketplace/types'
+import { useCurrentChain } from '~/hooks/useChains'
+import { IndexerApiService } from '~/services/indexer-api'
+import type { MarketplaceActivity, MarketplaceOrder } from '~/services/indexer-api/modules/marketplace/types'
 
 const TEMP_ETH_PRICE = 2263
 
@@ -21,6 +23,7 @@ const navTitles = [
 
 const MarketplaceTokenPage: NextPage = () => {
   const searchParams = useSearchParams()
+  const currentChain = useCurrentChain()
   const ticker = searchParams.get('ticker')
 
   const fetchMarketplaceActivityData = useCallback(
@@ -48,28 +51,16 @@ const MarketplaceTokenPage: NextPage = () => {
     [ticker],
   )
 
-  const fetchMarketplaceTokenData = useCallback(
-    async (page: number, limit: number): Promise<MarketplaceToken[]> => {
-      return new Promise((resolve) => {
-        const data: MarketplaceToken[] = Array.from({ length: 57 }, (v, i) => {
-          const events = ['listing', 'sold', 'cancelled']
-          const price = i % 2 === 0 ? Math.random() * 1000 : 100
-          const amount = Math.floor(Math.random() * 100)
-          return {
-            tick: ticker ?? '',
-            price: Math.random() * 10,
-            amount: Math.floor(Math.random() * 100),
-            id: Math.floor(Math.random() * 10000000).toString(),
-          }
-        })
-        resolve(data)
-      })
+  const fetchMarketplaceDataByTick = useCallback(
+    async (ticker: string, page: number, limit: number): Promise<MarketplaceOrder[]> => {
+      const indexerApiService = IndexerApiService.getInstance(currentChain)
+      return indexerApiService.tokensModule.getMarketplaceDataByTick(ticker, { page, limit })
     },
-    [ticker],
+    [currentChain],
   )
 
   const navContent: JSX.Element[] = [
-    <ListedToken key={0} ticker={ticker ?? ''} fetchMarketplaceTokenData={fetchMarketplaceTokenData} />,
+    <ListedToken key={0} ticker={ticker ?? ''} fetchMarketplaceDataByTick={fetchMarketplaceDataByTick} />,
     // <ListedScroll key={1} ticker={ticker ?? ''} />,
     <ActivityTable key={1} fetchMarketplaceActivityData={fetchMarketplaceActivityData} />,
     <Typography key={2}>{navTitles[2]}</Typography>,

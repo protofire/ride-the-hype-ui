@@ -4,12 +4,24 @@ import { useCallback } from 'react'
 import GeneralHeader from '~/components/GeneralHeader'
 import MarketplaceTable from '~/components/marketplace/MarketplaceTable'
 import { marketplaceNavItems } from '~/components/sidebar/SidebarNavigation/config'
+import { useCurrentChain } from '~/hooks/useChains'
+import { IndexerApiService } from '~/services/indexer-api'
 import type { Marketplace } from '~/services/indexer-api/modules/marketplace/types'
 
 export const TEMP_ETH_PRICE = 2225
 
 const MarketplacePage: NextPage = () => {
-  const fetchMarketplaceData = useCallback(async (page: number, limit: number): Promise<Marketplace[]> => {
+  const currentChain = useCurrentChain()
+
+  const fetchMarketplaceData = useCallback(
+    async (page: number, limit: number): Promise<Marketplace[]> => {
+      const indexerApiService = IndexerApiService.getInstance(currentChain)
+      return indexerApiService.tokensModule.getMarketplaceData({ page, limit })
+    },
+    [currentChain],
+  )
+
+  const fetchMockMarketplaceData = useCallback(async (page: number, limit: number): Promise<Marketplace[]> => {
     return new Promise((resolve) => {
       const data: Marketplace[] = Array.from({ length: 57 }, (v, i) => {
         const floorPrice = Math.random()
@@ -44,7 +56,10 @@ const MarketplacePage: NextPage = () => {
       <GeneralHeader title={'Marketplace'} navItems={marketplaceNavItems} />
 
       <main>
-        <MarketplaceTable fetchMarketplaceData={fetchMarketplaceData} />
+        <MarketplaceTable
+          fetchMarketplaceData={fetchMarketplaceData}
+          fetchMockMarketplaceData={fetchMockMarketplaceData}
+        />
       </main>
     </>
   )
