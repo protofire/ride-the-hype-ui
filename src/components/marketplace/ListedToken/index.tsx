@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import Paper from '@mui/material/Paper'
 import Grid from '@mui/material/Grid'
@@ -7,7 +7,7 @@ import { Skeleton, Typography } from '@mui/material'
 import css from './styles.module.css'
 import useWallet from '~/hooks/wallets/useWallet'
 import { MarketplaceTokenListItem } from '~/components/TokenList/MarketplaceTokenListItem'
-import type { MarketplaceOrder } from '~/services/indexer-api/modules/marketplace/types'
+import type { MarketplaceOrder, MarketplaceOrderList } from '~/services/indexer-api/modules/marketplace/types'
 import useAsync from '~/hooks/useAsync'
 import { ZERO_ADDRESS } from '~/config/constants'
 import { useCurrentChain } from '~/hooks/useChains'
@@ -19,7 +19,7 @@ export const ListedToken = ({
   fetchMarketplaceDataByTick,
 }: {
   ticker: string
-  fetchMarketplaceDataByTick: (tick: string, page: number, limit: number) => Promise<MarketplaceOrder[]>
+  fetchMarketplaceDataByTick: (tick: string, page: number, limit: number) => Promise<MarketplaceOrderList>
 }) => {
   // const { balances, loading, error } = useBalances()
   const [page, setPage] = useState(1)
@@ -40,7 +40,7 @@ export const ListedToken = ({
   }
 
   const [marketplaceTokenData, error, loading] = useAsync(async () => {
-    if (!!fetchMarketplaceDataByTick && !!currentChain) {
+    if (!!fetchMarketplaceDataByTick) {
       try {
         const data = await fetchMarketplaceDataByTick(ticker, page, PAGE_SIZE)
         return data
@@ -48,11 +48,10 @@ export const ListedToken = ({
         console.log(e)
       }
     }
-  }, [currentChain, fetchMarketplaceDataByTick, page, ticker])
+  }, [fetchMarketplaceDataByTick, page, ticker])
 
-  const hasMore = marketplaceTokenData && marketplaceTokenData.length % PAGE_SIZE === 0
-  const visibleTokens = useMemo(() => marketplaceTokenData?.slice(0, PAGE_SIZE * page), [marketplaceTokenData, page])
-
+  const hasMore = marketplaceTokenData && marketplaceTokenData.list.length % PAGE_SIZE === 0
+  // const visibleTokens = useMemo(() => marketplaceTokenData?.slice(0, PAGE_SIZE * page), [marketplaceTokenData, page])
   return (
     <Paper sx={{ padding: 4, maxWidth: '1200px', m: '1rem auto' }}>
       {loading ? (
@@ -65,16 +64,16 @@ export const ListedToken = ({
         </Grid>
       ) : null}
 
-      {error ? <Typography>An error occurred during loading balances...</Typography> : null}
+      {error ? <Typography>An error occurred during loading tokens...</Typography> : null}
 
-      {!loading && marketplaceTokenData?.length === 0 ? (
+      {!loading && marketplaceTokenData?.list.length === 0 ? (
         <Paper sx={{ padding: 4, maxWidth: '1200px', m: '1rem auto', textAlign: 'center' }}>
-          <Typography>You don&apos;t have any OSC-20 yet</Typography>
+          <Typography>No listed tokens</Typography>
         </Paper>
       ) : null}
 
       <InfiniteScroll
-        dataLength={visibleTokens?.length ?? 0}
+        dataLength={1}
         next={() => setPage((page) => page + 1)}
         hasMore={hasMore ?? false}
         loader={''}
@@ -85,11 +84,8 @@ export const ListedToken = ({
         }
       >
         <div className={css.gridContainer}>
-          {visibleTokens ? (
-            visibleTokens.map((item, i) => <MarketplaceTokenListItem key={i} item={item} />)
-          ) : (
-            <MarketplaceTokenListItem item={mockData} />
-          )}
+          {marketplaceTokenData &&
+            marketplaceTokenData.list.map((item, i) => <MarketplaceTokenListItem key={i} item={item} />)}
         </div>
       </InfiniteScroll>
       <div />

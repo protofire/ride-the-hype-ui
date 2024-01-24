@@ -6,7 +6,7 @@ import MarketplaceTable from '~/components/marketplace/MarketplaceTable'
 import { marketplaceNavItems } from '~/components/sidebar/SidebarNavigation/config'
 import { useCurrentChain } from '~/hooks/useChains'
 import { IndexerApiService } from '~/services/indexer-api'
-import type { Marketplace } from '~/services/indexer-api/modules/marketplace/types'
+import type { Marketplace, MarketplaceList } from '~/services/indexer-api/modules/marketplace/types'
 
 export const TEMP_ETH_PRICE = 2225
 
@@ -14,7 +14,7 @@ const MarketplacePage: NextPage = () => {
   const currentChain = useCurrentChain()
 
   const fetchMarketplaceData = useCallback(
-    async (page: number, limit: number): Promise<Marketplace[]> => {
+    async (page: number, limit: number): Promise<MarketplaceList> => {
       const indexerApiService = IndexerApiService.getInstance(currentChain)
       return indexerApiService.tokensModule.getMarketplaceData({ page, limit })
     },
@@ -56,10 +56,7 @@ const MarketplacePage: NextPage = () => {
       <GeneralHeader title={'Marketplace'} navItems={marketplaceNavItems} />
 
       <main>
-        <MarketplaceTable
-          fetchMarketplaceData={fetchMarketplaceData}
-          fetchMockMarketplaceData={fetchMockMarketplaceData}
-        />
+        <MarketplaceTable fetchMarketplaceData={fetchMarketplaceData} />
       </main>
     </>
   )

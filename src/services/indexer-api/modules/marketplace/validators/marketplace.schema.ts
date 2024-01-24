@@ -12,6 +12,11 @@ export const MarketplaceSchema = z.object({
   floorPrice: z.number(),
 })
 
+export const MarketplaceListSchema = z.object({
+  list: z.array(MarketplaceSchema),
+  count: z.number(),
+})
+
 export const MarketplaceActivitySchema = z.object({
   hash: z.string(),
   event: z.string(),
@@ -24,11 +29,9 @@ export const MarketplaceActivitySchema = z.object({
   time: z.number(),
 })
 
-export const MarketplaceTokenSchema = z.object({
-  id: z.string(),
-  tick: z.string(),
-  price: z.number(),
-  amount: z.number(),
+export const MarketplaceActivityListSchema = z.object({
+  list: z.array(MarketplaceActivitySchema),
+  count: z.number(),
 })
 
 export const MarketplaceOrderSchema = z.object({
@@ -43,6 +46,11 @@ export const MarketplaceOrderSchema = z.object({
   creatorFeeRate: z.number(),
   salt: z.number(),
   extraParams: z.string().optional(),
+})
+
+export const MarketplaceOrderListSchema = z.object({
+  list: z.array(MarketplaceOrderSchema),
+  count: z.number(),
 })
 
 export const MarketplaceOrderPayloadSchema = z.object({

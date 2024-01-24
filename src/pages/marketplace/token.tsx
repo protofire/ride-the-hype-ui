@@ -10,7 +10,7 @@ import { ListedToken } from '~/components/marketplace/ListedToken'
 import { ZERO_ADDRESS } from '~/config/constants'
 import { useCurrentChain } from '~/hooks/useChains'
 import { IndexerApiService } from '~/services/indexer-api'
-import type { MarketplaceActivity, MarketplaceOrder } from '~/services/indexer-api/modules/marketplace/types'
+import type { MarketplaceActivity, MarketplaceOrderList } from '~/services/indexer-api/modules/marketplace/types'
 
 const TEMP_ETH_PRICE = 2263
 
@@ -52,7 +52,7 @@ const MarketplaceTokenPage: NextPage = () => {
   )
 
   const fetchMarketplaceDataByTick = useCallback(
-    async (ticker: string, page: number, limit: number): Promise<MarketplaceOrder[]> => {
+    async (ticker: string, page: number, limit: number): Promise<MarketplaceOrderList> => {
       const indexerApiService = IndexerApiService.getInstance(currentChain)
       return indexerApiService.tokensModule.getMarketplaceDataByTick(ticker, { page, limit })
     },

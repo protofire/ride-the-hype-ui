@@ -8,6 +8,9 @@ import css from './styles.module.css'
 import { IconButton, ListItem, ListItemText, Stack } from '@mui/material'
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
 import type { MarketplaceOrder } from '~/services/indexer-api/modules/marketplace/types'
+import { fromWei } from 'web3-utils'
+import EthHashInfo from '../common/EthHashInfo'
+import Link from 'next/link'
 
 interface Props {
   item: MarketplaceOrder
@@ -16,21 +19,25 @@ interface Props {
 export const MarketplaceTokenListItem = ({ item }: Props) => {
   const [transferModalOpen, setTransferModalOpen] = useState<boolean>(false)
 
-  const tempUSDPrice = '$ 15'
-  const tempETHPrice = 'ETH 0.0062'
+  const tempUSDPrice = '$ _'
   return (
     <>
       <div className={css.card}>
         <div className={css.cardHeader}>
-          <span className={css.dollar}>{item.ticker}</span>
+          <Link href={`/token?ticker=${item.ticker}`}>
+            <span className={css.dollar}>{item.ticker}</span>
+          </Link>
         </div>
         <div className={css.cardBody}>{item.amount.toLocaleString()}</div>
         <ListItem>
           <ListItemText primary={tempUSDPrice} />
-          {tempETHPrice}
+          {`ETH ${fromWei(item.price)}`}
         </ListItem>
         <div className={css.cardFooter}>
-          <div className={css.hash}>{`${item.listId.slice(0, 8)}...${item.listId.slice(-8)}`}</div>
+          <div className={css.hash}>
+            {' '}
+            <EthHashInfo address={item.listId} hasExplorer avatarSize={0} />
+          </div>
           <div className={css.actions}>
             <CheckWallet>
               {(isOk) => (

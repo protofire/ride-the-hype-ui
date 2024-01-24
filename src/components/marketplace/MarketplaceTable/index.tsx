@@ -4,9 +4,11 @@ import css from './../styles.module.css'
 import { useState } from 'react'
 import useAsync from '~/hooks/useAsync'
 import EnhancedTable from '~/components/common/EnhancedTable'
-import type { Marketplace } from '~/services/indexer-api/modules/marketplace/types'
+import type { MarketplaceList } from '~/services/indexer-api/modules/marketplace/types'
 import { Button, ButtonGroup } from '@mui/material'
 import { AppRoutes } from '~/config/routes'
+import { useCurrentChain } from '~/hooks/useChains'
+import { chainsConfiguration } from '~/config/chains'
 
 const PAGE_SIZE = 5
 
@@ -42,31 +44,28 @@ const headCells = [
 ]
 
 interface Props {
-  fetchMarketplaceData: (page: number, limit: number) => Promise<Marketplace[]> | undefined
-  fetchMockMarketplaceData?: (page: number, limit: number) => Promise<Marketplace[]> | undefined
+  fetchMarketplaceData: (page: number, limit: number) => Promise<MarketplaceList> | undefined
 }
 
-const MarketplaceTable = ({ fetchMarketplaceData, fetchMockMarketplaceData }: Props) => {
+const MarketplaceTable = ({ fetchMarketplaceData }: Props) => {
   // const [hasMore, setHasMore] = useState(false)
   const [page, setPage] = useState(1)
   const [showAll, setShowAll] = useState(false)
   const [cellLabels, setCellLabels] = useState(headCells)
+  const currentChain = useCurrentChain()
 
   const [marketplaceData, error, loading] = useAsync(async () => {
-    if (!!fetchMarketplaceData) {
+    if (!!fetchMarketplaceData && currentChain == chainsConfiguration[1]) {
       try {
         const data = await fetchMarketplaceData(page, PAGE_SIZE)
         return data
       } catch (e) {
-        if (fetchMockMarketplaceData) {
-          const mock = await fetchMockMarketplaceData(page, PAGE_SIZE)
-          return mock
-        }
+        console.log(e)
       }
     }
-  }, [fetchMarketplaceData, fetchMockMarketplaceData, page])
+  }, [currentChain, fetchMarketplaceData, page])
 
-  const rows = (marketplaceData || []).map((item, i) => {
+  const rows = (marketplaceData?.list || []).map((item, i) => {
     return {
       key: i.toString(),
       href: AppRoutes.marketplace.token + `?ticker=${item.tick}`,
