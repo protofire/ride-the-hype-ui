@@ -9,6 +9,7 @@ export const MarketplaceSchema = z.object({
   owners: z.number(),
   listed: z.number(),
   marketCap: z.number(),
+  floorPriceUsd: z.number(),
   floorPrice: z.number(),
 })
 
