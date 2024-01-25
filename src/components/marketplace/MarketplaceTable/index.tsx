@@ -77,7 +77,7 @@ const MarketplaceTable = ({ fetchMarketplaceData }: Props) => {
         },
         floorPrice: {
           rawValue: item.floorPrice,
-          content: <Typography>{`ETH ${fromWei(item.floorPrice.toString())}`}</Typography>,
+          content: <Typography>{`$ ${item.floorPrice}`}</Typography>,
         },
         volume: {
           rawValue: item.volume24h,
