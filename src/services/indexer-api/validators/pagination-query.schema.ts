@@ -9,3 +9,9 @@ export const PaginationQuerySchema = z
     order: z.enum(['asc', 'desc']).default('asc'),
   })
   .partial()
+
+export const OrderParamsSchema = PaginationQuerySchema.extend({
+  tick: z.string(),
+  status: z.string(),
+  seller: z.string(),
+}).partial()

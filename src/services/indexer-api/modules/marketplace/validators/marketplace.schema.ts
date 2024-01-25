@@ -48,16 +48,23 @@ export const MarketplaceOrderSchema = z.object({
   extraParams: z.string().optional(),
 })
 
-export const MarketplaceOrderListSchema = z.object({
-  list: z.array(MarketplaceOrderSchema),
-  count: z.number(),
-})
-
 export const MarketplaceOrderPayloadSchema = z.object({
   order: MarketplaceOrderSchema.optional(),
   v: z.number().optional(),
   r: z.string().optional(),
   s: z.string().optional(),
+})
+
+export const MarketplaceOrderExtendedSchema = MarketplaceOrderSchema.extend({
+  v: z.number(),
+  r: z.string(),
+  s: z.string(),
+  status: z.string(),
+})
+
+export const MarketplaceOrderListSchema = z.object({
+  list: z.array(MarketplaceOrderExtendedSchema),
+  count: z.number(),
 })
 
 export const MarketplaceCreateOrderPayloadSchema = z.object({

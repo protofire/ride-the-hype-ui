@@ -1,7 +1,7 @@
 import z from 'zod'
 import type { Axios } from 'axios'
 
-import type { PaginationQuery, Transaction } from '~/services/indexer-api/types'
+import type { OrderParams, PaginationQuery, Transaction } from '~/services/indexer-api/types'
 import { TransactionSchema } from '~/services/indexer-api/validators'
 
 import { Insc20BalanceSchema, Insc20Schema, TokenHolderSchema } from './validators'
@@ -89,8 +89,8 @@ export class IndexerTokensModule {
     return MarketplaceListSchema.parseAsync(response.data)
   }
 
-  public async getMarketplaceDataByTick(tick: string, params?: PaginationQuery): Promise<MarketplaceOrderList> {
-    const response = await this.client.get(`api/v1/marketplace/${tick}?status=listed`, {
+  public async getMarketplaceDataByTick(params?: OrderParams): Promise<MarketplaceOrderList> {
+    const response = await this.client.get(`api/v1/orders`, {
       params,
     })
 

@@ -4,16 +4,19 @@ import css from './../styles.module.css'
 import { useState } from 'react'
 import useAsync from '~/hooks/useAsync'
 import EnhancedTable from '~/components/common/EnhancedTable'
-import type { MarketplaceActivity } from '~/services/indexer-api/modules/marketplace/types'
+import type { MarketplaceOrderList } from '~/services/indexer-api/modules/marketplace/types'
 import { AppRoutes } from '~/config/routes'
 import EthHashInfo from '~/components/common/EthHashInfo'
+import type { OrderParams } from '~/services/indexer-api/types'
+import { fromWei } from 'web3-utils'
+import Link from 'next/link'
 
 const PAGE_SIZE = 5
 
 const headCells = [
   {
-    id: 'event',
-    label: 'Event',
+    id: 'status',
+    label: 'Status',
   },
   {
     id: 'tick',
@@ -46,67 +49,73 @@ const headCells = [
 ]
 
 interface Props {
-  fetchMarketplaceActivityData: (page: number, limit: number) => Promise<MarketplaceActivity[]> | undefined
+  tick: string
+  fetchMarketplaceOrdersData: (params: OrderParams) => Promise<MarketplaceOrderList>
+  seller?: string
 }
 
-const ActivityTable = ({ fetchMarketplaceActivityData }: Props) => {
+const ActivityTable = ({ tick, fetchMarketplaceOrdersData, seller }: Props) => {
   // const [hasMore, setHasMore] = useState(false)
   const [page, setPage] = useState(1)
   const [showAll, setShowAll] = useState(false)
   const [cellLabels, setCellLabels] = useState(headCells)
 
   const [marketplaceData, error, loading] = useAsync(async () => {
-    if (!!fetchMarketplaceActivityData) {
+    if (!!fetchMarketplaceOrdersData) {
       try {
-        const data = await fetchMarketplaceActivityData(page, PAGE_SIZE)
+        const data = await fetchMarketplaceOrdersData({ tick, page, limit: PAGE_SIZE, seller })
         return data
       } catch (e) {
         console.log(e)
       }
     }
-  }, [fetchMarketplaceActivityData, page])
+  }, [fetchMarketplaceOrdersData, page, seller, tick])
 
-  const rows = (marketplaceData || []).map((item, i) => {
+  const rows = (marketplaceData?.list || []).map((item, i) => {
     return {
       key: i.toString(),
-      href: AppRoutes.marketplace.token + `?ticker=${item.tick}`,
+      href: AppRoutes.marketplace.token + `?ticker=${tick}`,
       cells: {
-        event: {
-          rawValue: item.event,
+        status: {
+          rawValue: item.status,
           content: (
             <>
-              <Typography>{item.event}</Typography>
-              <EthHashInfo showPrefix={false} address={item.hash} hasExplorer avatarSize={0} />
+              <Typography>{item.status}</Typography>
+              <EthHashInfo showPrefix={false} address={item.listId} hasExplorer avatarSize={0} />
             </>
           ),
         },
         tick: {
-          rawValue: item.tick,
-          content: <Typography>{item.tick}</Typography>,
+          rawValue: tick,
+          content: (
+            <Link href={`/tokens?ticker=${tick}`}>
+              <Typography color="primary">{tick}</Typography>
+            </Link>
+          ),
         },
         price: {
           rawValue: item.price,
-          content: <Typography>{`$${item.price.toFixed(2)}`}</Typography>,
+          content: <Typography>{`ETH ${fromWei(item.price)}`}</Typography>,
         },
         amount: {
           rawValue: item.amount,
-          content: <Typography>{item.amount.toFixed(0)}</Typography>,
+          content: <Typography>{+item.amount}</Typography>,
         },
         total: {
-          rawValue: item.total,
-          content: <Typography>{`ETH ${item.total.toFixed(2)}`}</Typography>,
+          rawValue: +item.amount * +item.price,
+          content: <Typography>{`ETH ${+item.amount * +fromWei(item.price)}`}</Typography>,
         },
         from: {
-          rawValue: item.from,
-          content: <EthHashInfo showPrefix={false} address={item.from} hasExplorer avatarSize={0} />,
+          rawValue: item.seller,
+          content: <EthHashInfo showPrefix={false} address={item.seller} hasExplorer avatarSize={0} />,
         },
         to: {
-          rawValue: item.to,
-          content: <EthHashInfo showPrefix={false} address={item.to} hasExplorer avatarSize={0} />,
+          rawValue: item.creator,
+          content: <EthHashInfo showPrefix={false} address={item.creator} hasExplorer avatarSize={0} />,
         },
         time: {
-          rawValue: item.time,
-          content: <Typography>{item.time.toFixed(0)}</Typography>,
+          rawValue: item.listingTime,
+          content: <Typography>{new Date(Number(item.expirationTime) * 1000).toLocaleString()}</Typography>,
         },
       },
     }
@@ -115,7 +124,7 @@ const ActivityTable = ({ fetchMarketplaceActivityData }: Props) => {
     <Paper sx={{ padding: 4, maxWidth: '1200px', m: '1rem auto' }}>
       {error ? <Typography>An error occurred while loading marketplace activity data...</Typography> : null}
       <div className={css.container}>
-        <EnhancedTable rows={rows} headCells={cellLabels} defaultSortField={headCells[5].id} />
+        <EnhancedTable rows={rows} headCells={cellLabels} />
       </div>
     </Paper>
   )
