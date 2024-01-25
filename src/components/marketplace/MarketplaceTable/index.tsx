@@ -9,6 +9,7 @@ import { Button, ButtonGroup } from '@mui/material'
 import { AppRoutes } from '~/config/routes'
 import { useCurrentChain } from '~/hooks/useChains'
 import { chainsConfiguration } from '~/config/chains'
+import { fromWei } from 'web3-utils'
 
 const PAGE_SIZE = 5
 
@@ -76,11 +77,15 @@ const MarketplaceTable = ({ fetchMarketplaceData }: Props) => {
         },
         floorPrice: {
           rawValue: item.floorPrice,
-          content: <Typography>{`$${item.floorPrice.toFixed(2)}`}</Typography>,
+          content: <Typography>{`ETH ${fromWei(item.floorPrice.toString())}`}</Typography>,
         },
         volume: {
           rawValue: item.volume24h,
-          content: <Typography>{`ETH ${(showAll ? item.volumeAll : item.volume24h).toFixed(2)}`}</Typography>,
+          content: (
+            <Typography>{`ETH ${
+              showAll ? fromWei(item.volumeAll.toString()) : fromWei(item.volume24h.toString())
+            }`}</Typography>
+          ),
         },
         sales: {
           rawValue: item.sales24h,
@@ -108,6 +113,7 @@ const MarketplaceTable = ({ fetchMarketplaceData }: Props) => {
         <Button
           color={showAll ? 'primary' : 'secondary'}
           onClick={() => {
+            if (showAll) return
             setShowAll((prevState) => !prevState)
             console.log(showAll)
             setCellLabels(
@@ -126,6 +132,7 @@ const MarketplaceTable = ({ fetchMarketplaceData }: Props) => {
         <Button
           color={showAll ? 'secondary' : 'primary'}
           onClick={() => {
+            if (!showAll) return
             setShowAll((prevState) => !prevState)
             console.log(showAll)
             setCellLabels(

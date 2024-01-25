@@ -7,9 +7,10 @@ import EnhancedTable from '~/components/common/EnhancedTable'
 import type { MarketplaceOrderList } from '~/services/indexer-api/modules/marketplace/types'
 import { AppRoutes } from '~/config/routes'
 import EthHashInfo from '~/components/common/EthHashInfo'
-import type { OrderParams } from '~/services/indexer-api/types'
+import { type OrderParams } from '~/services/indexer-api/types'
 import { fromWei } from 'web3-utils'
 import Link from 'next/link'
+// import { Button } from '@mui/material'
 
 const PAGE_SIZE = 5
 
@@ -46,6 +47,10 @@ const headCells = [
     id: 'time',
     label: 'Time',
   },
+  // {
+  //   id: 'action',
+  //   label: 'Action',
+  // },
 ]
 
 interface Props {
@@ -115,8 +120,20 @@ const ActivityTable = ({ tick, fetchMarketplaceOrdersData, seller }: Props) => {
         },
         time: {
           rawValue: item.listingTime,
-          content: <Typography>{new Date(Number(item.expirationTime) * 1000).toLocaleString()}</Typography>,
+          content: (
+            <>
+              {item.expirationTime && (
+                <Typography>{new Date(Number(item.expirationTime) * 1000).toLocaleString()}</Typography>
+              )}
+            </>
+          ),
         },
+        // action: {
+        //   rawValue: i,
+        //   content: (
+        //     <>{item.status === OrderStatus.PENDING ? <Button>{item.status === OrderStatus.PENDING}</Button> : <></>}</>
+        //   ),
+        // },
       },
     }
   })
