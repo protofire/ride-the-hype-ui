@@ -36,7 +36,6 @@ const EXECUTE_ORDER_TYPE = [
 ]
 
 export const MarketplaceTokenListItem = ({ item }: Props) => {
-  const tempUSDPrice = '$ _'
   const currentChain = useCurrentChain()
   const onboard = useOnboard()
 
@@ -98,7 +97,7 @@ export const MarketplaceTokenListItem = ({ item }: Props) => {
         </div>
         <div className={css.cardBody}>{item.amount.toLocaleString()}</div>
         <ListItem>
-          <ListItemText primary={tempUSDPrice} />
+          <ListItemText primary={`$ ${+item.amountUsd}`} />
           {`ETH ${fromWei(item.price)}`}
         </ListItem>
         <div className={css.cardFooter}>

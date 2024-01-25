@@ -61,6 +61,7 @@ export const MarketplaceOrderExtendedSchema = MarketplaceOrderSchema.extend({
   r: z.string(),
   s: z.string(),
   status: z.string(),
+  amountUsd: z.string(),
 })
 
 export const MarketplaceOrderListSchema = z.object({

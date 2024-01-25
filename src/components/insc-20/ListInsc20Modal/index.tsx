@@ -7,7 +7,7 @@ import DialogContent from '@mui/material/DialogContent'
 import { toHex, toWei } from 'web3-utils'
 
 import ModalDialog from '~/components/common/ModalDialog'
-import type { Insc20, Insc20Balance } from '~/services/indexer-api/types'
+import { type Insc20, type Insc20Balance } from '~/services/indexer-api/types'
 import { useCurrentChain } from '~/hooks/useChains'
 
 import css from './styles.module.css'
@@ -205,7 +205,9 @@ const ListInsc20Modal = ({ open, onClose, tick, tokenData }: Props) => {
           {loading ? (
             <Stack width="100%" alignItems="center" justifyContent="center" direction="row" spacing={2}>
               <CircularProgress />
-              <Typography variant="body2" color="primary">{`${status.toUpperCase()}...`}</Typography>
+              <Typography variant="body2" color="primary">{`${status.toUpperCase()}... ${
+                status !== ListingStatus.COMPLETED && 'PLEASE DO NOT CLOSE THE WINDOW'
+              }`}</Typography>
             </Stack>
           ) : (
             <>
