@@ -10,12 +10,13 @@ import EthHashInfo from '~/components/common/EthHashInfo'
 import { OrderStatus, type OrderParams } from '~/services/indexer-api/types'
 import { fromWei } from 'web3-utils'
 import Link from 'next/link'
-import { Button } from '@mui/material'
+import { Button, CircularProgress } from '@mui/material'
 import { useCurrentChain } from '~/hooks/useChains'
 import useOnboard from '~/hooks/wallets/useOnboard'
 import { defaultAbiCoder } from 'ethers/lib/utils'
 import { getAssertedChainSigner } from '~/utils/wallets'
 import { CANCEL_ORDER_ID, ORDER_TYPE } from '~/utils/web3Types'
+import useWallet from '~/hooks/wallets/useWallet'
 // import { Button } from '@mui/material'
 
 const PAGE_SIZE = 5
@@ -53,16 +54,21 @@ const headCells = [
     id: 'time',
     label: 'Time',
   },
-  {
-    id: 'action',
-    label: 'Action',
-  },
 ]
+
+const actionCell = {
+  id: 'action',
+  label: 'Action',
+}
 
 interface Props {
   tick: string
   fetchMarketplaceOrdersData: (params: OrderParams) => Promise<MarketplaceOrderList>
   seller?: string
+}
+
+type ButtonAction = {
+  [key: number]: boolean
 }
 
 const ActivityTable = ({ tick, fetchMarketplaceOrdersData, seller }: Props) => {
@@ -71,19 +77,22 @@ const ActivityTable = ({ tick, fetchMarketplaceOrdersData, seller }: Props) => {
   const [showAll, setShowAll] = useState(false)
   const currentChain = useCurrentChain()
   const onboard = useOnboard()
-  const [loadingStatus, setloadingStatus] = useState(false)
+  const [loadingStatus, setloadingStatus] = useState<ButtonAction>({})
 
-  const handleCancel = async (item: MarketplaceOrderExtended) => {
+  const wallet = useWallet()
+
+  const tableCells = !seller ? headCells : [...headCells, actionCell]
+
+  const handleCancel = async (item: MarketplaceOrderExtended, index: number) => {
     if (!onboard || !currentChain) {
       console.log('Please check you wallet')
       return
     }
 
     try {
-      setloadingStatus(true)
+      setloadingStatus({ [index]: true })
       const signer = await getAssertedChainSigner(onboard, currentChain?.chainId)
       const address = await signer.getAddress()
-
       const inputData = {
         seller: item.seller,
         creator: item.creator,
@@ -117,7 +126,7 @@ const ActivityTable = ({ tick, fetchMarketplaceOrdersData, seller }: Props) => {
     } catch (e) {
       console.error(e)
     }
-    setloadingStatus(false)
+    setloadingStatus({ [index]: false })
   }
 
   const [marketplaceData, error, loading] = useAsync(async () => {
@@ -187,16 +196,22 @@ const ActivityTable = ({ tick, fetchMarketplaceOrdersData, seller }: Props) => {
           rawValue: i,
           content: (
             <>
-              {item.status === OrderStatus.LISTED ? (
-                <Button variant="outlined" size="small" onClick={() => handleCancel(item)}>
-                  Cancel
-                </Button>
-              ) : item.status === OrderStatus.PENDING ? (
-                <Button variant="outlined" color="secondary" size="small">
-                  Refund
-                </Button>
+              {loadingStatus[i] ? (
+                <CircularProgress />
               ) : (
-                <></>
+                <>
+                  {seller && item.status === OrderStatus.LISTED ? (
+                    <Button variant="outlined" size="small" onClick={() => handleCancel(item, i)}>
+                      Cancel
+                    </Button>
+                  ) : seller && item.status === OrderStatus.PENDING ? (
+                    <Button variant="outlined" color="secondary" size="small">
+                      Refund
+                    </Button>
+                  ) : (
+                    <></>
+                  )}
+                </>
               )}
             </>
           ),
@@ -208,7 +223,7 @@ const ActivityTable = ({ tick, fetchMarketplaceOrdersData, seller }: Props) => {
     <Paper sx={{ padding: 4, maxWidth: '1200px', m: '1rem auto' }}>
       {error ? <Typography>An error occurred while loading marketplace activity data...</Typography> : null}
       <div className={css.container}>
-        <EnhancedTable rows={rows} headCells={headCells} />
+        <EnhancedTable rows={rows} headCells={tableCells} />
       </div>
     </Paper>
   )
