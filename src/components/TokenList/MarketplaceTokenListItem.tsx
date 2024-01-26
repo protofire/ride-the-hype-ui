@@ -1,7 +1,7 @@
 import Button from '@mui/material/Button'
 import CheckWallet from '~/components/common/CheckWallet'
 import css from './styles.module.css'
-import { IconButton, ListItem, ListItemText, Stack } from '@mui/material'
+import { CircularProgress, IconButton, ListItem, ListItemText, Stack, Typography } from '@mui/material'
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
 import type { MarketplaceOrderExtended } from '~/services/indexer-api/modules/marketplace/types'
 import { fromWei } from 'web3-utils'
@@ -11,6 +11,7 @@ import { useCurrentChain } from '~/hooks/useChains'
 import useOnboard from '~/hooks/wallets/useOnboard'
 import { getAssertedChainSigner } from '~/utils/wallets'
 import { defaultAbiCoder } from 'ethers/lib/utils'
+import { useState } from 'react'
 
 interface Props {
   item: MarketplaceOrderExtended
@@ -38,6 +39,7 @@ const EXECUTE_ORDER_TYPE = [
 export const MarketplaceTokenListItem = ({ item }: Props) => {
   const currentChain = useCurrentChain()
   const onboard = useOnboard()
+  const [loading, setloading] = useState(false)
 
   const handleBuy = async (item: MarketplaceOrderExtended) => {
     if (!onboard || !currentChain) {
@@ -46,6 +48,7 @@ export const MarketplaceTokenListItem = ({ item }: Props) => {
     }
 
     try {
+      setloading(true)
       const signer = await getAssertedChainSigner(onboard, currentChain?.chainId)
       const address = await signer.getAddress()
       console.log({ item })
@@ -69,7 +72,7 @@ export const MarketplaceTokenListItem = ({ item }: Props) => {
       console.log(inputData)
       console.log(Object.values(inputData))
       const input = defaultAbiCoder.encode(EXECUTE_ORDER_TYPE, [Object.values(inputData), address])
-      const methodId = '0xd9b3d6d0'
+      const methodId = '0xd207627f'
       const data = methodId + input.substring(2)
 
       console.log({ data })
@@ -86,6 +89,7 @@ export const MarketplaceTokenListItem = ({ item }: Props) => {
     } catch (e) {
       console.error(e)
     }
+    setloading(false)
   }
   return (
     <>
@@ -108,14 +112,25 @@ export const MarketplaceTokenListItem = ({ item }: Props) => {
           <div className={css.actions}>
             <CheckWallet>
               {(isOk) => (
-                <Stack direction={'row'} spacing={2}>
-                  <Button onClick={() => handleBuy(item)} variant="contained">
-                    Buy
-                  </Button>
-                  <IconButton color="primary">
-                    <AddShoppingCartIcon />
-                  </IconButton>
-                </Stack>
+                <>
+                  {loading ? (
+                    <Stack width="100%" alignItems="center" justifyContent="center" direction="row" spacing={2}>
+                      <CircularProgress />
+                      <Typography variant="body2" color="primary">
+                        {'Initiating...'}
+                      </Typography>
+                    </Stack>
+                  ) : (
+                    <Stack direction={'row'} spacing={2}>
+                      <Button onClick={() => handleBuy(item)} variant="contained">
+                        Buy
+                      </Button>
+                      <IconButton disabled color="primary">
+                        <AddShoppingCartIcon />
+                      </IconButton>
+                    </Stack>
+                  )}
+                </>
               )}
             </CheckWallet>
           </div>
