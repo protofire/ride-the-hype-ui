@@ -4,11 +4,7 @@ import css from './../styles.module.css'
 import { useState } from 'react'
 import useAsync from '~/hooks/useAsync'
 import EnhancedTable from '~/components/common/EnhancedTable'
-import type {
-  MarketplaceOrder,
-  MarketplaceOrderExtended,
-  MarketplaceOrderList,
-} from '~/services/indexer-api/modules/marketplace/types'
+import type { MarketplaceOrderExtended, MarketplaceOrderList } from '~/services/indexer-api/modules/marketplace/types'
 import { AppRoutes } from '~/config/routes'
 import EthHashInfo from '~/components/common/EthHashInfo'
 import { OrderStatus, type OrderParams } from '~/services/indexer-api/types'
@@ -88,7 +84,7 @@ const ActivityTable = ({ tick, fetchMarketplaceOrdersData, seller }: Props) => {
       const signer = await getAssertedChainSigner(onboard, currentChain?.chainId)
       const address = await signer.getAddress()
 
-      const inputData: MarketplaceOrder = {
+      const inputData = {
         seller: item.seller,
         creator: item.creator,
         listId: item.listId,

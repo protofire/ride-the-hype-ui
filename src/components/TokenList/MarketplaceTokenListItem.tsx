@@ -2,7 +2,7 @@ import Button from '@mui/material/Button'
 import CheckWallet from '~/components/common/CheckWallet'
 import css from './styles.module.css'
 import { CircularProgress, ListItem, ListItemText, Stack, Typography } from '@mui/material'
-import type { MarketplaceOrder, MarketplaceOrderExtended } from '~/services/indexer-api/modules/marketplace/types'
+import type { MarketplaceOrderExtended } from '~/services/indexer-api/modules/marketplace/types'
 import { fromWei } from 'web3-utils'
 import EthHashInfo from '../common/EthHashInfo'
 import Link from 'next/link'
@@ -37,7 +37,7 @@ export const MarketplaceTokenListItem = ({ item }: Props) => {
       const address = await signer.getAddress()
       console.log({ item })
 
-      const inputData: MarketplaceOrder = {
+      const inputData = {
         seller: item.seller,
         creator: item.creator,
         listId: item.listId,
