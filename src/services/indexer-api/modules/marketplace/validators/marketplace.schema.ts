@@ -46,7 +46,9 @@ export const MarketplaceOrderSchema = z.object({
   expirationTime: z.number(),
   creatorFeeRate: z.number(),
   salt: z.number(),
-  extraParams: z.string().optional(),
+  v: z.number(),
+  r: z.string(),
+  s: z.string(),
 })
 
 export const MarketplaceOrderPayloadSchema = z.object({
@@ -57,9 +59,7 @@ export const MarketplaceOrderPayloadSchema = z.object({
 })
 
 export const MarketplaceOrderExtendedSchema = MarketplaceOrderSchema.extend({
-  v: z.number(),
-  r: z.string(),
-  s: z.string(),
+  extraParams: z.string().optional(),
   status: z.string(),
   amountUsd: z.string(),
 })

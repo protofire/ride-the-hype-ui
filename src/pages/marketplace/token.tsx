@@ -40,7 +40,7 @@ const MarketplaceTokenPage: NextPage = () => {
     // <ListedScroll key={1} ticker={ticker ?? ''} />,
     <ActivityTable key={1} tick={ticker ?? ''} fetchMarketplaceOrdersData={fetchMarketplaceOrdersData} />,
     <ActivityTable
-      key={1}
+      key={2}
       tick={ticker ?? ''}
       seller={wallet?.address}
       fetchMarketplaceOrdersData={fetchMarketplaceOrdersData}

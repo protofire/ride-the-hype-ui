@@ -4,12 +4,22 @@ import css from './../styles.module.css'
 import { useState } from 'react'
 import useAsync from '~/hooks/useAsync'
 import EnhancedTable from '~/components/common/EnhancedTable'
-import type { MarketplaceOrderList } from '~/services/indexer-api/modules/marketplace/types'
+import type {
+  MarketplaceOrder,
+  MarketplaceOrderExtended,
+  MarketplaceOrderList,
+} from '~/services/indexer-api/modules/marketplace/types'
 import { AppRoutes } from '~/config/routes'
 import EthHashInfo from '~/components/common/EthHashInfo'
-import { type OrderParams } from '~/services/indexer-api/types'
+import { OrderStatus, type OrderParams } from '~/services/indexer-api/types'
 import { fromWei } from 'web3-utils'
 import Link from 'next/link'
+import { Button } from '@mui/material'
+import { useCurrentChain } from '~/hooks/useChains'
+import useOnboard from '~/hooks/wallets/useOnboard'
+import { defaultAbiCoder } from 'ethers/lib/utils'
+import { getAssertedChainSigner } from '~/utils/wallets'
+import { CANCEL_ORDER_ID, ORDER_TYPE } from '~/utils/web3Types'
 // import { Button } from '@mui/material'
 
 const PAGE_SIZE = 5
@@ -47,10 +57,10 @@ const headCells = [
     id: 'time',
     label: 'Time',
   },
-  // {
-  //   id: 'action',
-  //   label: 'Action',
-  // },
+  {
+    id: 'action',
+    label: 'Action',
+  },
 ]
 
 interface Props {
@@ -63,7 +73,56 @@ const ActivityTable = ({ tick, fetchMarketplaceOrdersData, seller }: Props) => {
   // const [hasMore, setHasMore] = useState(false)
   const [page, setPage] = useState(1)
   const [showAll, setShowAll] = useState(false)
-  const [cellLabels, setCellLabels] = useState(headCells)
+  const currentChain = useCurrentChain()
+  const onboard = useOnboard()
+  const [loadingStatus, setloadingStatus] = useState(false)
+
+  const handleCancel = async (item: MarketplaceOrderExtended) => {
+    if (!onboard || !currentChain) {
+      console.log('Please check you wallet')
+      return
+    }
+
+    try {
+      setloadingStatus(true)
+      const signer = await getAssertedChainSigner(onboard, currentChain?.chainId)
+      const address = await signer.getAddress()
+
+      const inputData: MarketplaceOrder = {
+        seller: item.seller,
+        creator: item.creator,
+        listId: item.listId,
+        ticker: item.ticker,
+        amount: item.amount,
+        price: item.price,
+        listingTime: item.listingTime,
+        expirationTime: item.expirationTime,
+        creatorFeeRate: item.creatorFeeRate,
+        salt: item.salt,
+        v: item.v,
+        r: item.r,
+        s: item.s,
+      }
+      const input = defaultAbiCoder.encode([ORDER_TYPE], [Object.values(inputData)])
+
+      const data = CANCEL_ORDER_ID + input.substring(2)
+
+      console.log({ data })
+
+      const tx = {
+        to: currentChain.marketplace,
+        value: 0,
+        data: data,
+      }
+
+      const transaction = await signer.sendTransaction(tx)
+
+      console.log(transaction.hash)
+    } catch (e) {
+      console.error(e)
+    }
+    setloadingStatus(false)
+  }
 
   const [marketplaceData, error, loading] = useAsync(async () => {
     if (!!fetchMarketplaceOrdersData) {
@@ -86,7 +145,7 @@ const ActivityTable = ({ tick, fetchMarketplaceOrdersData, seller }: Props) => {
           content: (
             <>
               <Typography>{item.status}</Typography>
-              <EthHashInfo showPrefix={false} address={item.listId} hasExplorer avatarSize={0} />
+              {/* <EthHashInfo showPrefix={false} address={item.listId} hasExplorer avatarSize={0} /> */}
             </>
           ),
         },
@@ -128,12 +187,24 @@ const ActivityTable = ({ tick, fetchMarketplaceOrdersData, seller }: Props) => {
             </>
           ),
         },
-        // action: {
-        //   rawValue: i,
-        //   content: (
-        //     <>{item.status === OrderStatus.PENDING ? <Button>{item.status === OrderStatus.PENDING}</Button> : <></>}</>
-        //   ),
-        // },
+        action: {
+          rawValue: i,
+          content: (
+            <>
+              {item.status === OrderStatus.LISTED ? (
+                <Button variant="outlined" size="small" onClick={() => handleCancel(item)}>
+                  Cancel
+                </Button>
+              ) : item.status === OrderStatus.PENDING ? (
+                <Button variant="outlined" color="secondary" size="small">
+                  Refund
+                </Button>
+              ) : (
+                <></>
+              )}
+            </>
+          ),
+        },
       },
     }
   })
@@ -141,7 +212,7 @@ const ActivityTable = ({ tick, fetchMarketplaceOrdersData, seller }: Props) => {
     <Paper sx={{ padding: 4, maxWidth: '1200px', m: '1rem auto' }}>
       {error ? <Typography>An error occurred while loading marketplace activity data...</Typography> : null}
       <div className={css.container}>
-        <EnhancedTable rows={rows} headCells={cellLabels} />
+        <EnhancedTable rows={rows} headCells={headCells} />
       </div>
     </Paper>
   )

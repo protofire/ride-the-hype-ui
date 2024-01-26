@@ -2,7 +2,7 @@ import Button from '@mui/material/Button'
 import CheckWallet from '~/components/common/CheckWallet'
 import css from './styles.module.css'
 import { CircularProgress, ListItem, ListItemText, Stack, Typography } from '@mui/material'
-import type { MarketplaceOrderExtended } from '~/services/indexer-api/modules/marketplace/types'
+import type { MarketplaceOrder, MarketplaceOrderExtended } from '~/services/indexer-api/modules/marketplace/types'
 import { fromWei } from 'web3-utils'
 import EthHashInfo from '../common/EthHashInfo'
 import Link from 'next/link'
@@ -12,29 +12,11 @@ import { getAssertedChainSigner } from '~/utils/wallets'
 import { defaultAbiCoder } from 'ethers/lib/utils'
 import { useState } from 'react'
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
+import { ORDER_TYPE, RECIPIENT_TYPE } from '~/utils/web3Types'
 
 interface Props {
   item: MarketplaceOrderExtended
 }
-
-const EXECUTE_ORDER_TYPE = [
-  //Order
-  `tuple(address,
-    address,
-    bytes32, 
-    string, 
-    uint256, 
-    uint256,
-    uint64, 
-    uint64, 
-    uint16, 
-    uint32, 
-    uint8, 
-    bytes32, 
-    bytes32)`,
-  //Recipient
-  'address',
-]
 
 export const MarketplaceTokenListItem = ({ item }: Props) => {
   const currentChain = useCurrentChain()
@@ -55,9 +37,9 @@ export const MarketplaceTokenListItem = ({ item }: Props) => {
       const address = await signer.getAddress()
       console.log({ item })
 
-      const inputData = {
+      const inputData: MarketplaceOrder = {
         seller: item.seller,
-        address: item.creator,
+        creator: item.creator,
         listId: item.listId,
         ticker: item.ticker,
         amount: item.amount,
@@ -73,7 +55,7 @@ export const MarketplaceTokenListItem = ({ item }: Props) => {
 
       console.log(inputData)
       console.log(Object.values(inputData))
-      const input = defaultAbiCoder.encode(EXECUTE_ORDER_TYPE, [Object.values(inputData), address])
+      const input = defaultAbiCoder.encode([ORDER_TYPE, RECIPIENT_TYPE], [Object.values(inputData), address])
       const methodId = '0xd207627f'
       const data = methodId + input.substring(2)
 
