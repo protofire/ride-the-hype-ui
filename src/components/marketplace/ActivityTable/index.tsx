@@ -10,7 +10,7 @@ import EthHashInfo from '~/components/common/EthHashInfo'
 import { OrderStatus, type OrderParams } from '~/services/indexer-api/types'
 import { fromWei } from 'web3-utils'
 import Link from 'next/link'
-import { Button, CircularProgress } from '@mui/material'
+import { Button, CircularProgress, useTheme } from '@mui/material'
 import { useCurrentChain } from '~/hooks/useChains'
 import useOnboard from '~/hooks/wallets/useOnboard'
 import { defaultAbiCoder } from 'ethers/lib/utils'
@@ -76,6 +76,7 @@ const ActivityTable = ({ tick, fetchMarketplaceOrdersData, seller }: Props) => {
   const currentChain = useCurrentChain()
   const onboard = useOnboard()
   const [loadingStatus, setloadingStatus] = useState<ButtonAction>({})
+  const theme = useTheme()
 
   const wallet = useWallet()
 
@@ -148,7 +149,21 @@ const ActivityTable = ({ tick, fetchMarketplaceOrdersData, seller }: Props) => {
           rawValue: item.status,
           content: (
             <>
-              <Typography>{item.status}</Typography>
+              <Typography
+                color={
+                  item.status === OrderStatus.EXECUTED
+                    ? theme.palette.warning.main
+                    : item.status === OrderStatus.PENDING
+                    ? theme.palette.secondary.main
+                    : item.status === OrderStatus.LISTED
+                    ? theme.palette.success.main
+                    : item.status === OrderStatus.CANCELLED
+                    ? theme.palette.primary.main
+                    : theme.palette.text.primary
+                }
+              >
+                {item.status}
+              </Typography>
               {/* <EthHashInfo showPrefix={false} address={item.listId} hasExplorer avatarSize={0} /> */}
             </>
           ),

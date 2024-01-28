@@ -11,4 +11,5 @@ export enum OrderStatus {
   BOUGHT = 'Bought',
   SOLD = 'Sold',
   CANCELLED = 'Cancelled',
+  EXECUTED = 'Executed',
 }
