@@ -17,9 +17,6 @@ import { defaultAbiCoder } from 'ethers/lib/utils'
 import { getAssertedChainSigner } from '~/utils/wallets'
 import { CANCEL_ORDER_ID, ORDER_TYPE } from '~/utils/web3Types'
 import useWallet from '~/hooks/wallets/useWallet'
-// import { Button } from '@mui/material'
-
-const PAGE_SIZE = 5
 
 const headCells = [
   {
@@ -73,7 +70,8 @@ type ButtonAction = {
 
 const ActivityTable = ({ tick, fetchMarketplaceOrdersData, seller }: Props) => {
   // const [hasMore, setHasMore] = useState(false)
-  const [page, setPage] = useState(1)
+  const [page, setPage] = useState(0)
+  const [pageSize, setPageSize] = useState(15)
   const [showAll, setShowAll] = useState(false)
   const currentChain = useCurrentChain()
   const onboard = useOnboard()
@@ -121,6 +119,7 @@ const ActivityTable = ({ tick, fetchMarketplaceOrdersData, seller }: Props) => {
       }
 
       const transaction = await signer.sendTransaction(tx)
+      const receipt = await signer.provider.waitForTransaction(transaction.hash)
 
       console.log(transaction.hash)
     } catch (e) {
@@ -132,13 +131,13 @@ const ActivityTable = ({ tick, fetchMarketplaceOrdersData, seller }: Props) => {
   const [marketplaceData, error, loading] = useAsync(async () => {
     if (!!fetchMarketplaceOrdersData) {
       try {
-        const data = await fetchMarketplaceOrdersData({ tick, page, limit: PAGE_SIZE, seller })
+        const data = await fetchMarketplaceOrdersData({ tick, page: page + 1, limit: pageSize, seller })
         return data
       } catch (e) {
         console.log(e)
       }
     }
-  }, [fetchMarketplaceOrdersData, page, seller, tick])
+  }, [fetchMarketplaceOrdersData, page, pageSize, seller, tick])
 
   const rows = (marketplaceData?.list || []).map((item, i) => {
     return {
@@ -172,7 +171,7 @@ const ActivityTable = ({ tick, fetchMarketplaceOrdersData, seller }: Props) => {
         },
         total: {
           rawValue: +item.amount * +item.price,
-          content: <Typography>{`ETH ${+item.amount * +fromWei(item.price)}`}</Typography>,
+          content: <Typography>{`ETH ${fromWei((+item.amount * +item.price).toString())}`}</Typography>,
         },
         from: {
           rawValue: item.seller,
@@ -223,7 +222,17 @@ const ActivityTable = ({ tick, fetchMarketplaceOrdersData, seller }: Props) => {
     <Paper sx={{ padding: 4, maxWidth: '1200px', m: '1rem auto' }}>
       {error ? <Typography>An error occurred while loading marketplace activity data...</Typography> : null}
       <div className={css.container}>
-        <EnhancedTable rows={rows} headCells={tableCells} />
+        <EnhancedTable
+          rows={rows}
+          headCells={tableCells}
+          onDemandPagination={{
+            pageSize: pageSize,
+            page: page,
+            setPage: setPage,
+            setPageSize: setPageSize,
+            totalHolders: marketplaceData?.count ?? 0,
+          }}
+        />
       </div>
     </Paper>
   )

@@ -68,6 +68,7 @@ export const MarketplaceTokenListItem = ({ item }: Props) => {
       }
 
       const transaction = await signer.sendTransaction(tx)
+      await signer.provider.waitForTransaction(transaction.hash)
 
       console.log(transaction.hash)
     } catch (e) {
