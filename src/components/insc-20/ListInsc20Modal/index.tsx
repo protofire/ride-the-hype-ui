@@ -13,7 +13,18 @@ import { useCurrentChain } from '~/hooks/useChains'
 import css from './styles.module.css'
 import useOnboard from '~/hooks/wallets/useOnboard'
 import { useState } from 'react'
-import { CircularProgress, ListItem, ListItemText, MenuItem, Select, Stack, Typography } from '@mui/material'
+import {
+  Box,
+  CircularProgress,
+  ListItem,
+  ListItemText,
+  MenuItem,
+  Select,
+  Step,
+  StepLabel,
+  Stepper,
+  Typography,
+} from '@mui/material'
 import { TokenDataCard } from '~/components/TokenList/TokenDataCard'
 import { marketplaceDomainEIP712, marketplaceTypesEIP712 } from '~/utils/signing'
 import { getAssertedChainSigner } from '~/utils/wallets'
@@ -36,22 +47,33 @@ type ListInsc20FormData = {
 }
 
 enum ListingStatus {
-  IDLE = 'idle',
-  SENDING_TX = 'sending transaction',
-  SIGNING_TX = 'signing',
-  INDEXING = 'indexing',
-  COMPLETED = 'completed',
+  IDLE,
+  SENDING_TX,
+  SIGNING_TX,
+  INDEXING,
+  COMPLETED,
+  REJECTED,
+  ERROR,
 }
+
+const isLoading = (status: ListingStatus) => {
+  return status == ListingStatus.SENDING_TX || status == ListingStatus.SIGNING_TX || status === ListingStatus.INDEXING
+}
+
+const steps = ['Send a list inscription', 'Sign an order', 'Index']
 
 const MOCK_SALT = 772957950
 
 const ListInsc20Modal = ({ open, onClose, tick, tokenData }: Props) => {
   const currentChain = useCurrentChain()
   const onboard = useOnboard()
-  const [loading, setLoading] = useState<boolean>(false)
+  // const [loading, setLoading] = useState<boolean>(false)
   const chainId = currentChain?.chainId
   const [tx, setTx] = useState<TransactionResponse | undefined>()
   const [status, setStatus] = useState<ListingStatus>(ListingStatus.IDLE)
+  const [activeStep, setActiveStep] = useState(0)
+
+  console.log(status)
 
   const domain = marketplaceDomainEIP712(chainId ?? '1337', currentChain?.marketplace)
 
@@ -60,12 +82,10 @@ const ListInsc20Modal = ({ open, onClose, tick, tokenData }: Props) => {
     handleSubmit,
     formState: { errors, isValid },
     reset,
-    getValues,
     watch,
   } = useForm<ListInsc20FormData>()
-
   const onSubmit: SubmitHandler<ListInsc20FormData> = async (data, __) => {
-    setLoading(true)
+    // setLoading(true)
     if (!onboard || !currentChain) {
       console.log('Please check you wallet')
       return
@@ -98,6 +118,7 @@ const ListInsc20Modal = ({ open, onClose, tick, tokenData }: Props) => {
       console.log({ tx })
 
       setStatus(ListingStatus.SIGNING_TX)
+      setActiveStep(1)
       const order: MarketplaceOrder = {
         seller: address,
         creator: currentChain?.marketplace || ZERO_ADDRESS,
@@ -117,6 +138,7 @@ const ListInsc20Modal = ({ open, onClose, tick, tokenData }: Props) => {
       const v = '0x' + signature.slice(130, 132)
 
       setStatus(ListingStatus.INDEXING)
+      setActiveStep(2)
       const createOrder: MarketplaceOrderPayload = {
         order: order,
         v: +v,
@@ -131,11 +153,17 @@ const ListInsc20Modal = ({ open, onClose, tick, tokenData }: Props) => {
 
       console.log({ createOrderResult })
       setStatus(ListingStatus.COMPLETED)
-      handleClose()
-    } catch (e) {
+      setActiveStep(0)
+      reset()
+    } catch (e: any) {
+      if (e.code && e.code === 4001) {
+        setStatus(ListingStatus.REJECTED)
+      } else {
+        setStatus(ListingStatus.ERROR)
+      }
       console.error(e)
     }
-    setLoading(false)
+    // setLoading(false)
   }
 
   const amount = watch('amount')
@@ -149,7 +177,15 @@ const ListInsc20Modal = ({ open, onClose, tick, tokenData }: Props) => {
   }
 
   return (
-    <ModalDialog open={open} onClose={handleClose} dialogTitle={`List ${tick}`}>
+    <ModalDialog
+      open={open}
+      onClose={handleClose}
+      dialogTitle={
+        <>
+          {`List ${tick}`} {isLoading(status) && <CircularProgress sx={{ ml: 2 }} />}
+        </>
+      }
+    >
       <form onSubmit={handleSubmit(onSubmit)}>
         <DialogContent className={css.transferModalContainer}>
           <div className={css.transferModalFields}>
@@ -157,9 +193,8 @@ const ListInsc20Modal = ({ open, onClose, tick, tokenData }: Props) => {
             <TextField
               required
               label="Amount"
-              defaultValue={tokenData.amount}
+              defaultValue={1}
               error={errors?.amount?.message !== undefined}
-              // helperText={errors?.amount?.type === 'validUrl' && errors?.appUrl?.message}
               autoComplete="off"
               type="number"
               {...register('amount', {
@@ -170,6 +205,12 @@ const ListInsc20Modal = ({ open, onClose, tick, tokenData }: Props) => {
             <TextField
               required
               label="Price"
+              defaultValue={1}
+              inputProps={{
+                step: 0.000000000000000001,
+                min: 0,
+                type: 'number',
+              }}
               {...register('price', {
                 required: true,
                 valueAsNumber: true,
@@ -178,6 +219,7 @@ const ListInsc20Modal = ({ open, onClose, tick, tokenData }: Props) => {
             <ListItem>
               <ListItemText primary="Expiration" />
               <Select
+                size="small"
                 defaultValue={SOLIDITY_MONTH}
                 label="Expiration"
                 error={errors?.amount?.message !== undefined}
@@ -196,20 +238,29 @@ const ListInsc20Modal = ({ open, onClose, tick, tokenData }: Props) => {
             </ListItem>
             <ListItem>
               <ListItemText primary="Total revenue" />
-              <Typography>{`${amount * price} ETH`}</Typography>
+              <Typography>{`${amount && price && (amount * price).toFixed(6)} ETH`}</Typography>
             </ListItem>
           </div>
         </DialogContent>
 
         <DialogActions disableSpacing>
-          {loading ? (
-            <Stack width="100%" alignItems="center" justifyContent="center" direction="row" spacing={2}>
-              <CircularProgress />
-              <Typography variant="body2" color="primary">{`${status.toUpperCase()}... ${
-                status !== ListingStatus.COMPLETED && 'PLEASE DO NOT CLOSE THE WINDOW'
-              }`}</Typography>
-            </Stack>
+          {isLoading(status) ? (
+            <Box sx={{ width: '100%' }}>
+              <Stepper activeStep={activeStep} alternativeLabel>
+                {steps.map((label) => (
+                  <Step key={label}>
+                    <StepLabel>{label}</StepLabel>
+                  </Step>
+                ))}
+              </Stepper>
+            </Box>
           ) : (
+            // <Stack width="100%" alignItems="center" justifyContent="center" direction="row" spacing={2}>
+            //   <CircularProgress />
+            //   <Typography variant="body2" color="primary">{`${status.toUpperCase()}... ${
+            //     status !== ListingStatus.COMPLETED && 'PLEASE DO NOT CLOSE THE WINDOW'
+            //   }`}</Typography>
+            // </Stack>
             <>
               <Button onClick={handleClose}>Cancel</Button>
               <Button type="submit" variant="contained" disabled={!isValid}>
