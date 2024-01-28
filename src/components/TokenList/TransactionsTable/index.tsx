@@ -8,9 +8,7 @@ import { useState } from 'react'
 import useAsync from '~/hooks/useAsync'
 import EthHashInfo from '~/components/common/EthHashInfo'
 import InfiniteScrollTable from '~/components/common/EnhancedTable/InfiniteScrollTable'
-function delay(ms: number): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, ms))
-}
+
 const PAGE_SIZE = 5
 
 const skeletonCells: EnhancedTableProps['rows'][0]['cells'] = {

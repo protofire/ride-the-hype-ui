@@ -3,13 +3,14 @@ import Typography from '@mui/material/Typography'
 import css from './../styles.module.css'
 import { useState } from 'react'
 import useAsync from '~/hooks/useAsync'
+import type { EnhancedTableProps } from '~/components/common/EnhancedTable'
 import EnhancedTable from '~/components/common/EnhancedTable'
 import type { MarketplaceOrderExtended, MarketplaceOrderList } from '~/services/indexer-api/modules/marketplace/types'
 import EthHashInfo from '~/components/common/EthHashInfo'
 import { OrderStatus, type OrderParams } from '~/services/indexer-api/types'
 import { fromWei } from 'web3-utils'
 import Link from 'next/link'
-import { Button, CircularProgress, useTheme } from '@mui/material'
+import { Button, CircularProgress, Skeleton, useTheme } from '@mui/material'
 import { useCurrentChain } from '~/hooks/useChains'
 import useOnboard from '~/hooks/wallets/useOnboard'
 import { defaultAbiCoder } from 'ethers/lib/utils'
@@ -57,6 +58,13 @@ const actionCell = {
   label: 'Action',
 }
 
+const skeletonCells: EnhancedTableProps['rows'][0]['cells'] = headCells.reduce(
+  (cells, key) => ({ ...cells, [key.id]: { rawValue: key, content: <Skeleton /> } }),
+  {},
+)
+
+const skeletonRows: EnhancedTableProps['rows'] = Array(5).fill({ cells: skeletonCells })
+
 interface Props {
   tick: string
   fetchMarketplaceOrdersData: (params: OrderParams) => Promise<MarketplaceOrderList>
@@ -76,6 +84,7 @@ const ActivityTable = ({ tick, fetchMarketplaceOrdersData, seller }: Props) => {
   const onboard = useOnboard()
   const [loadingStatus, setloadingStatus] = useState<ButtonAction>({})
   const theme = useTheme()
+  const [refetch, setRefetch] = useState(false)
 
   const wallet = useWallet()
 
@@ -122,6 +131,7 @@ const ActivityTable = ({ tick, fetchMarketplaceOrdersData, seller }: Props) => {
       const receipt = await signer.provider.waitForTransaction(transaction.hash)
 
       console.log(transaction.hash)
+      setRefetch(true)
     } catch (e) {
       console.error(e)
     }
@@ -132,12 +142,14 @@ const ActivityTable = ({ tick, fetchMarketplaceOrdersData, seller }: Props) => {
     if (!!fetchMarketplaceOrdersData) {
       try {
         const data = await fetchMarketplaceOrdersData({ tick, page: page + 1, limit: pageSize, seller })
+        setRefetch(false)
         return data
       } catch (e) {
         console.log(e)
       }
     }
-  }, [fetchMarketplaceOrdersData, page, pageSize, seller, tick])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fetchMarketplaceOrdersData, page, pageSize, seller, tick, refetch])
 
   const rows = (marketplaceData?.list || []).map((item, i) => {
     return {
@@ -236,7 +248,7 @@ const ActivityTable = ({ tick, fetchMarketplaceOrdersData, seller }: Props) => {
       {error ? <Typography>An error occurred while loading marketplace activity data...</Typography> : null}
       <div className={css.container}>
         <EnhancedTable
-          rows={rows}
+          rows={loading || refetch ? skeletonRows : rows}
           headCells={tableCells}
           onDemandPagination={{
             pageSize: pageSize,
