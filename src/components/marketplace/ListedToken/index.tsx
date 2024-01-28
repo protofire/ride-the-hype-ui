@@ -6,7 +6,7 @@ import { Skeleton, Typography } from '@mui/material'
 
 import css from './styles.module.css'
 import { MarketplaceTokenListItem } from '~/components/TokenList/MarketplaceTokenListItem'
-import type { MarketplaceOrderList } from '~/services/indexer-api/modules/marketplace/types'
+import type { MarketplaceOrderExtended, MarketplaceOrderList } from '~/services/indexer-api/modules/marketplace/types'
 import useAsync from '~/hooks/useAsync'
 import { OrderStatus, type OrderParams } from '~/services/indexer-api/types'
 
@@ -20,11 +20,15 @@ export const ListedToken = ({
   fetchMarketplaceOrdersData: (params: OrderParams) => Promise<MarketplaceOrderList>
 }) => {
   const [page, setPage] = useState(1)
+  const [hasMore, setHasMore] = useState(false)
+  const [listedTokens, setListedTokens] = useState([] as MarketplaceOrderExtended[])
 
   const [marketplaceTokenData, error, loading] = useAsync(async () => {
     if (!!fetchMarketplaceOrdersData) {
       try {
         const data = await fetchMarketplaceOrdersData({ tick, page, limit: PAGE_SIZE, status: OrderStatus.LISTED })
+        setListedTokens((prev) => prev.concat(data.list as MarketplaceOrderExtended[]))
+        setHasMore(!(data.list && data.list.length < PAGE_SIZE))
         return data
       } catch (e) {
         console.log(e)
@@ -32,8 +36,6 @@ export const ListedToken = ({
     }
   }, [fetchMarketplaceOrdersData, page, tick])
 
-  const hasMore = marketplaceTokenData && marketplaceTokenData.list.length % PAGE_SIZE === 0
-  // const visibleTokens = useMemo(() => marketplaceTokenData?.slice(0, PAGE_SIZE * page), [marketplaceTokenData, page])
   return (
     <Paper sx={{ padding: 4, maxWidth: '1200px', m: '1rem auto' }}>
       {loading ? (
@@ -48,26 +50,27 @@ export const ListedToken = ({
 
       {error ? <Typography>An error occurred during loading tokens...</Typography> : null}
 
-      {!loading && marketplaceTokenData?.list.length === 0 ? (
+      {!loading && marketplaceTokenData?.count === 0 ? (
         <Paper sx={{ padding: 4, maxWidth: '1200px', m: '1rem auto', textAlign: 'center' }}>
           <Typography>No listed tokens</Typography>
         </Paper>
       ) : null}
 
       <InfiniteScroll
-        dataLength={1}
-        next={() => setPage((page) => page + 1)}
-        hasMore={hasMore ?? false}
+        dataLength={PAGE_SIZE * page}
+        next={() => {
+          setPage((page) => page + 1)
+        }}
+        hasMore={hasMore}
         loader={''}
-        endMessage={
-          <p style={{ textAlign: 'center' }}>
-            <b>You have seen it all</b>
-          </p>
-        }
+        // endMessage={
+        //   <p style={{ textAlign: 'center' }}>
+        //     <b>You have seen it all</b>
+        //   </p>
+        // }
       >
         <div className={css.gridContainer}>
-          {marketplaceTokenData &&
-            marketplaceTokenData.list.map((item, i) => <MarketplaceTokenListItem key={i} item={item} />)}
+          {listedTokens && listedTokens.map((item, i) => <MarketplaceTokenListItem key={i} item={item} />)}
         </div>
       </InfiniteScroll>
       <div />

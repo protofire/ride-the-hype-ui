@@ -155,6 +155,7 @@ const ListInsc20Modal = ({ open, onClose, tick, tokenData }: Props) => {
       setStatus(ListingStatus.COMPLETED)
       setActiveStep(0)
       reset()
+      handleClose()
     } catch (e: any) {
       if (e.code && e.code === 4001) {
         setStatus(ListingStatus.REJECTED)

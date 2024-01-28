@@ -5,7 +5,6 @@ import { useState } from 'react'
 import useAsync from '~/hooks/useAsync'
 import EnhancedTable from '~/components/common/EnhancedTable'
 import type { MarketplaceOrderExtended, MarketplaceOrderList } from '~/services/indexer-api/modules/marketplace/types'
-import { AppRoutes } from '~/config/routes'
 import EthHashInfo from '~/components/common/EthHashInfo'
 import { OrderStatus, type OrderParams } from '~/services/indexer-api/types'
 import { fromWei } from 'web3-utils'
@@ -143,7 +142,6 @@ const ActivityTable = ({ tick, fetchMarketplaceOrdersData, seller }: Props) => {
   const rows = (marketplaceData?.list || []).map((item, i) => {
     return {
       key: i.toString(),
-      href: AppRoutes.marketplace.token + `?ticker=${tick}`,
       cells: {
         status: {
           rawValue: item.status,
@@ -171,7 +169,7 @@ const ActivityTable = ({ tick, fetchMarketplaceOrdersData, seller }: Props) => {
         tick: {
           rawValue: tick,
           content: (
-            <Link href={`/tokens?ticker=${tick}`}>
+            <Link href={`/token?ticker=${tick}`}>
               <Typography color="primary">{tick}</Typography>
             </Link>
           ),
