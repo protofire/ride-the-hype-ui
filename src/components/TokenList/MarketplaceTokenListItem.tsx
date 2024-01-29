@@ -1,7 +1,7 @@
 import Button from '@mui/material/Button'
 import CheckWallet from '~/components/common/CheckWallet'
 import css from './styles.module.css'
-import { CircularProgress, ListItem, ListItemText, Stack, Typography } from '@mui/material'
+import { CircularProgress, ListItem, ListItemText, Snackbar, Stack, Typography } from '@mui/material'
 import type { MarketplaceOrderExtended } from '~/services/indexer-api/modules/marketplace/types'
 import { fromWei } from 'web3-utils'
 import EthHashInfo from '../common/EthHashInfo'
@@ -23,8 +23,17 @@ export const MarketplaceTokenListItem = ({ item }: Props) => {
   const onboard = useOnboard()
   const [loading, setloading] = useState(false)
   const [disabled, setDisabled] = useState(false)
+  const [snackMessage, setSnackMessage] = useState<string | undefined>()
 
   const totalPrice = +item.price * +item.amount
+
+  const handleCloseSnack = (event: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return
+    }
+
+    setSnackMessage(undefined)
+  }
 
   const handleBuy = async (item: MarketplaceOrderExtended) => {
     if (!onboard || !currentChain) {
@@ -70,13 +79,12 @@ export const MarketplaceTokenListItem = ({ item }: Props) => {
       }
 
       const transaction = await signer.sendTransaction(tx)
-      await signer.provider.waitForTransaction(transaction.hash)
+      await transaction.wait()
 
-      // await delay(3000)
-      // setRefetch(true)
-      console.log(transaction.hash)
+      setSnackMessage('Transaction was successful!')
     } catch (e) {
       console.error(e)
+      setSnackMessage('Something went wrong.')
       setDisabled(false)
     }
     setloading(false)
@@ -132,6 +140,7 @@ export const MarketplaceTokenListItem = ({ item }: Props) => {
           </div>
         </div>
       </div>
+      <Snackbar open={!!snackMessage} autoHideDuration={5000} onClose={handleCloseSnack} message={snackMessage} />
     </>
   )
 }

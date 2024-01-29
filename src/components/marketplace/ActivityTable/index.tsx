@@ -10,17 +10,20 @@ import EthHashInfo from '~/components/common/EthHashInfo'
 import { OrderStatus, type OrderParams } from '~/services/indexer-api/types'
 import { fromWei } from 'web3-utils'
 import Link from 'next/link'
-import { Button, CircularProgress, Skeleton, useTheme } from '@mui/material'
+import { Box, Button, CircularProgress, Skeleton, Snackbar, useTheme } from '@mui/material'
 import { useCurrentChain } from '~/hooks/useChains'
 import useOnboard from '~/hooks/wallets/useOnboard'
 import { getAssertedChainSigner } from '~/utils/wallets'
-import useWallet from '~/hooks/wallets/useWallet'
 import { createSiweMessage } from '~/utils/signing'
 import { IndexerApiService } from '~/services/indexer-api'
 import { defaultAbiCoder } from 'ethers/lib/utils'
 import { ORDER_TYPE, CANCEL_ORDER_ID } from '~/utils/web3Types'
 
 const headCells = [
+  // {
+  //   id: 'id',
+  //   label: 'Id',
+  // },
   {
     id: 'status',
     label: 'Status',
@@ -45,10 +48,10 @@ const headCells = [
     id: 'seller',
     label: 'Seller',
   },
-  // {
-  //   id: 'market',
-  //   label: 'Market',
-  // },
+  {
+    id: 'transaction',
+    label: 'Transaction',
+  },
   {
     id: 'time',
     label: 'Time',
@@ -78,19 +81,24 @@ type ButtonAction = {
 }
 
 const ActivityTable = ({ tick, fetchMarketplaceOrdersData, seller }: Props) => {
-  // const [hasMore, setHasMore] = useState(false)
-  const [page, setPage] = useState(0)
-  const [pageSize, setPageSize] = useState(15)
-  const [showAll, setShowAll] = useState(false)
   const currentChain = useCurrentChain()
   const onboard = useOnboard()
-  const [loadingStatus, setloadingStatus] = useState<ButtonAction>({})
   const theme = useTheme()
+  const [page, setPage] = useState(0)
+  const [pageSize, setPageSize] = useState(15)
+  const [loadingStatus, setloadingStatus] = useState<ButtonAction>({})
   const [refetch, setRefetch] = useState(false)
-
-  const wallet = useWallet()
+  const [snackMessage, setSnackMessage] = useState<string | undefined>()
 
   const tableCells = !seller ? headCells : [...headCells, actionCell]
+
+  const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return
+    }
+
+    setSnackMessage(undefined)
+  }
 
   const handleCancel = async (item: MarketplaceOrderExtended, index: number) => {
     if (!onboard || !currentChain) {
@@ -115,9 +123,6 @@ const ActivityTable = ({ tick, fetchMarketplaceOrdersData, seller }: Props) => {
         expirationTime: item.expirationTime,
         creatorFeeRate: item.creatorFeeRate,
         salt: item.salt,
-        // v: item.v,
-        // r: item.r,
-        // s: item.s,
       }
 
       const nonce = await indexerApiService.tokensModule.getAddressNonce(address)
@@ -128,11 +133,9 @@ const ActivityTable = ({ tick, fetchMarketplaceOrdersData, seller }: Props) => {
         nonce.nonce,
       )
 
-      console.log(message)
-
       const signature = await signer.signMessage(message)
 
-      const orderRSV = await indexerApiService.tokensModule.signCancelOrder(inputData, message, signature)
+      const { r, s, v } = await indexerApiService.tokensModule.signCancelOrder(inputData, message, signature)
 
       const cancelOrder = {
         seller: item.seller,
@@ -145,9 +148,9 @@ const ActivityTable = ({ tick, fetchMarketplaceOrdersData, seller }: Props) => {
         expirationTime: item.expirationTime,
         creatorFeeRate: item.creatorFeeRate,
         salt: item.salt,
-        v: orderRSV.v,
-        r: orderRSV.r,
-        s: orderRSV.s,
+        v: v,
+        r: r,
+        s: s,
       }
       const input = defaultAbiCoder.encode([ORDER_TYPE], [Object.values(cancelOrder)])
 
@@ -162,12 +165,14 @@ const ActivityTable = ({ tick, fetchMarketplaceOrdersData, seller }: Props) => {
       }
 
       const transaction = await signer.sendTransaction(tx)
-      const receipt = await signer.provider.waitForTransaction(transaction.hash)
+      await transaction.wait()
 
       console.log(transaction.hash)
+      setSnackMessage(`Cancellation of ${item.ticker.toUpperCase()} order was successful.`)
       setRefetch(true)
     } catch (e) {
       console.error(e)
+      setSnackMessage(`Cancellation was unsuccessful.`)
     }
     setloadingStatus({ [index]: false })
   }
@@ -189,6 +194,10 @@ const ActivityTable = ({ tick, fetchMarketplaceOrdersData, seller }: Props) => {
     return {
       key: i.toString(),
       cells: {
+        // id: {
+        //   rawValue: item.id,
+        //   content: item.id,
+        // },
         status: {
           rawValue: item.status,
           content: (
@@ -206,7 +215,7 @@ const ActivityTable = ({ tick, fetchMarketplaceOrdersData, seller }: Props) => {
                     : theme.palette.text.primary
                 }
               >
-                {item.status}
+                {item.status === OrderStatus.EXECUTED ? 'Sold' : item.status}
               </Typography>
               {/* <EthHashInfo showPrefix={false} address={item.listId} hasExplorer avatarSize={0} /> */}
             </>
@@ -236,10 +245,10 @@ const ActivityTable = ({ tick, fetchMarketplaceOrdersData, seller }: Props) => {
           rawValue: item.seller,
           content: <EthHashInfo showPrefix={false} address={item.seller} hasExplorer avatarSize={0} />,
         },
-        // to: {
-        //   rawValue: item.creator,
-        //   content: <EthHashInfo showPrefix={false} address={item.creator} hasExplorer avatarSize={0} />,
-        // },
+        transaction: {
+          rawValue: item.lastTx,
+          content: <EthHashInfo showPrefix={false} address={item.lastTx} hasExplorer avatarSize={0} />,
+        },
         time: {
           rawValue: item.listingTime,
           content: (
@@ -255,7 +264,9 @@ const ActivityTable = ({ tick, fetchMarketplaceOrdersData, seller }: Props) => {
           content: (
             <>
               {loadingStatus[i] ? (
-                <CircularProgress />
+                <Box sx={{ textAlign: 'center' }}>
+                  <CircularProgress />
+                </Box>
               ) : (
                 <>
                   {seller && item.status === OrderStatus.LISTED ? (
@@ -278,22 +289,27 @@ const ActivityTable = ({ tick, fetchMarketplaceOrdersData, seller }: Props) => {
     }
   })
   return (
-    <Paper sx={{ padding: 4, maxWidth: '1200px', m: '1rem auto' }}>
-      {error ? <Typography>An error occurred while loading marketplace activity data...</Typography> : null}
-      <div className={css.container}>
-        <EnhancedTable
-          rows={loading || refetch ? skeletonRows : rows}
-          headCells={tableCells}
-          onDemandPagination={{
-            pageSize: pageSize,
-            page: page,
-            setPage: setPage,
-            setPageSize: setPageSize,
-            totalHolders: marketplaceData?.count ?? 0,
-          }}
-        />
-      </div>
-    </Paper>
+    <>
+      <Paper sx={{ padding: 4, maxWidth: '1200px', m: '1rem auto' }}>
+        {error ? <Typography>An error occurred while loading marketplace activity data...</Typography> : null}
+        <div className={css.container}>
+          <EnhancedTable
+            rows={loading || refetch ? skeletonRows : rows}
+            headCells={tableCells}
+            onDemandPagination={{
+              pageSize: pageSize,
+              page: page,
+              setPage: setPage,
+              setPageSize: setPageSize,
+              totalHolders: marketplaceData?.count ?? 0,
+            }}
+          />
+        </div>
+      </Paper>
+      {snackMessage && (
+        <Snackbar open={!!snackMessage} autoHideDuration={5000} onClose={handleClose} message={snackMessage} />
+      )}
+    </>
   )
 }
 
