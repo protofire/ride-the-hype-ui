@@ -72,3 +72,7 @@ export const MarketplaceOrderListSchema = z.object({
 export const MarketplaceCreateOrderPayloadSchema = z.object({
   listId: z.string().optional(),
 })
+
+export const TimestampSchema = z.object({
+  timestamp: z.string(),
+})

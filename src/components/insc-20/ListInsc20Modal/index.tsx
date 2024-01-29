@@ -26,7 +26,7 @@ import {
   Typography,
 } from '@mui/material'
 import { TokenDataCard } from '~/components/TokenList/TokenDataCard'
-import { marketplaceDomainEIP712, marketplaceTypesEIP712 } from '~/utils/signing'
+import { marketplaceDomainEIP712 } from '~/utils/signing'
 import { getAssertedChainSigner } from '~/utils/wallets'
 import type { MarketplaceOrder, MarketplaceOrderPayload } from '~/services/indexer-api/modules/marketplace/types'
 import type { TransactionResponse } from '@ethersproject/abstract-provider'
@@ -95,7 +95,9 @@ const ListInsc20Modal = ({ open, onClose, tick, tokenData }: Props) => {
       setStatus(ListingStatus.SENDING_TX)
       const signer = await getAssertedChainSigner(onboard, currentChain?.chainId)
       const address = await signer.getAddress()
-      const listingDateUnix = Math.floor(Date.now() / 1000)
+      const indexerApiService = IndexerApiService.getInstance(currentChain)
+
+      const listingDateUnix = await indexerApiService.tokensModule.getTimestamp()
 
       const txData = {
         p: `${currentChain.inscriptionPrefix}-20`,
@@ -126,12 +128,14 @@ const ListInsc20Modal = ({ open, onClose, tick, tokenData }: Props) => {
         ticker: tick,
         amount: data.amount.toString(),
         price: toWei(data.price.toString(), 'ether'),
-        listingTime: listingDateUnix,
-        expirationTime: +listingDateUnix + +data.expiration,
+        listingTime: +listingDateUnix.timestamp,
+        expirationTime: +listingDateUnix.timestamp + +data.expiration,
         creatorFeeRate: 200,
         salt: MOCK_SALT,
       }
-      const signature = await signer._signTypedData(domain, marketplaceTypesEIP712, order)
+      // const signature = await signer._signTypedData(domain, marketplaceTypesEIP712, order)
+
+      const signature = await indexerApiService.tokensModule.signOrder(order)
 
       const r = signature.slice(0, 66)
       const s = '0x' + signature.slice(66, 130)
@@ -147,8 +151,6 @@ const ListInsc20Modal = ({ open, onClose, tick, tokenData }: Props) => {
       }
 
       console.log({ createOrder })
-
-      const indexerApiService = IndexerApiService.getInstance(currentChain)
       const createOrderResult = await indexerApiService.tokensModule.createOrder(createOrder)
 
       console.log({ createOrderResult })

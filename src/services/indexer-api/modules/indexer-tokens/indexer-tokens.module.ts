@@ -7,14 +7,21 @@ import { TransactionSchema } from '~/services/indexer-api/validators'
 import { Insc20BalanceSchema, Insc20Schema, TokenHolderSchema } from './validators'
 import type { Insc20, Insc20Balance, TokenHolder, Insc20QueryFilter } from './types'
 
-import type { MarketplaceList, MarketplaceOrderCreatePayload, MarketplaceOrderList } from '../marketplace/types'
-import type { MarketplaceOrder, MarketplaceOrderPayload } from '../marketplace/types'
 import {
   MarketplaceCreateOrderPayloadSchema,
   MarketplaceListSchema,
   MarketplaceOrderListSchema,
   MarketplaceOrderPayloadSchema,
+  TimestampSchema,
 } from '../marketplace/validators/marketplace.schema'
+import type {
+  MarketplaceOrder,
+  MarketplaceOrderPayload,
+  MarketplaceOrderCreatePayload,
+  MarketplaceList,
+  MarketplaceOrderList,
+  Timestamp,
+} from '../marketplace/types'
 
 export class IndexerTokensModule {
   constructor(private client: Axios) {}
@@ -95,5 +102,11 @@ export class IndexerTokensModule {
     })
 
     return MarketplaceOrderListSchema.parseAsync(response.data)
+  }
+
+  public async getTimestamp(): Promise<Timestamp> {
+    const response = await this.client.get('api/v1/timestamp')
+
+    return TimestampSchema.parseAsync(response.data)
   }
 }

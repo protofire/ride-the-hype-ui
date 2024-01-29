@@ -9,7 +9,11 @@ import type {
   MarketplaceOrderListSchema,
   MarketplaceCreateOrderPayloadSchema,
   MarketplaceOrderExtendedSchema,
+  TimestampSchema,
 } from './validators'
+
+//Common
+export type Timestamp = TypeOf<typeof TimestampSchema>
 
 export type Marketplace = TypeOf<typeof MarketplaceSchema>
 export type MarketplaceActivity = TypeOf<typeof MarketplaceActivitySchema>
