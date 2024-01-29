@@ -80,8 +80,8 @@ export class IndexerTokensModule {
     signature: string,
   ): Promise<MarketplaceOrderPayload> {
     const response = await this.client.post(
-      `api/v1/orders/cancel/sign?message=${message}&signature=${signature}`,
-      JSON.stringify(order),
+      `api/v1/orders/cancel/sign`,
+      JSON.stringify({ order, message, signature }),
       {
         headers: {
           'Content-Type': 'application/json',
