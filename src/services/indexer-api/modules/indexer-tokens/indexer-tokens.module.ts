@@ -22,6 +22,7 @@ import type {
   MarketplaceOrderList,
   Timestamp,
   Nonce,
+  MarketplaceOrder,
 } from '../marketplace/types'
 
 export class IndexerTokensModule {
@@ -74,7 +75,7 @@ export class IndexerTokensModule {
   }
 
   public async signCancelOrder(
-    order: MarketplaceOrderPayload,
+    order: MarketplaceOrder,
     message: string,
     signature: string,
   ): Promise<MarketplaceOrderPayload> {

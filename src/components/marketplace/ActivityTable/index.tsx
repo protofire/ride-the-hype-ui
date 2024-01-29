@@ -42,13 +42,13 @@ const headCells = [
     label: 'Total',
   },
   {
-    id: 'from',
-    label: 'From',
+    id: 'seller',
+    label: 'Seller',
   },
-  {
-    id: 'to',
-    label: 'To',
-  },
+  // {
+  //   id: 'market',
+  //   label: 'Market',
+  // },
   {
     id: 'time',
     label: 'Time',
@@ -115,9 +115,9 @@ const ActivityTable = ({ tick, fetchMarketplaceOrdersData, seller }: Props) => {
         expirationTime: item.expirationTime,
         creatorFeeRate: item.creatorFeeRate,
         salt: item.salt,
-        v: item.v,
-        r: item.r,
-        s: item.s,
+        // v: item.v,
+        // r: item.r,
+        // s: item.s,
       }
 
       const nonce = await indexerApiService.tokensModule.getAddressNonce(address)
@@ -216,14 +216,14 @@ const ActivityTable = ({ tick, fetchMarketplaceOrdersData, seller }: Props) => {
           rawValue: +item.amount * +item.price,
           content: <Typography>{`ETH ${fromWei((+item.amount * +item.price).toString())}`}</Typography>,
         },
-        from: {
+        seller: {
           rawValue: item.seller,
           content: <EthHashInfo showPrefix={false} address={item.seller} hasExplorer avatarSize={0} />,
         },
-        to: {
-          rawValue: item.creator,
-          content: <EthHashInfo showPrefix={false} address={item.creator} hasExplorer avatarSize={0} />,
-        },
+        // to: {
+        //   rawValue: item.creator,
+        //   content: <EthHashInfo showPrefix={false} address={item.creator} hasExplorer avatarSize={0} />,
+        // },
         time: {
           rawValue: item.listingTime,
           content: (
