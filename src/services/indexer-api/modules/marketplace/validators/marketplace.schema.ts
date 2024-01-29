@@ -76,3 +76,7 @@ export const MarketplaceCreateOrderPayloadSchema = z.object({
 export const TimestampSchema = z.object({
   timestamp: z.string(),
 })
+
+export const NonceSchema = z.object({
+  nonce: z.string(),
+})

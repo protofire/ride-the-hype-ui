@@ -1,3 +1,5 @@
+const siwe = require('siwe')
+
 export const marketplaceDomainEIP712 = (chainId: string, marketplace?: string) => {
   return {
     name: 'OSC20Market',
@@ -20,4 +22,17 @@ export const marketplaceTypesEIP712 = {
     { name: 'creatorFeeRate', type: 'uint16' },
     { name: 'salt', type: 'uint32' },
   ],
+}
+
+export function createSiweMessage(address: string, statement: string, chainId: string, nonce: string) {
+  const siweMessage = new siwe.SiweMessage({
+    domain: window.location.host,
+    address,
+    statement,
+    uri: window.location.origin,
+    version: '1',
+    chainId: chainId,
+    nonce: nonce,
+  })
+  return siweMessage.prepareMessage()
 }

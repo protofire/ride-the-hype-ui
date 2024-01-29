@@ -13,10 +13,12 @@ import Link from 'next/link'
 import { Button, CircularProgress, Skeleton, useTheme } from '@mui/material'
 import { useCurrentChain } from '~/hooks/useChains'
 import useOnboard from '~/hooks/wallets/useOnboard'
-import { defaultAbiCoder } from 'ethers/lib/utils'
 import { getAssertedChainSigner } from '~/utils/wallets'
-import { CANCEL_ORDER_ID, ORDER_TYPE } from '~/utils/web3Types'
 import useWallet from '~/hooks/wallets/useWallet'
+import { createSiweMessage } from '~/utils/signing'
+import { IndexerApiService } from '~/services/indexer-api'
+import { defaultAbiCoder } from 'ethers/lib/utils'
+import { ORDER_TYPE, CANCEL_ORDER_ID } from '~/utils/web3Types'
 
 const headCells = [
   {
@@ -100,6 +102,8 @@ const ActivityTable = ({ tick, fetchMarketplaceOrdersData, seller }: Props) => {
       setloadingStatus({ [index]: true })
       const signer = await getAssertedChainSigner(onboard, currentChain?.chainId)
       const address = await signer.getAddress()
+      const indexerApiService = IndexerApiService.getInstance(currentChain)
+
       const inputData = {
         seller: item.seller,
         creator: item.creator,
@@ -115,7 +119,21 @@ const ActivityTable = ({ tick, fetchMarketplaceOrdersData, seller }: Props) => {
         r: item.r,
         s: item.s,
       }
-      const input = defaultAbiCoder.encode([ORDER_TYPE], [Object.values(inputData)])
+
+      const nonce = await indexerApiService.tokensModule.getAddressNonce(address)
+      const message = createSiweMessage(
+        address,
+        `Agree to cancel order ${item.listId}`,
+        currentChain.chainId,
+        nonce.nonce,
+      )
+
+      console.log(message)
+
+      const signature = await signer.signMessage(message)
+
+      const newOrder = await indexerApiService.tokensModule.signCancelOrder(inputData, message, signature)
+      const input = defaultAbiCoder.encode([ORDER_TYPE], [Object.values(newOrder)])
 
       const data = CANCEL_ORDER_ID + input.substring(2)
 

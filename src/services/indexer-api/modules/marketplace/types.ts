@@ -10,10 +10,12 @@ import type {
   MarketplaceCreateOrderPayloadSchema,
   MarketplaceOrderExtendedSchema,
   TimestampSchema,
+  NonceSchema,
 } from './validators'
 
 //Common
 export type Timestamp = TypeOf<typeof TimestampSchema>
+export type Nonce = TypeOf<typeof NonceSchema>
 
 export type Marketplace = TypeOf<typeof MarketplaceSchema>
 export type MarketplaceActivity = TypeOf<typeof MarketplaceActivitySchema>

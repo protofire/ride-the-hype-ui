@@ -12,15 +12,16 @@ import {
   MarketplaceListSchema,
   MarketplaceOrderListSchema,
   MarketplaceOrderPayloadSchema,
+  NonceSchema,
   TimestampSchema,
 } from '../marketplace/validators/marketplace.schema'
 import type {
-  MarketplaceOrder,
   MarketplaceOrderPayload,
   MarketplaceOrderCreatePayload,
   MarketplaceList,
   MarketplaceOrderList,
   Timestamp,
+  Nonce,
 } from '../marketplace/types'
 
 export class IndexerTokensModule {
@@ -66,17 +67,27 @@ export class IndexerTokensModule {
     return TransactionSchema.array().parseAsync(response.data)
   }
 
-  public async signOrder(order: MarketplaceOrder): Promise<any> {
-    try {
-      const response = await this.client.post('api/v1/orders/sign', JSON.stringify(order), {
+  public async getAddressNonce(address: string): Promise<Nonce> {
+    const response = await this.client.get(`api/v1/users/${address}/nonce`)
+
+    return NonceSchema.parseAsync(response.data)
+  }
+
+  public async signCancelOrder(
+    order: MarketplaceOrderPayload,
+    message: string,
+    signature: string,
+  ): Promise<MarketplaceOrderPayload> {
+    const response = await this.client.post(
+      `api/v1/orders/cancel/sign?message=${message}&signature=${signature}`,
+      JSON.stringify(order),
+      {
         headers: {
           'Content-Type': 'application/json',
         },
-      })
-      return MarketplaceOrderPayloadSchema.parseAsync(response.data)
-    } catch (e) {
-      console.log(e)
-    }
+      },
+    )
+    return MarketplaceOrderPayloadSchema.parseAsync(response.data)
   }
 
   public async createOrder(order: MarketplaceOrderPayload): Promise<MarketplaceOrderCreatePayload> {
