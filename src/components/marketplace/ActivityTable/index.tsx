@@ -132,8 +132,24 @@ const ActivityTable = ({ tick, fetchMarketplaceOrdersData, seller }: Props) => {
 
       const signature = await signer.signMessage(message)
 
-      const newOrder = await indexerApiService.tokensModule.signCancelOrder(inputData, message, signature)
-      const input = defaultAbiCoder.encode([ORDER_TYPE], [Object.values(newOrder)])
+      const orderRSV = await indexerApiService.tokensModule.signCancelOrder(inputData, message, signature)
+
+      const cancelOrder = {
+        seller: item.seller,
+        creator: item.creator,
+        listId: item.listId,
+        ticker: item.ticker,
+        amount: item.amount,
+        price: item.price,
+        listingTime: item.listingTime,
+        expirationTime: item.expirationTime,
+        creatorFeeRate: item.creatorFeeRate,
+        salt: item.salt,
+        v: orderRSV.v,
+        r: orderRSV.r,
+        s: orderRSV.s,
+      }
+      const input = defaultAbiCoder.encode([ORDER_TYPE], [Object.values(cancelOrder)])
 
       const data = CANCEL_ORDER_ID + input.substring(2)
 
