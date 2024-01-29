@@ -50,7 +50,8 @@ interface Props {
 
 const MarketplaceTable = ({ fetchMarketplaceData }: Props) => {
   // const [hasMore, setHasMore] = useState(false)
-  const [page, setPage] = useState(1)
+  const [page, setPage] = useState(0)
+  const [pageSize, setPageSize] = useState(15)
   const [showAll, setShowAll] = useState(false)
   const [cellLabels, setCellLabels] = useState(headCells)
   const currentChain = useCurrentChain()
@@ -58,13 +59,13 @@ const MarketplaceTable = ({ fetchMarketplaceData }: Props) => {
   const [marketplaceData, error, loading] = useAsync(async () => {
     if (!!fetchMarketplaceData && currentChain == chainsConfiguration[1]) {
       try {
-        const data = await fetchMarketplaceData(page, PAGE_SIZE)
+        const data = await fetchMarketplaceData(page + 1, pageSize)
         return data
       } catch (e) {
         console.log(e)
       }
     }
-  }, [currentChain, fetchMarketplaceData, page])
+  }, [currentChain, fetchMarketplaceData, page, pageSize])
 
   const rows = (marketplaceData?.list || []).map((item, i) => {
     return {
@@ -150,7 +151,18 @@ const MarketplaceTable = ({ fetchMarketplaceData }: Props) => {
         </Button>
       </ButtonGroup>
       <div className={css.container}>
-        <EnhancedTable rows={rows} headCells={cellLabels} defaultSortField={headCells[5].id} />
+        <EnhancedTable
+          rows={rows}
+          headCells={cellLabels}
+          defaultSortField={headCells[5].id}
+          onDemandPagination={{
+            pageSize: pageSize,
+            page: page,
+            setPage: setPage,
+            setPageSize: setPageSize,
+            totalHolders: marketplaceData?.count ?? 0,
+          }}
+        />
       </div>
     </Paper>
   )
