@@ -1,12 +1,12 @@
 import type { ReactElement } from 'react'
 import React, { useState, useEffect } from 'react'
-import { Stack, Box } from '@mui/material'
+import { Stack, Box, CircularProgress } from '@mui/material'
 import css from './styles.module.css'
 
 const LAUNCH_TIMESTAMP = 1706778000000
 
 const CountdownTimer = (): ReactElement => {
-  const [timeRemaining, setTimeRemaining] = useState<number>(2)
+  const [timeRemaining, setTimeRemaining] = useState<number>(1)
 
   useEffect(() => {
     const calculateTimeRemaining = (): number => {
@@ -22,16 +22,18 @@ const CountdownTimer = (): ReactElement => {
     return () => clearInterval(intervalId)
   }, [])
 
-  const formatTime = (milliseconds: number) => {
+  const formatTime = (ms: number) => {
     const formattedTime = [
-      { label: 'days', value: Math.floor(milliseconds / (1000 * 60 * 60 * 24)) },
-      { label: 'hours', value: Math.floor(milliseconds / (1000 * 60 * 60)) % 24 },
-      { label: 'minutes', value: Math.floor(milliseconds / (1000 * 60)) % 60 },
-      { label: 'seconds', value: Math.floor(milliseconds / 1000) % 60 },
+      { label: 'days', value: Math.floor(ms / (1000 * 60 * 60 * 24)) },
+      { label: 'hours', value: Math.floor(ms / (1000 * 60 * 60)) % 24 },
+      { label: 'minutes', value: Math.floor(ms / (1000 * 60)) % 60 },
+      { label: 'seconds', value: Math.floor(ms / 1000) % 60 },
     ]
     return formattedTime.map((item, i) => (
       <Stack key={i} alignItems={'center'} alignContent={'center'} justifyContent={'center'}>
-        <Box className={css.bannerDigit}>{`${item.value < 10 ? '0' : ''}${item.value}`}</Box>
+        <Box className={css.bannerDigit}>
+          {ms === 1 ? <CircularProgress size="1rem" color="inherit" /> : `${item.value < 10 ? '0' : ''}${item.value}`}
+        </Box>
         <span className={css.digitText}>{item.label}</span>
       </Stack>
     ))
@@ -42,7 +44,7 @@ const CountdownTimer = (): ReactElement => {
     <Stack className={css.container} alignItems={'center'} direction={'row'}>
       <span className={css.bannerText}>{text} </span>
       <Stack direction="row" spacing={2}>
-        {timeRemaining && formatTime(timeRemaining)}
+        {timeRemaining > 0 && formatTime(timeRemaining)}
       </Stack>
     </Stack>
   )
