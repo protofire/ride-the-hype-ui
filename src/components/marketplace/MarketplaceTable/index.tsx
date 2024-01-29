@@ -57,7 +57,7 @@ const MarketplaceTable = ({ fetchMarketplaceData }: Props) => {
   const currentChain = useCurrentChain()
 
   const [marketplaceData, error, loading] = useAsync(async () => {
-    if (!!fetchMarketplaceData && currentChain == chainsConfiguration[1]) {
+    if (!!fetchMarketplaceData) {
       try {
         const data = await fetchMarketplaceData(page + 1, pageSize)
         return data
@@ -65,7 +65,7 @@ const MarketplaceTable = ({ fetchMarketplaceData }: Props) => {
         console.log(e)
       }
     }
-  }, [currentChain, fetchMarketplaceData, page, pageSize])
+  }, [fetchMarketplaceData, page, pageSize])
 
   const rows = (marketplaceData?.list || []).map((item, i) => {
     return {
