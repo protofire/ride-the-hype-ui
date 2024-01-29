@@ -28,7 +28,7 @@ import {
 import { TokenDataCard } from '~/components/TokenList/TokenDataCard'
 import { marketplaceDomainEIP712 } from '~/utils/signing'
 import { getAssertedChainSigner } from '~/utils/wallets'
-import type { MarketplaceOrder, MarketplaceOrderPayload } from '~/services/indexer-api/modules/marketplace/types'
+import type { MarketplaceOrder } from '~/services/indexer-api/modules/marketplace/types'
 import type { TransactionResponse } from '@ethersproject/abstract-provider'
 import { ZERO_ADDRESS } from '~/config/constants'
 import { IndexerApiService } from '~/services/indexer-api'
@@ -136,22 +136,23 @@ const ListInsc20Modal = ({ open, onClose, tick, tokenData }: Props) => {
       // const signature = await signer._signTypedData(domain, marketplaceTypesEIP712, order)
 
       const signature = await indexerApiService.tokensModule.signOrder(order)
+      console.log(signature)
 
-      const r = signature.slice(0, 66)
-      const s = '0x' + signature.slice(66, 130)
-      const v = '0x' + signature.slice(130, 132)
+      // const r = signature.r.slice(0, 66)
+      // const s = '0x' + signature.s.slice(66, 130)
+      // const v = '0x' + signature.v.slice(130, 132)
 
       setStatus(ListingStatus.INDEXING)
       setActiveStep(2)
-      const createOrder: MarketplaceOrderPayload = {
-        order: order,
-        v: +v,
-        r: r,
-        s: s,
-      }
+      // const createOrder: MarketplaceOrderPayload = {
+      //   order: order,
+      //   v: +v,
+      //   r: r,
+      //   s: s,
+      // }
 
-      console.log({ createOrder })
-      const createOrderResult = await indexerApiService.tokensModule.createOrder(createOrder)
+      // console.log({ createOrder })
+      const createOrderResult = await indexerApiService.tokensModule.createOrder(signature)
 
       console.log({ createOrderResult })
       setStatus(ListingStatus.COMPLETED)

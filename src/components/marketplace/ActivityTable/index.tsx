@@ -229,7 +229,7 @@ const ActivityTable = ({ tick, fetchMarketplaceOrdersData, seller }: Props) => {
                       Cancel
                     </Button>
                   ) : seller && item.status === OrderStatus.PENDING ? (
-                    <Button variant="outlined" color="secondary" size="small">
+                    <Button variant="outlined" color="secondary" size="small" onClick={() => handleCancel(item, i)}>
                       Refund
                     </Button>
                   ) : (
