@@ -92,7 +92,7 @@ export const MarketplaceTokenListItem = ({ item }: Props) => {
         <div className={css.cardBody}>{item.amount.toLocaleString()}</div>
         <ListItem>
           <ListItemText primary={`ETH ${fromWei(item.price)}`} />
-          {`$ ${+item.amountUsd}`}
+          {`$ ${+parseFloat(item.amountUsd.toFixed(6).toString())}`}
         </ListItem>
         {/* <Typography align="center">{`Total:  ETH ${fromWei(totalPrice.toString())}`}</Typography> */}
         <div className={css.cardFooter}>
