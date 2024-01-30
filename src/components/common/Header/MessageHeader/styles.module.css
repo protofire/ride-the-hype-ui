@@ -1,0 +1,51 @@
+.container {
+    background-color: black;
+    color: var(--color-background-paper);
+    padding: 10px;
+    border-radius: 0;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .bannerButton {
+    background: linear-gradient(to right, var(--color-primary-main), #D639F9);
+    color: var(--color-background-paper);
+    border: none;
+    border-radius: 36px; 
+    margin-right: var(--space-2);
+    font-size: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+
+  .bannerDigit {
+    background: linear-gradient(to right, var(--color-primary-main), #D639F9);
+    color: var(--color-background-paper);
+    border: none;
+    /* border-radius: 36px;  */
+    /* margin-right: var(--space-2); */
+    font-size: 14px;
+    /* padding-top: 5px;
+    padding-bottom: 5px; */
+    width: 34px;
+    height: 34px;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    display:flex
+  }
+
+
+
+  .bannerText {
+    margin-right:  var(--space-4);
+    margin-left:  var(--space-4);
+    font-size: 14px;
+  }
+
+  .digitText {
+    align-self: center;
+    font-size: 10px;
+  }
