@@ -1,4 +1,4 @@
-const siwe = require('siwe')
+import * as siwe from 'siwe'
 
 export const marketplaceDomainEIP712 = (chainId: string, marketplace?: string) => {
   return {
@@ -31,7 +31,7 @@ export function createSiweMessage(address: string, statement: string, chainId: s
     statement,
     uri: window.location.origin,
     version: '1',
-    chainId: chainId,
+    chainId: +chainId,
     nonce: nonce,
   })
   return siweMessage.prepareMessage()
