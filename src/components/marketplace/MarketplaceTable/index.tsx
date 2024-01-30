@@ -8,6 +8,7 @@ import type { MarketplaceList } from '~/services/indexer-api/modules/marketplace
 import { Button, ButtonGroup } from '@mui/material'
 import { AppRoutes } from '~/config/routes'
 import { useCurrentChain } from '~/hooks/useChains'
+import { fromWei } from 'web3-utils'
 
 const PAGE_SIZE = 5
 
@@ -80,7 +81,11 @@ const MarketplaceTable = ({ fetchMarketplaceData }: Props) => {
         },
         volume: {
           rawValue: item.volume24h,
-          content: <Typography>{`ETH ${showAll ? item.volumeAll.toString() : item.volume24h.toString()}`}</Typography>,
+          content: (
+            <Typography>{`ETH ${
+              showAll ? fromWei(item.volumeAll.toString()) : fromWei(item.volume24h.toString())
+            }`}</Typography>
+          ),
         },
         sales: {
           rawValue: item.sales24h,

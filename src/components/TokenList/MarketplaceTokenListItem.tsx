@@ -3,6 +3,7 @@ import CheckWallet from '~/components/common/CheckWallet'
 import css from './styles.module.css'
 import { CircularProgress, ListItem, ListItemText, Snackbar, Stack, Typography } from '@mui/material'
 import type { MarketplaceOrderExtended } from '~/services/indexer-api/modules/marketplace/types'
+import { fromWei } from 'web3-utils'
 import EthHashInfo from '../common/EthHashInfo'
 import Link from 'next/link'
 import { useCurrentChain } from '~/hooks/useChains'
@@ -98,7 +99,7 @@ export const MarketplaceTokenListItem = ({ item }: Props) => {
         </div>
         <div className={css.cardBody}>{item.amount.toLocaleString()}</div>
         <ListItem>
-          <ListItemText primary={`ETH ${item.price}`} />
+          <ListItemText primary={`ETH ${fromWei(item.price)}`} />
           {`$ ${+parseFloat(item.amountUsd.toFixed(6).toString())}`}
         </ListItem>
         {/* <Typography align="center">{`Total:  ETH ${fromWei(totalPrice.toString())}`}</Typography> */}
@@ -126,7 +127,7 @@ export const MarketplaceTokenListItem = ({ item }: Props) => {
                         onClick={() => handleBuy(item)}
                         variant="contained"
                       >
-                        {disabled ? 'BOUGHT' : `ETH ${totalPrice.toString()}`}
+                        {disabled ? 'BOUGHT' : `ETH ${fromWei(totalPrice.toString())}`}
                       </Button>
                       {/* <IconButton disabled color="primary">
                         <AddShoppingCartIcon />

@@ -8,6 +8,7 @@ import EnhancedTable from '~/components/common/EnhancedTable'
 import type { MarketplaceOrderExtended, MarketplaceOrderList } from '~/services/indexer-api/modules/marketplace/types'
 import EthHashInfo from '~/components/common/EthHashInfo'
 import { OrderStatus, type OrderParams } from '~/services/indexer-api/types'
+import { fromWei } from 'web3-utils'
 import Link from 'next/link'
 import { Box, Button, CircularProgress, Skeleton, Snackbar, useTheme } from '@mui/material'
 import { useCurrentChain } from '~/hooks/useChains'
@@ -230,7 +231,7 @@ const ActivityTable = ({ tick, fetchMarketplaceOrdersData, seller }: Props) => {
         },
         price: {
           rawValue: item.price,
-          content: <Typography>{`ETH ${item.price}`}</Typography>,
+          content: <Typography>{`ETH ${fromWei(item.price)}`}</Typography>,
         },
         amount: {
           rawValue: item.amount,
@@ -238,7 +239,7 @@ const ActivityTable = ({ tick, fetchMarketplaceOrdersData, seller }: Props) => {
         },
         total: {
           rawValue: +item.amount * +item.price,
-          content: <Typography>{`ETH ${+item.amount * +item.price}`}</Typography>,
+          content: <Typography>{`ETH ${fromWei((+item.amount * +item.price).toString())}`}</Typography>,
         },
         seller: {
           rawValue: item.seller,
