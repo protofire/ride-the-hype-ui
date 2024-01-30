@@ -18,6 +18,7 @@ import { createSiweMessage } from '~/utils/signing'
 import { IndexerApiService } from '~/services/indexer-api'
 import { defaultAbiCoder } from 'ethers/lib/utils'
 import { ORDER_TYPE, CANCEL_ORDER_ID } from '~/utils/web3Types'
+import CheckWallet from '~/components/common/CheckWallet'
 
 const headCells = [
   // {
@@ -54,7 +55,7 @@ const headCells = [
   },
   {
     id: 'time',
-    label: 'Time',
+    label: 'Listing Time',
   },
 ]
 
@@ -79,6 +80,7 @@ interface Props {
 type ButtonAction = {
   [key: number]: boolean
 }
+const SOLIDITY_MONTH = 2592000
 
 const ActivityTable = ({ tick, fetchMarketplaceOrdersData, seller }: Props) => {
   const currentChain = useCurrentChain()
@@ -100,7 +102,7 @@ const ActivityTable = ({ tick, fetchMarketplaceOrdersData, seller }: Props) => {
     setSnackMessage(undefined)
   }
 
-  const handleCancel = async (item: MarketplaceOrderExtended, index: number) => {
+  const handleCancel = async (item: MarketplaceOrderExtended, index: number, isRefund = false) => {
     if (!onboard || !currentChain) {
       console.log('Please check you wallet')
       return
@@ -125,6 +127,11 @@ const ActivityTable = ({ tick, fetchMarketplaceOrdersData, seller }: Props) => {
         salt: item.salt,
       }
 
+      if (isRefund) {
+        const timestamp = await indexerApiService.tokensModule.getTimestamp()
+        inputData.expirationTime = +timestamp.timestamp + SOLIDITY_MONTH
+      }
+
       const nonce = await indexerApiService.tokensModule.getAddressNonce(address)
       const message = createSiweMessage(
         address,
@@ -138,25 +145,15 @@ const ActivityTable = ({ tick, fetchMarketplaceOrdersData, seller }: Props) => {
       const { r, s, v } = await indexerApiService.tokensModule.signCancelOrder(inputData, message, signature)
 
       const cancelOrder = {
-        seller: item.seller,
-        creator: item.creator,
-        listId: item.listId,
-        ticker: item.ticker,
-        amount: item.amount,
-        price: item.price,
-        listingTime: item.listingTime,
-        expirationTime: item.expirationTime,
-        creatorFeeRate: item.creatorFeeRate,
-        salt: item.salt,
+        ...inputData,
         v: v,
         r: r,
         s: s,
       }
+
       const input = defaultAbiCoder.encode([ORDER_TYPE], [Object.values(cancelOrder)])
 
       const data = CANCEL_ORDER_ID + input.substring(2)
-
-      console.log({ data })
 
       const tx = {
         to: currentChain.marketplace,
@@ -253,8 +250,8 @@ const ActivityTable = ({ tick, fetchMarketplaceOrdersData, seller }: Props) => {
           rawValue: item.listingTime,
           content: (
             <>
-              {item.expirationTime && (
-                <Typography>{new Date(Number(item.expirationTime) * 1000).toLocaleString()}</Typography>
+              {item.listingTime > 0 && (
+                <Typography>{new Date(Number(item.listingTime) * 1000).toLocaleString()}</Typography>
               )}
             </>
           ),
@@ -268,19 +265,29 @@ const ActivityTable = ({ tick, fetchMarketplaceOrdersData, seller }: Props) => {
                   <CircularProgress />
                 </Box>
               ) : (
-                <>
-                  {seller && item.status === OrderStatus.LISTED ? (
-                    <Button variant="outlined" size="small" onClick={() => handleCancel(item, i)}>
-                      Cancel
-                    </Button>
-                  ) : seller && item.status === OrderStatus.PENDING ? (
-                    <Button variant="outlined" color="secondary" size="small" onClick={() => handleCancel(item, i)}>
-                      Refund
-                    </Button>
-                  ) : (
-                    <></>
+                <CheckWallet>
+                  {(isOk) => (
+                    <>
+                      {seller && item.status === OrderStatus.LISTED ? (
+                        <Button disabled={!isOk} variant="outlined" size="small" onClick={() => handleCancel(item, i)}>
+                          Cancel
+                        </Button>
+                      ) : seller && item.status === OrderStatus.PENDING ? (
+                        <Button
+                          disabled={!isOk}
+                          variant="outlined"
+                          color="secondary"
+                          size="small"
+                          onClick={() => handleCancel(item, i, true)}
+                        >
+                          Refund
+                        </Button>
+                      ) : (
+                        <></>
+                      )}
+                    </>
                   )}
-                </>
+                </CheckWallet>
               )}
             </>
           ),
