@@ -1,11 +1,11 @@
 import type { ReactElement } from 'react'
 import React, { useState, useEffect } from 'react'
-import { Stack, Box, CircularProgress, useMediaQuery, useTheme } from '@mui/material'
+import { Stack, Box, CircularProgress, useMediaQuery, useTheme, Typography } from '@mui/material'
 import css from './styles.module.css'
 
 const LAUNCH_TIMESTAMP = 1706778000000
 
-const CountdownTimer = (): ReactElement => {
+const MobileCountdownTimer = (): ReactElement => {
   const [timeRemaining, setTimeRemaining] = useState<number>(1)
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
@@ -42,16 +42,18 @@ const CountdownTimer = (): ReactElement => {
   }
   const text = timeRemaining ? '> Marketplace is Launching Soon!' : 'Marketplace Has Been Launched!'
 
-  return !isMobile ? (
-    <Stack className={css.container} alignItems={'center'} direction={'row'}>
-      <span className={css.bannerText}>{text} </span>
-      <Stack direction="row" spacing={2}>
+  return isMobile ? (
+    <>
+      <Stack direction="row" spacing={2} justifyContent={'center'} justifyItems={'center'}>
         {timeRemaining > 0 && formatTime(timeRemaining)}
       </Stack>
-    </Stack>
+      <Typography color="secondary" align="center" fontSize={'10px'}>
+        {text}{' '}
+      </Typography>
+    </>
   ) : (
     <></>
   )
 }
 
-export default CountdownTimer
+export default MobileCountdownTimer
