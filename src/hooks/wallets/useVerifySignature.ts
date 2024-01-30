@@ -8,8 +8,10 @@ import type { AuthSignature } from '~/utils/signing'
 import { createSiweMessage, removeSignature, retrieveSignature, storeSignature } from '~/utils/signing'
 import type { ChainInfo } from '~/types'
 import useOnboard from './useOnboard'
+import { setAuthStatus } from '~/store/authSlice'
+import { useAppDispatch } from '~/store'
 
-enum SignStatus {
+export enum SignStatus {
   IDLE,
   PENDING,
   COMPLETED,
@@ -21,11 +23,13 @@ export const useVerifySignature = () => {
   const chainId = chain?.chainId
   const onboard = useOnboard()
   const wallet = useWallet()
-  const [signatureStatus, setSignatureStatus] = useState<SignStatus>(SignStatus.IDLE)
+  const dispatch = useAppDispatch()
+  const [pendingSignature, setPending] = useState(false)
 
   useEffect(() => {
-    if (wallet && wallet.chainId === chainId && chain && signatureStatus !== SignStatus.PENDING) {
-      setSignatureStatus(SignStatus.PENDING)
+    if (wallet && wallet.chainId === chainId && chain && !pendingSignature) {
+      setPending(true)
+      dispatch(setAuthStatus(SignStatus.PENDING))
       const signature = retrieveSignature(wallet.address)
       if (!signature) {
         signAuth(wallet, chain).then((signed) => {
@@ -33,9 +37,11 @@ export const useVerifySignature = () => {
             onboard?.disconnectWallet({
               label: wallet.label,
             })
-            setSignatureStatus(SignStatus.COMPLETED)
+            setPending(false)
+            dispatch(setAuthStatus(SignStatus.ERROR))
           } else {
-            setSignatureStatus(SignStatus.ERROR)
+            setPending(false)
+            dispatch(setAuthStatus(SignStatus.COMPLETED))
           }
         })
       } else {
@@ -45,27 +51,16 @@ export const useVerifySignature = () => {
               label: wallet.label,
             })
             removeSignature(wallet.address)
-            setSignatureStatus(SignStatus.COMPLETED)
+            setPending(false)
+            dispatch(setAuthStatus(SignStatus.ERROR))
           } else {
-            setSignatureStatus(SignStatus.ERROR)
+            setPending(false)
+            dispatch(setAuthStatus(SignStatus.COMPLETED))
           }
         })
-        // setSignatureStatus(!verified)
-        // if (!verified) {
-        //   setWeb3ReadOnly(undefined)
-        // }
       }
     }
-  }, [wallet, chainId, chain, signatureStatus, onboard])
-
-  //   useEffect(() => {
-  //     if (!rpcUri) {
-  //       setWeb3ReadOnly(undefined)
-  //       return
-  //     }
-  //     const web3ReadOnly = createWeb3ReadOnly(rpcUri)
-  //     setWeb3ReadOnly(web3ReadOnly)
-  //   }, [rpcUri])
+  }, [wallet, chainId, chain, onboard, dispatch, pendingSignature])
 }
 
 const signAuth = async (wallet: ConnectedWallet, chain: ChainInfo) => {

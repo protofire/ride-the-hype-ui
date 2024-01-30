@@ -14,11 +14,13 @@ import { chainsSlice } from './chainsSlice'
 import { sessionSlice } from './sessionSlice'
 import { balancesSlice } from '~/store/balancesSlice'
 import { getPreloadedState, persistState } from './persistStore'
+import { authSlice } from './authSlice'
 
 const rootReducer = combineReducers({
   [chainsSlice.name]: chainsSlice.reducer,
   [sessionSlice.name]: sessionSlice.reducer,
   [balancesSlice.name]: balancesSlice.reducer,
+  [authSlice.name]: authSlice.reducer,
 })
 
 const persistedSlices: (keyof PreloadedState<RootState>)[] = [sessionSlice.name]
