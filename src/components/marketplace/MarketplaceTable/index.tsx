@@ -81,11 +81,7 @@ const MarketplaceTable = ({ fetchMarketplaceData }: Props) => {
         },
         volume: {
           rawValue: item.volume24h,
-          content: (
-            <Typography>{`ETH ${
-              showAll ? fromWei(item.volumeAll.toString()) : fromWei(item.volume24h.toString())
-            }`}</Typography>
-          ),
+          content: <Typography>{`ETH ${showAll ? item.volumeAll.toString() : item.volume24h.toString()}`}</Typography>,
         },
         sales: {
           rawValue: item.sales24h,

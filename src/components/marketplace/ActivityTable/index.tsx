@@ -231,7 +231,7 @@ const ActivityTable = ({ tick, fetchMarketplaceOrdersData, seller }: Props) => {
         },
         price: {
           rawValue: item.price,
-          content: <Typography>{`ETH ${fromWei(item.price)}`}</Typography>,
+          content: <Typography>{`ETH ${item.price}`}</Typography>,
         },
         amount: {
           rawValue: item.amount,
@@ -239,7 +239,7 @@ const ActivityTable = ({ tick, fetchMarketplaceOrdersData, seller }: Props) => {
         },
         total: {
           rawValue: +item.amount * +item.price,
-          content: <Typography>{`ETH ${fromWei((+item.amount * +item.price).toString())}`}</Typography>,
+          content: <Typography>{`ETH ${+item.amount * +item.price}`}</Typography>,
         },
         seller: {
           rawValue: item.seller,
