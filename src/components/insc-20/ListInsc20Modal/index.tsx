@@ -116,8 +116,6 @@ const ListInsc20Modal = ({ open, onClose, tick, tokenData }: Props) => {
 
       await tx.wait()
 
-      console.log({ tx })
-
       setStatus(ListingStatus.SIGNING_TX)
       setActiveStep(1)
       const order: MarketplaceOrder = {
@@ -146,11 +144,8 @@ const ListInsc20Modal = ({ open, onClose, tick, tokenData }: Props) => {
         r: r,
         s: s,
       }
-
-      console.log({ createOrder })
       const createOrderResult = await indexerApiService.tokensModule.createOrder(createOrder)
 
-      console.log({ createOrderResult })
       setStatus(ListingStatus.COMPLETED)
       setActiveStep(0)
       setSnackMessage('Listing was successful!')

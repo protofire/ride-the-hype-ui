@@ -3,6 +3,7 @@ import Head from 'next/head'
 import { useSearchParams } from 'next/navigation'
 import { useCallback } from 'react'
 import LocalNavHeader from '~/components/LocalNavHeader'
+import { ConnectWalletPaper } from '~/components/common/ConnectWallet/ConnectWalletPaper'
 import ActivityTable from '~/components/marketplace/ActivityTable'
 // import { ListedScroll } from '~/components/marketplace/ListedInscription'
 import { ListedToken } from '~/components/marketplace/ListedToken'
@@ -37,14 +38,17 @@ const MarketplaceTokenPage: NextPage = () => {
 
   const navContent: JSX.Element[] = [
     <ListedToken key={0} tick={ticker ?? ''} fetchMarketplaceOrdersData={fetchMarketplaceOrdersData} />,
-    // <ListedScroll key={1} ticker={ticker ?? ''} />,
     <ActivityTable key={1} tick={ticker ?? ''} fetchMarketplaceOrdersData={fetchMarketplaceOrdersData} />,
-    <ActivityTable
-      key={2}
-      tick={ticker ?? ''}
-      seller={wallet?.address}
-      fetchMarketplaceOrdersData={fetchMarketplaceOrdersData}
-    />,
+    wallet?.address ? (
+      <ActivityTable
+        key={2}
+        tick={ticker ?? ''}
+        seller={wallet?.address}
+        fetchMarketplaceOrdersData={fetchMarketplaceOrdersData}
+      />
+    ) : (
+      <ConnectWalletPaper />
+    ),
   ]
 
   return (
