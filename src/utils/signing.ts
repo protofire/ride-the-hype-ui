@@ -25,7 +25,12 @@ export const marketplaceTypesEIP712 = {
 }
 
 export function createSiweMessage(address: string, statement: string, chainId: string, nonce: string) {
-  const siweMessage = new siwe.SiweMessage({
+  const siweMessage = createSiweObject(address, statement, chainId, nonce)
+  return siweMessage.prepareMessage()
+}
+
+export function createSiweObject(address: string, statement: string, chainId: string, nonce: string) {
+  return new siwe.SiweMessage({
     domain: window.location.host,
     address,
     statement,
@@ -34,5 +39,25 @@ export function createSiweMessage(address: string, statement: string, chainId: s
     chainId: +chainId,
     nonce: nonce,
   })
-  return siweMessage.prepareMessage()
+}
+
+export type AuthSignature = {
+  message: string
+  signature: string
+}
+export function storeSignature(address: string, signature: AuthSignature) {
+  const signatures = JSON.parse(localStorage.getItem('signature') || '{}')
+  signatures[address] = signature
+  localStorage.setItem('signature', JSON.stringify(signatures))
+}
+
+export function retrieveSignature(address: string): AuthSignature {
+  const signatures = JSON.parse(localStorage.getItem('signature') || '{}')
+  return signatures[address] ?? undefined
+}
+
+export function removeSignature(address: string) {
+  const signatures = JSON.parse(localStorage.getItem('signature') || '{}')
+  delete signatures[address]
+  localStorage.setItem('signature', JSON.stringify(signatures))
 }
