@@ -116,13 +116,13 @@ export const MarketplaceTokenListItem = ({ item }: Props) => {
                     <Stack width="100%" alignItems="center" justifyContent="center" direction="row" spacing={2}>
                       <CircularProgress />
                       <Typography variant="body2" color="primary">
-                        {'Initiating...'}
+                        {'In progress...'}
                       </Typography>
                     </Stack>
                   ) : (
                     <Stack direction={'row'} spacing={2}>
                       <Button
-                        disabled={disabled}
+                        disabled={disabled || !isOk}
                         endIcon={<AddShoppingCartIcon />}
                         onClick={() => handleBuy(item)}
                         variant="contained"
