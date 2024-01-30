@@ -8,7 +8,6 @@ import type { MarketplaceList } from '~/services/indexer-api/modules/marketplace
 import { Button, ButtonGroup } from '@mui/material'
 import { AppRoutes } from '~/config/routes'
 import { useCurrentChain } from '~/hooks/useChains'
-import { fromWei } from 'web3-utils'
 
 const PAGE_SIZE = 5
 
