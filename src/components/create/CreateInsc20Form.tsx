@@ -17,6 +17,7 @@ import { getAssertedChainSigner } from '~/utils/wallets'
 //import { ZERO_ADDRESS } from '~/config/constants'
 import type { TransactionResponse } from '@ethersproject/abstract-provider'
 import EthHashInfo from '~/components/common/EthHashInfo'
+import CheckWallet from '../common/CheckWallet'
 
 export enum FormField {
   tick = 'tick',
@@ -327,10 +328,13 @@ export const CreateInsc20Form = () => {
               {tx !== undefined ? (
                 <EthHashInfo address={tx.hash} showAvatar={false} showCopyButton hasExplorer />
               ) : null}
-
-              <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
-                Deploy
-              </Button>
+              <CheckWallet>
+                {(isOk) => (
+                  <Button disabled={!isOk} type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
+                    Deploy
+                  </Button>
+                )}
+              </CheckWallet>
             </form>
           </FormProvider>
         </Grid>

@@ -261,12 +261,6 @@ const ListInsc20Modal = ({ open, onClose, tick, tokenData }: Props) => {
                 </Stepper>
               </Box>
             ) : (
-              // <Stack width="100%" alignItems="center" justifyContent="center" direction="row" spacing={2}>
-              //   <CircularProgress />
-              //   <Typography variant="body2" color="primary">{`${status.toUpperCase()}... ${
-              //     status !== ListingStatus.COMPLETED && 'PLEASE DO NOT CLOSE THE WINDOW'
-              //   }`}</Typography>
-              // </Stack>
               <>
                 <Button onClick={handleClose}>Cancel</Button>
                 <Button type="submit" variant="contained" disabled={!isValid}>

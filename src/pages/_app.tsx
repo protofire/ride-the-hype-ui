@@ -15,12 +15,14 @@ import { useInitOnboard } from '~/hooks/wallets/useOnboard'
 import { useInitSession } from '~/hooks/useInitSession'
 import { useInitWeb3 } from '~/hooks/wallets/useInitWeb3'
 import useLoadableStores from '~/hooks/useLoadableStores'
+import { useVerifySignature } from '~/hooks/wallets/useVerifySignature'
 
 const InitApp = (): null => {
   useInitSession()
   useLoadableStores()
   useInitOnboard()
   useInitWeb3()
+  useVerifySignature()
 
   return null
 }
