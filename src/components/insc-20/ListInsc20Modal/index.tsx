@@ -68,12 +68,11 @@ const ListInsc20Modal = ({ open, onClose, tick, tokenData }: Props) => {
   const currentChain = useCurrentChain()
   const onboard = useOnboard()
   const chainId = currentChain?.chainId
-  // const [tx, setTx] = useState<TransactionResponse | undefined>()
   const [status, setStatus] = useState<ListingStatus>(ListingStatus.IDLE)
   const [activeStep, setActiveStep] = useState(0)
   const [snackMessage, setSnackMessage] = useState<string | undefined>()
 
-  console.log(status)
+  const [pendingOrder, setPendingOrder] = useState<MarketplaceOrder | undefined>()
 
   const domain = marketplaceDomainEIP712(chainId ?? '1337', currentChain?.marketplace)
 
@@ -99,37 +98,45 @@ const ListInsc20Modal = ({ open, onClose, tick, tokenData }: Props) => {
 
       const listingDateUnix = await indexerApiService.tokensModule.getTimestamp()
 
-      const txData = {
-        p: `${currentChain.inscriptionPrefix}-20`,
-        op: 'list',
-        tick: tick,
-        amt: data.amount.toString(),
+      let order: MarketplaceOrder
+
+      if (!pendingOrder) {
+        const txData = {
+          p: `${currentChain.inscriptionPrefix}-20`,
+          op: 'list',
+          tick: tick,
+          amt: data.amount.toString(),
+        }
+
+        const dataHex = toHex('data:,' + JSON.stringify(txData))
+
+        const tx = await signer.sendTransaction({
+          to: currentChain?.marketplace,
+          value: 0,
+          data: dataHex,
+        })
+
+        //await tx.wait()
+
+        setStatus(ListingStatus.SIGNING_TX)
+        setActiveStep(1)
+        order = {
+          seller: address,
+          creator: currentChain?.marketplace || ZERO_ADDRESS,
+          listId: tx.hash,
+          ticker: tick,
+          amount: data.amount.toString(),
+          price: toWei(data.price.toString(), 'ether'),
+          listingTime: +listingDateUnix.timestamp,
+          expirationTime: +listingDateUnix.timestamp + +data.expiration,
+          creatorFeeRate: 200,
+          salt: MOCK_SALT,
+        }
+        setPendingOrder(order)
+      } else {
+        order = pendingOrder
       }
 
-      const dataHex = toHex('data:,' + JSON.stringify(txData))
-
-      const tx = await signer.sendTransaction({
-        to: currentChain?.marketplace,
-        value: 0,
-        data: dataHex,
-      })
-
-      //await tx.wait()
-
-      setStatus(ListingStatus.SIGNING_TX)
-      setActiveStep(1)
-      const order: MarketplaceOrder = {
-        seller: address,
-        creator: currentChain?.marketplace || ZERO_ADDRESS,
-        listId: tx.hash,
-        ticker: tick,
-        amount: data.amount.toString(),
-        price: toWei(data.price.toString(), 'ether'),
-        listingTime: +listingDateUnix.timestamp,
-        expirationTime: +listingDateUnix.timestamp + +data.expiration,
-        creatorFeeRate: 200,
-        salt: MOCK_SALT,
-      }
       const signature = await signer._signTypedData(domain, marketplaceTypesEIP712, order)
 
       const r = signature.slice(0, 66)
@@ -144,7 +151,7 @@ const ListInsc20Modal = ({ open, onClose, tick, tokenData }: Props) => {
         r: r,
         s: s,
       }
-      const createOrderResult = await indexerApiService.tokensModule.createOrder(createOrder)
+      await indexerApiService.tokensModule.createOrder(createOrder)
 
       setStatus(ListingStatus.COMPLETED)
       setActiveStep(0)
@@ -156,7 +163,6 @@ const ListInsc20Modal = ({ open, onClose, tick, tokenData }: Props) => {
       setSnackMessage('Something went wrong.')
       console.error(e)
     }
-    // setLoading(false)
   }
 
   const amount = watch('amount')
@@ -202,6 +208,7 @@ const ListInsc20Modal = ({ open, onClose, tick, tokenData }: Props) => {
                 inputProps={{
                   min: 1,
                   max: tokenData.amount,
+                  readOnly: activeStep > 0,
                 }}
                 {...register('amount', {
                   required: true,
@@ -216,6 +223,7 @@ const ListInsc20Modal = ({ open, onClose, tick, tokenData }: Props) => {
                   step: 0.000000000000000001,
                   min: 0,
                   type: 'number',
+                  readOnly: activeStep > 0,
                 }}
                 {...register('price', {
                   required: true,
@@ -264,7 +272,7 @@ const ListInsc20Modal = ({ open, onClose, tick, tokenData }: Props) => {
               <>
                 <Button onClick={handleClose}>Cancel</Button>
                 <Button type="submit" variant="contained" disabled={!isValid}>
-                  List
+                  {status !== ListingStatus.IDLE ? 'Retry' : 'List'}
                 </Button>
               </>
             )}
