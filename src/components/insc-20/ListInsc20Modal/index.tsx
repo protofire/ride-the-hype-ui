@@ -114,7 +114,7 @@ const ListInsc20Modal = ({ open, onClose, tick, tokenData }: Props) => {
         data: dataHex,
       })
 
-      await tx.wait()
+      //await tx.wait()
 
       setStatus(ListingStatus.SIGNING_TX)
       setActiveStep(1)
