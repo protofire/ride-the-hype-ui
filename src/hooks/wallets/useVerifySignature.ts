@@ -10,7 +10,6 @@ import type { ChainInfo } from '~/types'
 import useOnboard from './useOnboard'
 import { setAuthStatus } from '~/store/authSlice'
 import { useAppDispatch } from '~/store'
-import { chainsConfiguration } from '~/config/chains'
 
 export enum SignStatus {
   IDLE,
@@ -70,8 +69,7 @@ const signAuth = async (wallet: ConnectedWallet, chain: ChainInfo) => {
     const address = wallet.address
     const chainId = wallet.chainId
 
-    //TODO: remove temp usage of a supported chain in API: OP Sepolia Testnet
-    const indexerApiService = await IndexerApiService.getInstance(chainsConfiguration[2])
+    const indexerApiService = await IndexerApiService.getInstance(chain)
     const nonce = await indexerApiService.tokensModule.getAddressNonce(address)
     const message = createSiweMessage(address, AUTH_MESSAGE, chainId, nonce.nonce)
 

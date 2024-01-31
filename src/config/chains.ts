@@ -42,10 +42,12 @@ const chainsConfiguration: ChainInfo[] = [
     },
     apiUri: {
       value:
-        process.env.NEXT_PUBLIC_IS_PRODUCTION === 'true'
-          ? 'https://api.optiscriptions.io/'
-          : 'https://api.stg.optiscriptions.io',
+        // process.env.NEXT_PUBLIC_IS_PRODUCTION === 'true'
+        // ? 'https://api.optiscriptions.io/'
+        // :
+        'https://api.stg.optiscriptions.io',
     },
+    marketplace: '',
   },
 
   {
