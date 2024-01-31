@@ -59,12 +59,12 @@ const chainsConfiguration: ChainInfo[] = [
       name: 'Ether',
       symbol: 'ETH',
       decimals: 18,
-      logoUri: 'https://safe-astar-static-assets.s3.amazonaws.com/chains/1261120/currency_logo.png',
+      logoUri: 'https://assets.coingecko.com/coins/images/279/standard/ethereum.png?1696501628',
     },
     blockExplorerUriTemplate: {
-      address: 'https://zkatana.blockscout.com/address/{{address}}',
-      txHash: 'https://zkatana.blockscout.com/tx/{{txHash}}',
-      api: 'https://zkatana.blockscout.com/api?module={{module}}&action={{action}}&address={{address}}&apiKey={{apiKey}}',
+      address: 'https://sepolia-optimism.etherscan.io/address/{{address}}',
+      txHash: 'https://sepolia-optimism.etherscan.io/tx/{{txHash}}',
+      api: 'https://sepolia-optimism.etherscan.io/api?module={{module}}&action={{action}}&address={{address}}&apiKey={{apiKey}}',
     },
     disabledWallets: ['trust', 'coinbase', 'ledger', 'trezor', 'keystone', 'walletConnect_v2', 'NONE'],
     ensRegistryAddress: null,
@@ -79,9 +79,9 @@ const chainsConfiguration: ChainInfo[] = [
       backgroundColor: '#000000',
     },
     apiUri: {
-      value: 'http://localhost:3000',
+      value: 'http://localhost:3001',
     },
-    marketplace: '0xC5e9B56E119aC55e807098E6A12B01f7a69d6964',
+    marketplace: '0x688e4229c7FA174eBC990d504522Ab04CBEef6eC',
   },
   {
     chainId: '11155420',
@@ -116,7 +116,7 @@ const chainsConfiguration: ChainInfo[] = [
     apiUri: {
       value: 'https://api-test.stg.optiscriptions.io/',
     },
-    marketplace: '0x83ce3BE37bB624eb7D0077590cE5cBe73846109a',
+    marketplace: '0x688e4229c7FA174eBC990d504522Ab04CBEef6eC',
   },
 ]
 
