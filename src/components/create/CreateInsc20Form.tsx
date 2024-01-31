@@ -52,6 +52,7 @@ export const CreateInsc20Form = () => {
     },
   })
   const {
+    trigger,
     register,
     handleSubmit,
     setValue,
@@ -226,6 +227,9 @@ export const CreateInsc20Form = () => {
               <TextField
                 {...register(FormField.limitPerMint, {
                   required: 'Limit per mint can not be empty',
+                  onChange: (e) => {
+                    trigger(FormField.limitPerAddress)
+                  },
                 })}
                 variant="outlined"
                 type="number"
@@ -267,6 +271,9 @@ export const CreateInsc20Form = () => {
               <TextField
                 {...register(FormField.limitPerAddress, {
                   required: 'Limit per address can not be empty',
+                  onChange: (e) => {
+                    trigger(FormField.totalSupply)
+                  },
                   validate: (value) =>
                     tokenAmountHigher('"Max limit per address"', +value, '"Limit per Mint"', +getValues().limitPerMint),
                 })}
