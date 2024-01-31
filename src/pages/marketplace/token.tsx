@@ -30,6 +30,9 @@ const MarketplaceTokenPage: NextPage = () => {
 
   const fetchMarketplaceOrdersData = useCallback(
     async (params: OrderParams): Promise<MarketplaceOrderList> => {
+      if (!params.tick) {
+        return { list: [], count: 0 }
+      }
       const indexerApiService = IndexerApiService.getInstance(currentChain)
       return indexerApiService.tokensModule.getMarketplaceDataByTick(params)
     },
