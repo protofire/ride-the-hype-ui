@@ -4,6 +4,10 @@ import FireBadge from '~/public/images/badges/on-fire-badge.png'
 import Hot24hBadge from '~/public/images/badges/hot-24h-badge.png'
 import DecentralizedBadge from '~/public/images/badges/decentralized-badge.png'
 
+export interface KnownBadges {
+  [key: string]: { [key: string]: Badge[] }
+}
+
 export enum Badge {
   GOLDEN_BADGE = 'Golden Badge',
   SILVER_BADGE = 'Silver Badge',
@@ -19,11 +23,15 @@ export const BADGE_CONFIG = {
   [Badge.FIRE_BADGE]: { description: 'On Fire! Most transactions within the last hour', icon: FireBadge },
   [Badge.DECENTRALIZED_BADGE]: { description: 'Decentralized! Largest number of holders', icon: DecentralizedBadge },
 }
-export interface KnownBadges {
-  [key: string]: Badge[]
-}
 
 export const KNOWN_BADGES: KnownBadges = {
-  osct: [Badge.GOLDEN_BADGE],
-  opti: [Badge.SILVER_BADGE],
+  '10': {
+    osct: [Badge.GOLDEN_BADGE],
+    opti: [Badge.SILVER_BADGE],
+  },
+}
+
+export function retrieveKnownBadges(chainId: string, tick: string): Badge[] {
+  const chainConfig = KNOWN_BADGES[chainId]
+  return chainConfig && chainConfig[tick] ? chainConfig[tick] : []
 }
