@@ -169,6 +169,7 @@ const ListInsc20Modal = ({ open, onClose, tick, tokenData }: Props) => {
   const price = watch('price')
   const SOLIDITY_MONTH = 2592000
   const SOLIDITY_YEAR = 31556952
+  const FEE = 200
 
   const handleClose = () => {
     reset()
@@ -248,11 +249,14 @@ const ListInsc20Modal = ({ open, onClose, tick, tokenData }: Props) => {
               </ListItem>
               <ListItem>
                 <ListItemText primary="Service Fee" />
-                <Typography>2%</Typography>
+                <Typography>{`${FEE / 100}%`}</Typography>
               </ListItem>
               <ListItem>
                 <ListItemText primary="Total revenue" />
-                <Typography>{`${parseFloat((amount * price).toFixed(6).toString())} ETH`}</Typography>
+                <Typography>{`${parseFloat(
+                  // eslint-disable-next-line prettier/prettier
+                  (amount * price * (( 10000 - FEE ) / 10000)).toFixed(6).toString(),
+                )} ETH`}</Typography>
               </ListItem>
             </div>
           </DialogContent>
