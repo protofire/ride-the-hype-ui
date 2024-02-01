@@ -7,7 +7,7 @@ import SideDrawer from './SideDrawer'
 import Header from '~/components/common/Header'
 import useDebounce from '~/hooks/useDebounce'
 import Footer from '../Footer'
-import CountdownTimer from '../Header/MessageHeader/CountDown'
+// import CountdownTimer from '../Header/MessageHeader/CountDown'
 
 const PageLayout = ({ children }: { pathname: string; children: ReactElement }): ReactElement => {
   const router = useRouter()
@@ -23,7 +23,7 @@ const PageLayout = ({ children }: { pathname: string; children: ReactElement }):
     <>
       <header className={css.header}>
         <Header onMenuToggle={noSidebar ? undefined : setSidebarOpen} />
-        <CountdownTimer />
+        {/* <CountdownTimer /> */}
       </header>
 
       {!noSidebar && <SideDrawer isOpen={isSidebarOpen} onToggle={setSidebarOpen} />}
