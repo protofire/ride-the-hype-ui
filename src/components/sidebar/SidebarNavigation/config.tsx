@@ -1,12 +1,13 @@
 import type { ReactElement } from 'react'
 import React from 'react'
 import { AppRoutes } from '~/config/routes'
-import CreateIcon from '~/public/images/sidebar/create.svg'
-import RecentIcon from '~/public/images/sidebar/recent.svg'
-import PersonalIcon from '~/public/images/sidebar/personal.svg'
+// import CreateIcon from '~/public/images/sidebar/create.svg'
+// import RecentIcon from '~/public/images/sidebar/recent.svg'
+// import PersonalIcon from '~/public/images/sidebar/personal.svg'
 import { SvgIcon } from '@mui/material'
 import type { ListItemProps } from '@mui/material/ListItem/ListItem'
 import { FEATURES } from '~/types'
+import NewReleasesIcon from '@mui/icons-material/NewReleases'
 
 export type NavItem = {
   label: string
@@ -20,28 +21,28 @@ export type NavItem = {
 export const navItems: NavItem[] = [
   {
     label: 'Inscriptions',
-    icon: <SvgIcon component={RecentIcon} inheritViewBox />,
+    // icon: <SvgIcon component={RecentIcon} inheritViewBox />,
     href: AppRoutes.allInscriptions.index,
   },
   {
     label: 'Tokens',
-    icon: <SvgIcon component={RecentIcon} inheritViewBox />,
+    // icon: <SvgIcon component={RecentIcon} inheritViewBox />,
     href: AppRoutes.tokens.index,
   },
   {
     label: 'My Balance',
-    icon: <SvgIcon component={PersonalIcon} inheritViewBox />,
+    // icon: <SvgIcon component={PersonalIcon} inheritViewBox />,
     href: AppRoutes.wallet.index,
     listItemComponentProps: { divider: true },
   },
   {
     label: 'Inscribe',
-    icon: <SvgIcon component={CreateIcon} inheritViewBox />,
+    // icon: <SvgIcon component={CreateIcon} inheritViewBox />,
     href: AppRoutes.create.index,
   },
   {
     label: 'Marketplace',
-    icon: <SvgIcon component={CreateIcon} inheritViewBox />,
+    icon: <SvgIcon component={NewReleasesIcon} inheritViewBox />,
     href: AppRoutes.marketplace.index,
   },
 ]
