@@ -1,10 +1,11 @@
 import { Axios } from 'axios'
 
-import { DEFAULT_INDEXER_API_BASE_URL } from '~/config/constants'
 import { IndexerApiStatusSchema, InscriptionSchema, TransactionSchema } from '~/services/indexer-api/validators'
 import type { IndexerApiStatus, Inscription, PaginationQuery, Transaction } from '~/services/indexer-api/types'
 import { IndexerTokensModule } from '~/services/indexer-api/modules/indexer-tokens'
 import { transformAxiosResponse as transformResponse } from '~/utils'
+import { chainsConfiguration } from '~/config/chains'
+import type { ChainInfo } from '~/types'
 
 export class IndexerApiService {
   private static instances = new Map<string, IndexerApiService>()
@@ -19,8 +20,8 @@ export class IndexerApiService {
     this.tokensModule = new IndexerTokensModule(this.client)
   }
 
-  public static getInstance = (baseUrl: string = DEFAULT_INDEXER_API_BASE_URL): IndexerApiService => {
-    if (!baseUrl) throw new Error('baseUrl is required')
+  public static getInstance = (chain?: ChainInfo): IndexerApiService => {
+    const baseUrl = chain?.apiUri.value ?? chainsConfiguration[0].apiUri.value
 
     const existingInstance = IndexerApiService.instances.get(baseUrl)
     if (existingInstance === undefined) {

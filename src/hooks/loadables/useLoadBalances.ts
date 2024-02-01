@@ -6,21 +6,23 @@ import useIntervalCounter from '../useIntervalCounter'
 import useWallet from '~/hooks/wallets/useWallet'
 import { IndexerApiService } from '~/services/indexer-api'
 import type { Insc20Balance } from '~/services/indexer-api/types'
+import { useCurrentChain } from '../useChains'
 
 export const useLoadBalances = (): AsyncResult<{ insc20s: Insc20Balance[] }> => {
   const [pollCount, resetPolling] = useIntervalCounter(POLLING_INTERVAL)
   const wallet = useWallet()
+  const currentChain = useCurrentChain()
 
   // Re-fetch assets when the wallet address/chainId updates
   const [insc20s, error, loading] = useAsync<Insc20Balance[]>(
     () => {
       if (!wallet || !wallet.address) return
 
-      const indexerApiService = IndexerApiService.getInstance()
+      const indexerApiService = IndexerApiService.getInstance(currentChain)
       return indexerApiService.tokensModule.getUserHoldings(wallet.address, { limit: 100 })
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [wallet?.address, wallet?.chainId, pollCount],
+    [wallet?.address, wallet?.chainId, pollCount, currentChain],
     false, // don't clear data between polls
   )
 

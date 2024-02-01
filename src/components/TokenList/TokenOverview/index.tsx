@@ -8,8 +8,9 @@ import HoldersTable from '../HoldersTable'
 import TransactionsTable from '../TransactionsTable'
 import { MintButton } from '~/components/insc-20/Insc20List/MintButton'
 import type { Badge } from '~/config/badgeConfig'
-import { BADGE_CONFIG, KNOWN_BADGES } from '~/config/badgeConfig'
+import { BADGE_CONFIG, retrieveKnownBadges } from '~/config/badgeConfig'
 import Image from 'next/image'
+import { useCurrentChain } from '~/hooks/useChains'
 
 const listProperties = [
   {
@@ -74,6 +75,7 @@ interface Props {
 const labels = ['holders', 'transactions']
 
 const TokenOverview = ({ fetchToken, fetchHolders, fetchTransactions, ticker }: Props) => {
+  const currentChain = useCurrentChain()
   const [tokenData, error, loading] = useAsync(async () => {
     if (!!fetchToken && !!ticker) {
       try {
@@ -99,8 +101,9 @@ const TokenOverview = ({ fetchToken, fetchHolders, fetchTransactions, ticker }: 
           <Typography color="primary" textAlign={'center'} variant="h2">
             {'$' + ticker}
           </Typography>
-          {KNOWN_BADGES[ticker] &&
-            KNOWN_BADGES[ticker].map((badge, i) => (
+          {/* Known badges */}
+          {currentChain &&
+            retrieveKnownBadges(currentChain?.chainId, ticker).map((badge, i) => (
               <Tooltip key={i} title={BADGE_CONFIG[badge].description}>
                 <Image width={40} src={BADGE_CONFIG[badge].icon} alt={''} />
               </Tooltip>

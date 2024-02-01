@@ -2,6 +2,10 @@ export declare type RpcUri = {
   value: string
 }
 
+export declare type ApiUri = {
+  value: string
+}
+
 export declare type BlockExplorerUriTemplate = {
   address: string
   txHash: string
@@ -38,6 +42,8 @@ export declare type ChainInfo = {
   ensRegistryAddress?: string | null
   disabledWallets: string[]
   features: FEATURES[]
+  apiUri: ApiUri
+  marketplace?: string
 }
 
 export enum Insc20Filter {

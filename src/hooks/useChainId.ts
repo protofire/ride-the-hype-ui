@@ -6,7 +6,7 @@ import { selectSession } from '~/store/sessionSlice'
 import useWallet from './wallets/useWallet'
 import useChains from './useChains'
 
-const defaultChainId = IS_PRODUCTION ? chains.oeth : chains.oeth
+const defaultChainId = IS_PRODUCTION ? chains.oeth : chains.opsep
 
 export const useUrlChainId = (): string | undefined => {
   const queryParams = useParams()

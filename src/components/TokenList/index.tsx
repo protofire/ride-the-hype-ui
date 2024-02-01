@@ -10,16 +10,26 @@ import useBalances from '~/hooks/useBalances'
 import css from './styles.module.css'
 import useWallet from '~/hooks/wallets/useWallet'
 import ConnectWallet from '../common/ConnectWallet'
+import { useCurrentChain } from '~/hooks/useChains'
+import { marketplaceDomainEIP712 } from '~/utils/signing'
+import useOnboard from '~/hooks/wallets/useOnboard'
+import type { TransactionResponse } from '@ethersproject/abstract-provider'
 
 const PAGE_SIZE = 12
 
 export const TokenList = () => {
+  const onboard = useOnboard()
   const { balances, loading, error } = useBalances()
   const [page, setPage] = useState(1)
   const wallet = useWallet()
+  const [tx, setTx] = useState<TransactionResponse | undefined>()
 
   const visibleBalances = useMemo(() => balances.insc20s.slice(0, PAGE_SIZE * page), [balances.insc20s, page])
   const hasMore = visibleBalances.length % PAGE_SIZE === 0
+  const currentChain = useCurrentChain()
+  const chainId = currentChain?.chainId
+
+  const domain = marketplaceDomainEIP712(chainId ?? '1337')
 
   if (!wallet || !wallet.address)
     return (
@@ -46,9 +56,11 @@ export const TokenList = () => {
       {error ? <Typography>An error occurred during loading balances...</Typography> : null}
 
       {!loading && balances.insc20s.length === 0 ? (
-        <Paper sx={{ padding: 4, maxWidth: '1200px', m: '1rem auto', textAlign: 'center' }}>
-          <Typography>You don&apos;t have any OSC-20 yet</Typography>
-        </Paper>
+        <>
+          <Paper sx={{ padding: 4, maxWidth: '1200px', m: '1rem auto', textAlign: 'center' }}>
+            <Typography>You don&apos;t have any OSC-20 yet</Typography>
+          </Paper>
+        </>
       ) : null}
 
       <InfiniteScroll

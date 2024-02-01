@@ -1,11 +1,29 @@
 import z from 'zod'
 import type { Axios } from 'axios'
 
-import type { PaginationQuery, Transaction } from '~/services/indexer-api/types'
+import type { OrderParams, PaginationQuery, Transaction } from '~/services/indexer-api/types'
 import { TransactionSchema } from '~/services/indexer-api/validators'
 
 import { Insc20BalanceSchema, Insc20Schema, TokenHolderSchema } from './validators'
 import type { Insc20, Insc20Balance, TokenHolder, Insc20QueryFilter } from './types'
+
+import {
+  MarketplaceCreateOrderPayloadSchema,
+  MarketplaceListSchema,
+  MarketplaceOrderListSchema,
+  MarketplaceOrderPayloadSchema,
+  NonceSchema,
+  TimestampSchema,
+} from '../marketplace/validators/marketplace.schema'
+import type {
+  MarketplaceOrderPayload,
+  MarketplaceOrderCreatePayload,
+  MarketplaceList,
+  MarketplaceOrderList,
+  Timestamp,
+  Nonce,
+  MarketplaceOrder,
+} from '../marketplace/types'
 
 export class IndexerTokensModule {
   constructor(private client: Axios) {}
@@ -48,5 +66,59 @@ export class IndexerTokensModule {
     })
 
     return TransactionSchema.array().parseAsync(response.data)
+  }
+
+  public async getAddressNonce(address: string): Promise<Nonce> {
+    const response = await this.client.get(`api/v1/users/${address}/nonce`)
+
+    return NonceSchema.parseAsync(response.data)
+  }
+
+  public async signCancelOrder(
+    order: MarketplaceOrder,
+    message: string,
+    signature: string,
+  ): Promise<MarketplaceOrderPayload> {
+    const response = await this.client.post(
+      `api/v1/orders/cancel/sign`,
+      JSON.stringify({ order, message, signature }),
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    )
+    return MarketplaceOrderPayloadSchema.parseAsync(response.data)
+  }
+
+  public async createOrder(order: MarketplaceOrderPayload): Promise<MarketplaceOrderCreatePayload> {
+    const response = await this.client.post('api/v1/orders/create', JSON.stringify(order), {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    return MarketplaceCreateOrderPayloadSchema.parseAsync(response.data)
+  }
+
+  public async getMarketplaceData(params?: PaginationQuery): Promise<MarketplaceList> {
+    const response = await this.client.get(`api/v1/marketplace`, {
+      params,
+    })
+
+    return MarketplaceListSchema.parseAsync(response.data)
+  }
+
+  public async getMarketplaceDataByTick(params?: OrderParams): Promise<MarketplaceOrderList> {
+    const response = await this.client.get(`api/v1/orders`, {
+      params,
+    })
+
+    return MarketplaceOrderListSchema.parseAsync(response.data)
+  }
+
+  public async getTimestamp(): Promise<Timestamp> {
+    const response = await this.client.get('api/v1/timestamp')
+
+    return TimestampSchema.parseAsync(response.data)
   }
 }

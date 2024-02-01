@@ -13,9 +13,6 @@ import classNames from 'classnames'
 import css from './styles.module.css'
 import { Collapse } from '@mui/material'
 import InfiniteScroll from 'react-infinite-scroll-component'
-function delay(ms: number): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, ms))
-}
 
 type RegularCell = {
   content: ReactNode

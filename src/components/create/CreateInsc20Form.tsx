@@ -17,6 +17,7 @@ import { getAssertedChainSigner } from '~/utils/wallets'
 //import { ZERO_ADDRESS } from '~/config/constants'
 import type { TransactionResponse } from '@ethersproject/abstract-provider'
 import EthHashInfo from '~/components/common/EthHashInfo'
+import CheckWallet from '../common/CheckWallet'
 
 export enum FormField {
   tick = 'tick',
@@ -51,6 +52,7 @@ export const CreateInsc20Form = () => {
     },
   })
   const {
+    trigger,
     register,
     handleSubmit,
     setValue,
@@ -225,6 +227,9 @@ export const CreateInsc20Form = () => {
               <TextField
                 {...register(FormField.limitPerMint, {
                   required: 'Limit per mint can not be empty',
+                  onChange: (e) => {
+                    trigger(FormField.limitPerAddress)
+                  },
                 })}
                 variant="outlined"
                 type="number"
@@ -266,6 +271,9 @@ export const CreateInsc20Form = () => {
               <TextField
                 {...register(FormField.limitPerAddress, {
                   required: 'Limit per address can not be empty',
+                  onChange: (e) => {
+                    trigger(FormField.totalSupply)
+                  },
                   validate: (value) =>
                     tokenAmountHigher('"Max limit per address"', +value, '"Limit per Mint"', +getValues().limitPerMint),
                 })}
@@ -327,10 +335,13 @@ export const CreateInsc20Form = () => {
               {tx !== undefined ? (
                 <EthHashInfo address={tx.hash} showAvatar={false} showCopyButton hasExplorer />
               ) : null}
-
-              <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
-                Deploy
-              </Button>
+              <CheckWallet>
+                {(isOk) => (
+                  <Button disabled={!isOk} type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
+                    Deploy
+                  </Button>
+                )}
+              </CheckWallet>
             </form>
           </FormProvider>
         </Grid>

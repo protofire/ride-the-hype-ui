@@ -9,9 +9,6 @@ export const TREZOR_EMAIL = 'test@test.com'
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 
 export const DEFAULT_INDEXER_API_BASE_URL = process.env.NEXT_PUBLIC_INDEXER_API_BASE_URL || ''
-// process.env.NEXT_PUBLIC_INDEXER_API_BASE_URL || IS_PRODUCTION
-//   ? 'https://api.ioscriptions.io'
-//   : 'https://inscriptions-api.protofire.io'
 
 export const SOCIALS = {
   TWITTER: 'https://twitter.com/optiscriptions',

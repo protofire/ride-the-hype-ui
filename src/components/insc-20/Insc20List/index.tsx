@@ -19,11 +19,12 @@ import { Insc20Filter } from '~/types'
 import { MintButton } from './MintButton'
 import css from './styles.module.css'
 import type { Badge } from '~/config/badgeConfig'
-import { BADGE_CONFIG, KNOWN_BADGES } from '~/config/badgeConfig'
+import { BADGE_CONFIG, retrieveKnownBadges } from '~/config/badgeConfig'
 import { Tooltip } from '@mui/material'
 
 import Image from 'next/image'
 import EthHashInfo from '~/components/common/EthHashInfo'
+import { useCurrentChain } from '~/hooks/useChains'
 
 const PAGE_SIZE = 100
 
@@ -124,8 +125,10 @@ const Insc20List = () => {
 
   const [filter, setFilter] = useState<Insc20Filter>(Insc20Filter.ALL)
 
+  const currentChain = useCurrentChain()
+
   const [tokens, error, loading] = useAsync(async () => {
-    const indexerApiService = IndexerApiService.getInstance()
+    const indexerApiService = IndexerApiService.getInstance(currentChain)
     let finalData: EnhancedInsc20[] | [] = []
     let i = 1
     let loadedAll = false
@@ -150,7 +153,7 @@ const Insc20List = () => {
 
     return finalData
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, counter, filter])
+  }, [page, counter, filter, currentChain])
 
   // Add new tokens to the accumulated list
   // useEffect(() => {
@@ -194,8 +197,8 @@ const Insc20List = () => {
                 <Stack direction="row" alignContent={'center'} alignItems={'center'} spacing={1}>
                   <Typography>{item.tick}</Typography>
                   {/* Known badges */}
-                  {KNOWN_BADGES[item.tick] &&
-                    KNOWN_BADGES[item.tick].map((badge, i) => (
+                  {currentChain &&
+                    retrieveKnownBadges(currentChain?.chainId, item.tick).map((badge, i) => (
                       <Tooltip key={i} title={BADGE_CONFIG[badge].description}>
                         <Image width={40} src={BADGE_CONFIG[badge].icon} alt={''} />
                       </Tooltip>
@@ -207,11 +210,6 @@ const Insc20List = () => {
                         <Image width={40} src={BADGE_CONFIG[badge as Badge].icon} alt={''} />
                       </Tooltip>
                     ))}
-                  {/* {BADGE_CONFIG[item.badge as Badge] && (
-                    <Tooltip title={BADGE_CONFIG[item.badge as Badge].description}>
-                      <Image width={20} src={BADGE_CONFIG[item.badge as Badge].icon} alt={''} />
-                    </Tooltip>
-                  )} */}
                 </Stack>
               ),
             },

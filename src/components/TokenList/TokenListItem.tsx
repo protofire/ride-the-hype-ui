@@ -6,6 +6,8 @@ import TransferInsc20Modal from '~/components/insc-20/TransferInsc20Modal'
 import CheckWallet from '~/components/common/CheckWallet'
 
 import css from './styles.module.css'
+import { ButtonGroup } from '@mui/material'
+import ListInsc20Modal from '../insc-20/ListInsc20Modal'
 
 interface Props {
   item: Insc20Balance
@@ -13,6 +15,7 @@ interface Props {
 
 export const TokenListItem = ({ item }: Props) => {
   const [transferModalOpen, setTransferModalOpen] = useState<boolean>(false)
+  const [listModalOpen, setListModalOpen] = useState<boolean>(false)
 
   return (
     <>
@@ -26,9 +29,14 @@ export const TokenListItem = ({ item }: Props) => {
           <div className={css.actions}>
             <CheckWallet>
               {(isOk) => (
-                <Button className={css.button} onClick={() => setTransferModalOpen(true)} disabled={!isOk}>
-                  Transfer
-                </Button>
+                <ButtonGroup fullWidth>
+                  <Button className={css.button} onClick={() => setTransferModalOpen(true)} disabled={!isOk}>
+                    Transfer
+                  </Button>
+                  <Button className={css.button} onClick={() => setListModalOpen(true)} disabled={!isOk}>
+                    List
+                  </Button>
+                </ButtonGroup>
               )}
             </CheckWallet>
             {/* <button className={css.button}>List</button> */}
@@ -42,6 +50,7 @@ export const TokenListItem = ({ item }: Props) => {
         tick={item.tick}
         maxAmount={item.amount}
       />
+      <ListInsc20Modal open={listModalOpen} onClose={() => setListModalOpen(false)} tick={item.tick} tokenData={item} />
     </>
   )
 }
