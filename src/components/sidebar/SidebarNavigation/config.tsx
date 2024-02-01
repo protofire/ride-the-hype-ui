@@ -1,125 +1,55 @@
-import type { ReactElement } from 'react'
-import React from 'react'
-import { AppRoutes } from '~/config/routes'
-// import CreateIcon from '~/public/images/sidebar/create.svg'
-// import RecentIcon from '~/public/images/sidebar/recent.svg'
-// import PersonalIcon from '~/public/images/sidebar/personal.svg'
-import { SvgIcon } from '@mui/material'
-import type { ListItemProps } from '@mui/material/ListItem/ListItem'
-import { FEATURES } from '~/types'
-import NewReleasesIcon from '@mui/icons-material/NewReleases'
+import React, { type ReactElement } from 'react'
+import { useRouter } from 'next/router'
+import ListItem from '@mui/material/ListItem'
 
-export type NavItem = {
-  label: string
-  icon?: ReactElement
-  href: string
-  badge?: boolean
-  listItemComponentProps?: ListItemProps
-  featureName?: FEATURES
+import {
+  SidebarList,
+  SidebarListItemButton,
+  SidebarListItemIcon,
+  // SidebarListItemIcon,
+  SidebarListItemText,
+} from '~/components/sidebar/SidebarList'
+import { navItems } from './config'
+
+const getSubdirectory = (pathname: string): string => {
+  return pathname.split('/')[1]
 }
 
-export const navItems: NavItem[] = [
-  {
-    label: 'Inscriptions',
-    // icon: <SvgIcon component={RecentIcon} inheritViewBox />,
-    href: AppRoutes.allInscriptions.index,
-  },
-  {
-    label: 'Tokens',
-    // icon: <SvgIcon component={RecentIcon} inheritViewBox />,
-    href: AppRoutes.tokens.index,
-  },
-  {
-    label: 'My Balance',
-    // icon: <SvgIcon component={PersonalIcon} inheritViewBox />,
-    href: AppRoutes.wallet.index,
-    listItemComponentProps: { divider: true },
-  },
-  {
-    label: 'Inscribe',
-    // icon: <SvgIcon component={CreateIcon} inheritViewBox />,
-    href: AppRoutes.create.index,
-  },
-  {
-    label: 'Marketplace',
-    icon: <SvgIcon component={NewReleasesIcon} inheritViewBox />,
-    href: AppRoutes.marketplace.index,
-  },
-]
+const Navigation = (): ReactElement => {
+  const router = useRouter()
+  const currentSubdirectory = getSubdirectory(router.pathname)
 
-export const allInscriptionsNavItems: NavItem[] = [
-  {
-    label: 'OSC-20',
-    href: AppRoutes.allInscriptions.allInsc20,
-    featureName: FEATURES.INSC20,
-  },
-  {
-    label: 'IRC-721',
-    href: AppRoutes.allInscriptions.allInsc721,
-    featureName: FEATURES.INSC721,
-  },
-]
+  return (
+    <SidebarList>
+      {navItems.map((item) => {
+        const isSelected = currentSubdirectory === getSubdirectory(item.href)
 
-export const createNavItems = [
-  {
-    label: 'OSC-20',
-    href: AppRoutes.create.insc20,
-    featureName: FEATURES.INSC20,
-  },
-  {
-    label: 'IRC-721',
-    href: AppRoutes.create.insc721,
-    featureName: FEATURES.INSC721,
-  },
-  {
-    label: 'Custom',
-    href: AppRoutes.create.custom,
-    featureName: FEATURES.CUSTOM_INSC,
-  },
-]
+        return (
+          <ListItem key={item.href} disablePadding selected={isSelected} {...item.listItemComponentProps}>
+            <SidebarListItemButton disabled={!item.href} selected={isSelected} href={{ pathname: item.href }}>
+              {item.icon && (
+                <SidebarListItemIcon
+                  sx={{
+                    '& svg': {
+                      // width: '16px',
+                      // height: '16px',
+                      '& path': ({ palette }) => ({
+                        fill: palette.primary.main,
+                      }),
+                    },
+                  }}
+                  badge={item.badge}
+                >
+                  {item.icon}
+                </SidebarListItemIcon>
+              )}
+              <SidebarListItemText bold>{item.label}</SidebarListItemText>
+            </SidebarListItemButton>
+          </ListItem>
+        )
+      })}
+    </SidebarList>
+  )
+}
 
-export const marketplaceNavItems = [
-  {
-    label: 'Tokens',
-    href: AppRoutes.marketplace.index,
-  },
-  // {
-  //   label: 'Inscriptions',
-  //   href: AppRoutes.marketplace.index,
-  // },
-]
-
-export const insc20NavItems = [
-  {
-    label: 'Inscribe',
-    href: AppRoutes.insc20.create,
-  },
-  {
-    label: 'Mint',
-    href: AppRoutes.insc20.mint,
-  },
-  {
-    label: 'Transfer',
-    href: AppRoutes.insc20.transfer,
-  },
-]
-
-export const insc721NavItems = [
-  {
-    label: 'Mint',
-    href: AppRoutes.insc721.mint,
-  },
-]
-
-export const walletNavItems = [
-  {
-    label: 'OSC-20',
-    href: AppRoutes.wallet.ownableInsc20,
-    featureName: FEATURES.INSC20,
-  },
-  {
-    label: 'IRC-721',
-    href: AppRoutes.wallet.ownableInsc721,
-    featureName: FEATURES.INSC721,
-  },
-]
+export default React.memo(Navigation)
