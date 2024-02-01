@@ -221,8 +221,8 @@ const ActivityTable = ({ tick, fetchMarketplaceOrdersData, seller }: Props) => {
         tick: {
           rawValue: tick,
           content: (
-            <Link href={`/token?ticker=${tick}`}>
-              <Typography color="primary">{tick}</Typography>
+            <Link href={`/token?ticker=${item.ticker}`}>
+              <Typography color="primary">{item.ticker}</Typography>
             </Link>
           ),
         },
