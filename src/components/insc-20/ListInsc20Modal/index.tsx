@@ -154,6 +154,7 @@ const ListInsc20Modal = ({ open, onClose, tick, tokenData }: Props) => {
       await indexerApiService.tokensModule.createOrder(createOrder)
 
       setStatus(ListingStatus.COMPLETED)
+      setPendingOrder(undefined)
       setActiveStep(0)
       setSnackMessage('Listing was successful!')
       reset()
@@ -276,7 +277,7 @@ const ListInsc20Modal = ({ open, onClose, tick, tokenData }: Props) => {
               <>
                 <Button onClick={handleClose}>Cancel</Button>
                 <Button type="submit" variant="contained" disabled={!isValid}>
-                  {status !== ListingStatus.IDLE ? 'Retry' : 'List'}
+                  {pendingOrder ? 'Retry' : 'List'}
                 </Button>
               </>
             )}
