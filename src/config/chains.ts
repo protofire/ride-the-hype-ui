@@ -47,7 +47,7 @@ const chainsConfiguration: ChainInfo[] = [
         // :
         'https://api.stg.optiscriptions.io',
     },
-    marketplace: '',
+    marketplace: '0x688e4229c7FA174eBC990d504522Ab04CBEef6eC',
   },
 
   {
