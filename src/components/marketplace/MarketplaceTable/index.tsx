@@ -5,10 +5,12 @@ import { useState } from 'react'
 import useAsync from '~/hooks/useAsync'
 import EnhancedTable from '~/components/common/EnhancedTable'
 import type { MarketplaceList } from '~/services/indexer-api/modules/marketplace/types'
-import { Button, ButtonGroup } from '@mui/material'
+// import { Button, ButtonGroup } from '@mui/material'
 import { AppRoutes } from '~/config/routes'
 import { useCurrentChain } from '~/hooks/useChains'
 import { fromWei } from 'web3-utils'
+import { Button, Tooltip } from '@mui/material'
+import InfoIcon from '@mui/icons-material/Info'
 
 const PAGE_SIZE = 5
 
@@ -23,11 +25,11 @@ const headCells = [
   },
   {
     id: 'volume',
-    label: 'Volume (24h)',
+    label: 'Volume (All)',
   },
   {
     id: 'sales',
-    label: 'Sales (24h)',
+    label: 'Sales (All)',
   },
   {
     id: 'owners',
@@ -51,7 +53,7 @@ const MarketplaceTable = ({ fetchMarketplaceData }: Props) => {
   // const [hasMore, setHasMore] = useState(false)
   const [page, setPage] = useState(0)
   const [pageSize, setPageSize] = useState(15)
-  const [showAll, setShowAll] = useState(false)
+  const [showAll, setShowAll] = useState(true)
   const [cellLabels, setCellLabels] = useState(headCells)
   const currentChain = useCurrentChain()
 
@@ -109,7 +111,7 @@ const MarketplaceTable = ({ fetchMarketplaceData }: Props) => {
   return (
     <Paper sx={{ padding: 4, maxWidth: '1200px', m: '1rem auto' }}>
       {error ? <Typography>An error occurred while loading marketplace data...</Typography> : null}
-      <ButtonGroup sx={{ width: '50px' }}>
+      {/* <ButtonGroup sx={{ width: '50px' }}>
         <Button
           color={showAll ? 'primary' : 'secondary'}
           onClick={() => {
@@ -148,12 +150,16 @@ const MarketplaceTable = ({ fetchMarketplaceData }: Props) => {
         >
           24h
         </Button>
-      </ButtonGroup>
+      </ButtonGroup> */}
+      <Tooltip title="List tokens in your balance page">
+        <Button size="small" href={'/wallet'} variant="contained" startIcon={<InfoIcon />}>
+          List
+        </Button>
+      </Tooltip>
       <div className={css.container}>
         <EnhancedTable
           rows={rows}
           headCells={cellLabels}
-          defaultSortField={headCells[5].id}
           onDemandPagination={{
             pageSize: pageSize,
             page: page,
