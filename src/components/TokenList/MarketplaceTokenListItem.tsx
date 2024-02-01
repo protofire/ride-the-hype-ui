@@ -46,7 +46,6 @@ export const MarketplaceTokenListItem = ({ item }: Props) => {
       setDisabled(true)
       const signer = await getAssertedChainSigner(onboard, currentChain?.chainId)
       const address = await signer.getAddress()
-      console.log({ item })
 
       const inputData = {
         seller: item.seller,
@@ -64,13 +63,9 @@ export const MarketplaceTokenListItem = ({ item }: Props) => {
         s: item.s,
       }
 
-      console.log(inputData)
-      console.log(Object.values(inputData))
       const input = defaultAbiCoder.encode([ORDER_TYPE, RECIPIENT_TYPE], [Object.values(inputData), address])
       const methodId = '0xd207627f'
       const data = methodId + input.substring(2)
-
-      console.log({ data })
 
       const tx = {
         to: currentChain.marketplace,
