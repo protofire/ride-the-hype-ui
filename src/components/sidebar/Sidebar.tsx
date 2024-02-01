@@ -7,7 +7,7 @@ import SidebarNavigation from '~/components/sidebar/SidebarNavigation'
 import SidebarFooter from '~/components/sidebar/SidebarFooter'
 
 import css from './styles.module.css'
-import MobileCountdownTimer from '../common/Header/MessageHeader/MobileCountDown'
+// import MobileCountdownTimer from '../common/Header/MessageHeader/MobileCountDown'
 
 const Sidebar = (): ReactElement => {
   return (
@@ -22,7 +22,7 @@ const Sidebar = (): ReactElement => {
 
         {/* Nav menu */}
         <SidebarNavigation />
-        <MobileCountdownTimer />
+        {/* <MobileCountdownTimer /> */}
 
         <Box flex={1} />
 
