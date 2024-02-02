@@ -8,7 +8,7 @@ import type { MarketplaceList } from '~/services/indexer-api/modules/marketplace
 // import { Button, ButtonGroup } from '@mui/material'
 import { AppRoutes } from '~/config/routes'
 import { useCurrentChain } from '~/hooks/useChains'
-import { fromWei } from 'web3-utils'
+// import { fromWei } from 'web3-utils'
 import { Button, Tooltip } from '@mui/material'
 import InfoIcon from '@mui/icons-material/Info'
 
@@ -23,10 +23,10 @@ const headCells = [
     id: 'floorPrice',
     label: 'Floor Price',
   },
-  {
-    id: 'volume',
-    label: 'Volume (All)',
-  },
+  // {
+  //   id: 'volume',
+  //   label: 'Volume (All)',
+  // },
   {
     id: 'sales',
     label: 'Sales (All)',
@@ -81,14 +81,14 @@ const MarketplaceTable = ({ fetchMarketplaceData }: Props) => {
           rawValue: item.floorPrice,
           content: <Typography>{`$ ${parseFloat(item.floorPriceUsd.toFixed(6).toString())}`}</Typography>,
         },
-        volume: {
-          rawValue: item.volume24h,
-          content: (
-            <Typography>{`ETH ${
-              showAll ? fromWei(item.volumeAll.toString()) : fromWei(item.volume24h.toString())
-            }`}</Typography>
-          ),
-        },
+        // volume: {
+        //   rawValue: item.volume24h,
+        //   content: (
+        //     <Typography>{`ETH ${
+        //       showAll ? fromWei(item.volumeAll.toString()) : fromWei(item.volume24h.toString())
+        //     }`}</Typography>
+        //   ),
+        // },
         sales: {
           rawValue: item.sales24h,
           content: <Typography>{`${(showAll ? item.salesAll : item.sales24h).toFixed(0)}`}</Typography>,
