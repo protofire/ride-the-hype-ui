@@ -8,7 +8,7 @@ const CreatePage: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Create an Inscription - OSC-20</title>
+        <title>Create an Inscription</title>
       </Head>
 
       <Insc20Header />

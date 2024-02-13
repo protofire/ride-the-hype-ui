@@ -6,7 +6,7 @@ const TransferPage: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Transfer an Inscription - OSC-20</title>
+        <title>Transfer an Inscription</title>
       </Head>
 
       <Insc20Header />

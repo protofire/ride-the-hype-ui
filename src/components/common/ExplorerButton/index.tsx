@@ -27,7 +27,7 @@ const ExplorerButton = ({
       sx={{ color: 'inherit' }}
       onClick={onClick}
     >
-      <SvgIcon component={icon} inheritViewBox fontSize="small" />
+      <SvgIcon component={icon} color={'secondary'} inheritViewBox fontSize="small" />
     </IconButton>
   </Tooltip>
 )

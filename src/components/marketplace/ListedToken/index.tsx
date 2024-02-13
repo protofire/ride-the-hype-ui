@@ -37,7 +37,7 @@ export const ListedToken = ({
   }, [fetchMarketplaceOrdersData, page, tick])
 
   return (
-    <Paper sx={{ padding: 4, maxWidth: '1200px', m: '1rem auto' }}>
+    <Paper>
       {loading ? (
         <Grid container direction="row" spacing={3} mb={2}>
           {[...Array(PAGE_SIZE)].map((element, index) => (
@@ -63,6 +63,7 @@ export const ListedToken = ({
         }}
         hasMore={hasMore}
         loader={''}
+        height={'56vh'}
         // endMessage={
         //   <p style={{ textAlign: 'center' }}>
         //     <b>You have seen it all</b>

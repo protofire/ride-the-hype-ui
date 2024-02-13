@@ -1,15 +1,21 @@
 .container {
-  padding: var(--space-2) var(--space-1) var(--space-1) var(--space-2);
-  font-size: 13px;
-  background-color: var(--color-text-disabled);
-  align-items: center;
-  justify-content: center;
-  display: flex;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100%;
+  background-image: url('~/public/images/assets/footer.png');
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  padding-right:20px; 
+  padding-bottom:10px;
+
 }
 
 .icon{
-  color: black;
-  font-size: 36px;
+  color: var(--color-secondary-light);
+  font-size: 26px;
+  margin-top: 10px;
+  margin-left: 10px;
 }
 
 .icon:hover{

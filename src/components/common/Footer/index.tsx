@@ -9,7 +9,6 @@ import SvgIcon from '@mui/material/SvgIcon'
 import { useTheme } from '@mui/material/styles'
 import { Stack, useMediaQuery } from '@mui/material'
 import { SOCIALS } from '~/config/constants'
-import FloatingButtonsFooter from './FloatingButtonsFooter'
 
 const footerPages = [AppRoutes.allInscriptions.index, AppRoutes.create.index]
 
@@ -25,23 +24,19 @@ const Footer = (): ReactElement | null => {
 
   return (
     <>
-      {isScrollable ? (
-        <FloatingButtonsFooter />
-      ) : (
-        <footer className={css.container}>
-          <Stack direction="row" justifyContent="center" alignItems="center" spacing={3}>
-            <ExternalLink sx={{ bgColor: 'black' }} href={SOCIALS.TELEGRAM} noIcon>
-              <SvgIcon className={css.icon} component={TelegramIcon} inheritViewBox />
-            </ExternalLink>
-            <ExternalLink sx={{ bgColor: 'black' }} href={SOCIALS.TWITTER} noIcon>
-              <SvgIcon className={css.icon} component={TwitterIcon} inheritViewBox />
-            </ExternalLink>
-            {/* <ExternalLink color={'#000'} href="https://protofire.io/" noIcon sx={{ textDecoration: 'underline' }}>
+      <footer className={css.container}>
+        <Stack direction="row" justifyContent="right" alignItems="right" spacing={2}>
+          <ExternalLink sx={{ bgColor: 'primary' }} href={SOCIALS.TELEGRAM} noIcon>
+            <SvgIcon className={css.icon} component={TelegramIcon} inheritViewBox />
+          </ExternalLink>
+          <ExternalLink sx={{ bgColor: 'primary' }} href={SOCIALS.TWITTER} noIcon>
+            <SvgIcon className={css.icon} component={TwitterIcon} inheritViewBox />
+          </ExternalLink>
+          {/* <ExternalLink color={'#000'} href="https://protofire.io/" noIcon sx={{ textDecoration: 'underline' }}>
             Supported by Protofire.io
           </ExternalLink> */}
-          </Stack>
-        </footer>
-      )}
+        </Stack>
+      </footer>
     </>
   )
 }

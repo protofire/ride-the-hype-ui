@@ -1,7 +1,6 @@
 import { FormProvider, useForm } from 'react-hook-form'
 import { useState } from 'react'
 import { toHex } from 'web3-utils'
-import Paper from '@mui/material/Paper'
 import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
 import Tooltip from '@mui/material/Tooltip'
@@ -18,6 +17,10 @@ import { getAssertedChainSigner } from '~/utils/wallets'
 import type { TransactionResponse } from '@ethersproject/abstract-provider'
 import EthHashInfo from '~/components/common/EthHashInfo'
 import CheckWallet from '../common/CheckWallet'
+import ContentPaper from '../common/ContentPaper'
+import TabsButton from '../common/TabsButton'
+import router from 'next/router'
+import { AppRoutes } from '~/config/routes'
 
 export enum FormField {
   text = 'text',
@@ -27,7 +30,7 @@ export type FormData = {
   [FormField.text]: string
 }
 
-export const CreateCustomForm = () => {
+export const CreateCustomForm = ({ title }: { title?: string }) => {
   const chain = useCurrentChain()
   const onboard = useOnboard()
   const [tx, setTx] = useState<TransactionResponse | undefined>()
@@ -69,12 +72,23 @@ export const CreateCustomForm = () => {
   }
 
   return (
-    <Paper sx={{ padding: 4, maxWidth: '900px', m: '1rem auto' }}>
+    <ContentPaper title={title}>
       <Grid container direction="row" justifyContent="space-between" spacing={3} mb={2}>
-        <Grid item lg={5} xs={12}>
-          <Typography variant="h4" fontWeight={700}>
-            Custom message
-          </Typography>
+        <Grid item lg={3} xs={12}>
+          <TabsButton
+            titles={[`${chain?.inscriptionPrefix.toUpperCase() ?? ''}-20`, 'CUSTOM']}
+            onClick={(selected) => {
+              switch (selected) {
+                case 0: {
+                  router.push(AppRoutes.create.index)
+                  break
+                }
+                case 1: {
+                  break
+                }
+              }
+            }}
+          />
         </Grid>
 
         <Grid item xs>
@@ -133,6 +147,6 @@ export const CreateCustomForm = () => {
           </FormProvider>
         </Grid>
       </Grid>
-    </Paper>
+    </ContentPaper>
   )
 }

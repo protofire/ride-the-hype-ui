@@ -1,7 +1,6 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import { CreateCustomForm } from '~/components/create/CreateCustomForm'
-import CreateHeader from '~/components/create/CreateHeader'
 
 const CreateCustomPage: NextPage = () => {
   return (
@@ -10,10 +9,8 @@ const CreateCustomPage: NextPage = () => {
         <title>Create an Inscription - Custom</title>
       </Head>
 
-      <CreateHeader />
-
       <main>
-        <CreateCustomForm />
+        <CreateCustomForm title={'Create a brand new inscription'} />
       </main>
     </>
   )

@@ -1,4 +1,3 @@
-import Paper from '@mui/material/Paper'
 import Typography from '@mui/material/Typography'
 import css from './../styles.module.css'
 import { useState } from 'react'
@@ -10,7 +9,7 @@ import EthHashInfo from '~/components/common/EthHashInfo'
 import { OrderStatus, type OrderParams } from '~/services/indexer-api/types'
 import { fromWei } from 'web3-utils'
 import Link from 'next/link'
-import { Box, Button, CircularProgress, Skeleton, Snackbar, useTheme } from '@mui/material'
+import { Box, Button, CircularProgress, Paper, Skeleton, Snackbar, useTheme } from '@mui/material'
 import { useCurrentChain } from '~/hooks/useChains'
 import useOnboard from '~/hooks/wallets/useOnboard'
 import { getAssertedChainSigner } from '~/utils/wallets'
@@ -75,6 +74,7 @@ interface Props {
   tick: string
   fetchMarketplaceOrdersData: (params: OrderParams) => Promise<MarketplaceOrderList>
   seller?: string
+  title?: string
 }
 
 type ButtonAction = {
@@ -82,12 +82,12 @@ type ButtonAction = {
 }
 const SOLIDITY_MONTH = 2592000
 
-const ActivityTable = ({ tick, fetchMarketplaceOrdersData, seller }: Props) => {
+const ActivityTable = ({ tick, fetchMarketplaceOrdersData, seller, title }: Props) => {
   const currentChain = useCurrentChain()
   const onboard = useOnboard()
   const theme = useTheme()
   const [page, setPage] = useState(0)
-  const [pageSize, setPageSize] = useState(15)
+  const [pageSize, setPageSize] = useState(5)
   const [loadingStatus, setloadingStatus] = useState<ButtonAction>({})
   const [refetch, setRefetch] = useState(false)
   const [snackMessage, setSnackMessage] = useState<string | undefined>()
@@ -297,7 +297,7 @@ const ActivityTable = ({ tick, fetchMarketplaceOrdersData, seller }: Props) => {
   })
   return (
     <>
-      <Paper sx={{ padding: 4, maxWidth: '1200px', m: '1rem auto' }}>
+      <Paper>
         {error ? <Typography>An error occurred while loading marketplace activity data...</Typography> : null}
         <div className={css.container}>
           <EnhancedTable

@@ -1,9 +1,12 @@
+import { Stack } from '@mui/material'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useSearchParams } from 'next/navigation'
-import { useCallback } from 'react'
-import LocalNavHeader from '~/components/LocalNavHeader'
+import { useCallback, useState } from 'react'
+// import LocalNavHeader from '~/components/LocalNavHeader'
 import { ConnectWalletPaper } from '~/components/common/ConnectWallet/ConnectWalletPaper'
+import ContentPaper from '~/components/common/ContentPaper'
+import TabsButton from '~/components/common/TabsButton'
 import ActivityTable from '~/components/marketplace/ActivityTable'
 // import { ListedScroll } from '~/components/marketplace/ListedInscription'
 import { ListedToken } from '~/components/marketplace/ListedToken'
@@ -27,6 +30,7 @@ const MarketplaceTokenPage: NextPage = () => {
   const currentChain = useCurrentChain()
   const ticker = searchParams.get('ticker')
   const wallet = useWallet()
+  const [selectedContent, setSelectedContent] = useState(0)
 
   const fetchMarketplaceOrdersData = useCallback(
     async (params: OrderParams): Promise<MarketplaceOrderList> => {
@@ -59,7 +63,20 @@ const MarketplaceTokenPage: NextPage = () => {
       <Head>
         <title>Marketplace</title>
       </Head>
-      <LocalNavHeader title={`${ticker} Token`} navTitles={navTitles} navContent={navContent} />
+      {/* <LocalNavHeader title={`${ticker} Token`} navTitles={navTitles} navContent={navContent} /> */}
+      <main>
+        <ContentPaper title={`${ticker} Token`}>
+          <Stack direction="row" justifyContent={'space-between'} sx={{ mb: 3 }}>
+            <TabsButton
+              titles={navTitles}
+              onClick={(selected) => {
+                setSelectedContent(selected)
+              }}
+            />
+          </Stack>
+          {navContent[selectedContent]}
+        </ContentPaper>
+      </main>
     </>
   )
 }

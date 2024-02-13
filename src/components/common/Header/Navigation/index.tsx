@@ -53,8 +53,6 @@ const Navigation = () => {
                     className={css.icon}
                     sx={{
                       '& svg': {
-                        // width: '16px',
-                        // height: '16px',
                         '& path': ({ palette }) => ({
                           fill: palette.primary.main,
                         }),
@@ -65,7 +63,11 @@ const Navigation = () => {
                   </ListItemIcon>
                 )}
 
-                <ListItemText primaryTypographyProps={{ variant: 'body2', fontWeight: 700 }}>{item.label}</ListItemText>
+                <ListItemText
+                  primaryTypographyProps={{ variant: 'body2', fontWeight: 700, fontFamily: 'KulimParkItalic' }}
+                >
+                  {item.label}
+                </ListItemText>
               </NavListItemButton>
             </ListItem>
           </Tooltip>

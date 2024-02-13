@@ -94,7 +94,7 @@ export const MarketplaceTokenListItem = ({ item }: Props) => {
         </div>
         <div className={css.cardBody}>{item.amount.toLocaleString()}</div>
         <ListItem>
-          <ListItemText primary={`ETH ${fromWei(item.price)}`} />
+          <ListItemText primary={`${currentChain?.nativeCurrency.symbol + ' ' + fromWei(item.price)}`} />
           {`$ ${+parseFloat(item.amountUsd.toFixed(4).toString())}`}
         </ListItem>
         {/* <Typography align="center">{`Total:  ETH ${fromWei(totalPrice.toString())}`}</Typography> */}
@@ -122,7 +122,9 @@ export const MarketplaceTokenListItem = ({ item }: Props) => {
                         onClick={() => handleBuy(item)}
                         variant="contained"
                       >
-                        {disabled ? 'BOUGHT' : `ETH ${fromWei(totalPrice.toString())}`}
+                        {disabled
+                          ? 'BOUGHT'
+                          : `${currentChain?.nativeCurrency.symbol + ' ' + fromWei(totalPrice.toString())}`}
                       </Button>
                       {/* <IconButton disabled color="primary">
                         <AddShoppingCartIcon />

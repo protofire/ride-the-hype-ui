@@ -1,11 +1,7 @@
 import { Box, LinearProgress, List, ListItem, ListItemText, Skeleton, Stack, Tooltip, Typography } from '@mui/material'
 import Paper from '@mui/material/Paper'
 import EthHashInfo from '~/components/common/EthHashInfo'
-import ContentTabs from '~/components/common/NavTabs/ContentTabs'
-import useAsync from '~/hooks/useAsync'
-import type { Insc20, TokenHolder, Transaction } from '~/services/indexer-api/types'
-import HoldersTable from '../HoldersTable'
-import TransactionsTable from '../TransactionsTable'
+import type { Insc20 } from '~/services/indexer-api/types'
 import { MintButton } from '~/components/insc-20/Insc20List/MintButton'
 import type { Badge } from '~/config/badgeConfig'
 import { BADGE_CONFIG, retrieveKnownBadges } from '~/config/badgeConfig'
@@ -13,6 +9,11 @@ import Image from 'next/image'
 import { useCurrentChain } from '~/hooks/useChains'
 
 const listProperties = [
+  {
+    id: 'mintAction',
+    label: 'Actions',
+    action: true,
+  },
   {
     id: 'totalSupply',
     label: 'Total Supply',
@@ -58,45 +59,25 @@ const listProperties = [
     label: 'Completed At',
     nullable: true,
   },
-  {
-    id: 'mintAction',
-    label: 'Actions',
-    action: true,
-  },
 ]
 
+export type TokenData = Insc20 & {
+  badges: string[]
+  progress: number
+}
 interface Props {
-  fetchToken: (ticker: string) => Promise<Insc20>
-  fetchHolders: (ticker: string, page: number, limit: number) => Promise<TokenHolder[]> | undefined
-  fetchTransactions: (ticker: string, page: number, limit: number) => Promise<Transaction[]> | undefined
+  // fetchToken: (ticker: string) => Promise<Insc20>
+  tokenData?: TokenData
+  loading?: boolean
+  error?: Error
   ticker: string
 }
-
-const labels = ['holders', 'transactions']
-
-const TokenOverview = ({ fetchToken, fetchHolders, fetchTransactions, ticker }: Props) => {
+const TokenOverview = ({ tokenData, ticker, loading, error }: Props) => {
   const currentChain = useCurrentChain()
-  const [tokenData, error, loading] = useAsync(async () => {
-    if (!!fetchToken && !!ticker) {
-      try {
-        const data = await fetchToken(ticker)
-        data.createdAt = new Date(Number(data.createdAt) * 1000).toLocaleString()
-        data.completedAt = data.completedAt ? new Date(Number(data.completedAt) * 1000).toLocaleString() : null
-        const updatedObject = {
-          ...data,
-          progress: data.progress ? +(+data.progress * 100).toFixed(2) : 0,
-          badges: data.badge ? data.badge?.split(',') : [],
-        }
-        return updatedObject
-      } catch (e) {
-        console.log(e)
-      }
-    }
-  }, [fetchToken, ticker])
 
   return (
     <>
-      <Paper sx={{ padding: 8, maxWidth: '1200px', m: '1rem auto' }}>
+      <Paper sx={{ px: '36px', maxHeight: '56vh', overflow: 'auto' }}>
         <Stack direction="row" alignItems="center" justifyContent="center" spacing={1}>
           <Typography color="primary" textAlign={'center'} variant="h2">
             {'$' + ticker}
@@ -130,7 +111,7 @@ const TokenOverview = ({ fetchToken, fetchHolders, fetchTransactions, ticker }: 
                   <Skeleton width="50%" />
                 ) : tokenData ? (
                   <>
-                    <Typography fontFamily={'Inter'}>
+                    <Typography>
                       {property.id === 'progress' ? (
                         <Stack>
                           <Typography>{`${tokenData.progress.toFixed(2)}%`}</Typography>
@@ -151,7 +132,7 @@ const TokenOverview = ({ fetchToken, fetchHolders, fetchTransactions, ticker }: 
                             {tokenData.progress !== 100 ? (
                               <MintButton insc20={tokenData} />
                             ) : (
-                              <Typography color="error">Fully minted</Typography>
+                              <Typography sx={{ color: `success.main` }}>Fully minted</Typography>
                             )}
                           </Box>
                         </>
@@ -170,19 +151,6 @@ const TokenOverview = ({ fetchToken, fetchHolders, fetchTransactions, ticker }: 
 
         {error ? <Typography>An error occurred when during loading token...</Typography> : null}
       </Paper>
-      <ContentTabs navItems={labels}>
-        <HoldersTable
-          ticker={ticker ?? ''}
-          fetchHolders={fetchHolders}
-          totalHolders={tokenData?.holders ?? 0}
-          maxSupply={tokenData?.maxSupply ?? 0}
-        />
-        <TransactionsTable
-          ticker={ticker ?? ''}
-          fetchTransactions={fetchTransactions}
-          totalTransactions={tokenData?.transactions ?? 0}
-        />
-      </ContentTabs>
     </>
   )
 }

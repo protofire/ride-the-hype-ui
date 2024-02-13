@@ -2,7 +2,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useMemo } from 'react'
 
-import GeneralHeader from '~/components/GeneralHeader'
+// import GeneralHeader from '~/components/GeneralHeader'
 import { TransactionList } from '~/components/TransactionList'
 import { allInscriptionsNavItems } from '~/components/sidebar/SidebarNavigation/config'
 import { useCurrentChain } from '~/hooks/useChains'
@@ -36,7 +36,7 @@ const LatestTransactionsPage: NextPage = () => {
       </Head>
 
       {/* <AllInscriptionsHeader /> */}
-      <GeneralHeader title={'Explore all inscriptions'} navItems={navItems} />
+      {/* <GeneralHeader title={'Explore all inscriptions'} navItems={navItems} /> */}
 
       <main>
         <TransactionList />

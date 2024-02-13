@@ -97,7 +97,7 @@ const TransactionOverview = ({ fetchTransaction, fetchToken, hash }: Props) => {
                     key={i}
                     primary={prop.label}
                     secondary={
-                      <Typography color="#fff" fontFamily={'Inter'}>
+                      <Typography color="#fff">
                         {tokenLoading ? (
                           <Skeleton />
                         ) : tokenError || !tokenData ? (
@@ -122,7 +122,7 @@ const TransactionOverview = ({ fetchTransaction, fetchToken, hash }: Props) => {
                   <ListItemText
                     primary={prop.label}
                     secondary={
-                      <Typography color="#fff" fontFamily={'Inter'}>
+                      <Typography color="#fff">
                         {loading ? (
                           <Skeleton />
                         ) : !txData || error ? (

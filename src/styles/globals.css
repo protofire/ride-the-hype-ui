@@ -6,8 +6,8 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: Inter, sans-serif;
-  background-color: var(--color-background-paper);
+  font-family: KulimPark, Inter, sans-serif;
+  background-color: #222E1B;
 }
 
 main {
@@ -33,7 +33,7 @@ button {
 }
 
 :root {
-  --header-height: 72px;
+  --header-height: 70px;
   --footer-height: 47px;
 }
 
@@ -91,4 +91,16 @@ body.beamerAnnouncementBarTopActive {
 
 #beamerLastPostTitle {
   left: 120px !important;
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-background-light);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-primary-main);
 }

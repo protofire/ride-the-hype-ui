@@ -1,11 +1,9 @@
 
-<svg width="60" height="60" xmlns="http://www.w3.org/2000/svg" stroke-linejoin="round" stroke-linecap="round" stroke-width="1.5" stroke="#ffffff" fill="none">
+<svg width="65" height="65" xmlns="http://www.w3.org/2000/svg" fill="none">
  <g id="Layer_1">
   <title>Layer 1</title>
-  <ellipse stroke-width="0" ry="28.95334" rx="29.70379" id="svg_1" cy="29.53483" cx="29.92139" fill="#e92f13" stroke="#e92f13"/>
-  <g stroke="null" id="svg_2" stroke-width="5">
-   <path stroke="null" d="m22.83249,42.19187l14.95101,-12.39004l-14.95101,-12.39004" id="svg_3"/>
-  </g>
+  <path id="svg_16" fill="#75835D" d="m46.3267,13.7873l-16.8574,26.3043l-1.697,13.2936l-3.677,0l1.6405,-13.2936l-10.352,-26.3043l3.9598,0l8.655,22.4011l14.2552,-22.4011l4.0729,0z"/>
+  <path id="svg_17" fill="#75835D" d="m52.2588,13.9357l-16.8574,26.3044l-1.6971,13.2935l-3.6769,0l1.6405,-13.2935l-10.3521,-26.3044l3.9598,0l8.655,22.4011l14.2552,-22.4011l4.073,0z"/>
+  <circle id="svg_18" stroke-width="2" stroke-opacity="0.5" stroke="#9BA885" r="29.3345" cy="32.3747" cx="32.7982"/>
  </g>
-
 </svg>

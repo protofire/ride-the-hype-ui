@@ -47,7 +47,7 @@ export const createOnboard = (chainConfigs: ChainInfo[], currentChain: ChainInfo
 
     appMetadata: {
       name: 'Ioscriptions',
-      icon: location.origin + '/logo-no-text.svg',
+      icon: location.origin + '/logo.svg',
       description: 'Inscriptions',
       recommendedInjectedWallets: getRecommendedInjectedWallets(),
     },

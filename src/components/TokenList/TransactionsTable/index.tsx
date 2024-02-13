@@ -9,7 +9,7 @@ import useAsync from '~/hooks/useAsync'
 import EthHashInfo from '~/components/common/EthHashInfo'
 import InfiniteScrollTable from '~/components/common/EnhancedTable/InfiniteScrollTable'
 
-const PAGE_SIZE = 5
+const PAGE_SIZE = 8
 
 const skeletonCells: EnhancedTableProps['rows'][0]['cells'] = {
   id: {
@@ -139,16 +139,16 @@ const TransactionsTable = ({ fetchTransactions, ticker, totalTransactions }: Pro
       cells: {
         id: {
           rawValue: item.id,
-          content: <Typography fontFamily={'Inter'}>{item.id}</Typography>,
+          content: <Typography>{item.id}</Typography>,
         },
         type: {
           rawValue: item.type,
-          content: <Typography fontFamily={'Inter'}>{item.type}</Typography>,
+          content: <Typography>{item.type}</Typography>,
         },
         txHash: {
           rawValue: item.hash,
           content: (
-            <Typography fontFamily={'Inter'}>
+            <Typography>
               <EthHashInfo showCopyButton address={item.hash} showPrefix={false} hasExplorer avatarSize={0} />
             </Typography>
           ),
@@ -156,7 +156,7 @@ const TransactionsTable = ({ fetchTransactions, ticker, totalTransactions }: Pro
         from: {
           rawValue: item.from,
           content: (
-            <Typography fontFamily={'Inter'}>
+            <Typography>
               <EthHashInfo showCopyButton address={item.from} showPrefix={false} hasExplorer avatarSize={0} />
             </Typography>
           ),
@@ -164,20 +164,18 @@ const TransactionsTable = ({ fetchTransactions, ticker, totalTransactions }: Pro
         to: {
           rawValue: toValue,
           content: (
-            <Typography fontFamily={'Inter'}>
+            <Typography>
               <EthHashInfo showCopyButton address={toValue} showPrefix={false} hasExplorer avatarSize={0} />
             </Typography>
           ),
         },
         amount: {
           rawValue: amountValue,
-          content: <Typography fontFamily={'Inter'}>{amountValue}</Typography>,
+          content: <Typography>{amountValue}</Typography>,
         },
         dateTime: {
           rawValue: item.createdAt,
-          content: (
-            <Typography fontFamily={'Inter'}>{new Date(Number(item.createdAt) * 1000).toLocaleString()}</Typography>
-          ),
+          content: <Typography>{new Date(Number(item.createdAt) * 1000).toLocaleString()}</Typography>,
         },
       },
     }

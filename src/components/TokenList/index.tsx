@@ -14,10 +14,11 @@ import { useCurrentChain } from '~/hooks/useChains'
 import { marketplaceDomainEIP712 } from '~/utils/signing'
 import useOnboard from '~/hooks/wallets/useOnboard'
 import type { TransactionResponse } from '@ethersproject/abstract-provider'
+import ContentPaper from '../common/ContentPaper'
 
-const PAGE_SIZE = 12
+const PAGE_SIZE = 3
 
-export const TokenList = () => {
+export const TokenList = ({ title }: { title?: string }) => {
   const onboard = useOnboard()
   const { balances, loading, error } = useBalances()
   const [page, setPage] = useState(1)
@@ -33,16 +34,16 @@ export const TokenList = () => {
 
   if (!wallet || !wallet.address)
     return (
-      <Paper sx={{ padding: 4, maxWidth: '1200px', m: '1rem auto', textAlign: 'center' }}>
-        <Typography>Please connect your wallet to see your tokens</Typography>
+      <ContentPaper title={title}>
+        <Typography sx={{ textAlign: 'center' }}>Please connect your wallet to see your tokens</Typography>
         <Box display="flex" justifyContent="center" sx={{ pt: '10px' }}>
           <ConnectWallet />
         </Box>
-      </Paper>
+      </ContentPaper>
     )
 
   return (
-    <Paper sx={{ padding: 4, maxWidth: '1200px', m: '1rem auto' }}>
+    <ContentPaper title={title}>
       {loading ? (
         <Grid container direction="row" spacing={3} mb={2}>
           {[...Array(PAGE_SIZE)].map((element, index) => (
@@ -57,8 +58,8 @@ export const TokenList = () => {
 
       {!loading && balances.insc20s.length === 0 ? (
         <>
-          <Paper sx={{ padding: 4, maxWidth: '1200px', m: '1rem auto', textAlign: 'center' }}>
-            <Typography>You don&apos;t have any OSC-20 yet</Typography>
+          <Paper sx={{ textAlign: 'center' }}>
+            <Typography>{`You don't have any ${currentChain?.inscriptionPrefix.toUpperCase()}-20 yet`}</Typography>
           </Paper>
         </>
       ) : null}
@@ -68,6 +69,7 @@ export const TokenList = () => {
         next={() => setPage((page) => page + 1)}
         hasMore={hasMore}
         loader={''}
+        height={'56vh'}
         endMessage={
           <p style={{ textAlign: 'center' }}>
             <b>You have seen it all</b>
@@ -81,6 +83,6 @@ export const TokenList = () => {
         </div>
       </InfiniteScroll>
       <div />
-    </Paper>
+    </ContentPaper>
   )
 }

@@ -10,14 +10,14 @@ import useAsync from '~/hooks/useAsync'
 import EthHashInfo from '~/components/common/EthHashInfo'
 import { Box, LinearProgress } from '@mui/material'
 
-const INITIAL_PAGE_SIZE = 10
+const INITIAL_PAGE_SIZE = 5
 
 const skeletonCells: EnhancedTableProps['rows'][0]['cells'] = {
   address: {
     rawValue: '',
     content: (
       <Typography>
-        <Skeleton width="90px" height="60px" />
+        <Skeleton width="90px" />
       </Typography>
     ),
   },
@@ -25,7 +25,7 @@ const skeletonCells: EnhancedTableProps['rows'][0]['cells'] = {
     rawValue: '',
     content: (
       <Typography>
-        <Skeleton width="90px" height="60px" />
+        <Skeleton width="90px" />
       </Typography>
     ),
   },
@@ -33,7 +33,7 @@ const skeletonCells: EnhancedTableProps['rows'][0]['cells'] = {
     rawValue: '',
     content: (
       <Typography>
-        <Skeleton width="90px" height="60px" />
+        <Skeleton width="90px" />
       </Typography>
     ),
   },
@@ -102,7 +102,7 @@ const HoldersTable = ({ fetchHolders, ticker, totalHolders, maxSupply }: Props) 
             address: {
               rawValue: item.address,
               content: (
-                <Typography fontFamily={'Inter'}>
+                <Typography>
                   <EthHashInfo
                     shortAddress={false}
                     showCopyButton
@@ -129,14 +129,14 @@ const HoldersTable = ({ fetchHolders, ticker, totalHolders, maxSupply }: Props) 
             },
             amount: {
               rawValue: item.amount,
-              content: <Typography fontFamily={'Inter'}>{item.amount}</Typography>,
+              content: <Typography>{item.amount}</Typography>,
             },
           },
         }
       })
 
   return (
-    <Paper sx={{ padding: 4, maxWidth: '1200px', m: '1rem auto' }}>
+    <Paper sx={{ padding: 4, maxHeight: '56vh', overflow: 'auto' }}>
       {error ? <Typography>An error occurred during loading tokens...</Typography> : null}
 
       <div className={css.container}>

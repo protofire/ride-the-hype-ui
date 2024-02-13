@@ -1,4 +1,3 @@
-import Paper from '@mui/material/Paper'
 import Typography from '@mui/material/Typography'
 import css from './../styles.module.css'
 import { useState } from 'react'
@@ -9,8 +8,7 @@ import type { MarketplaceList } from '~/services/indexer-api/modules/marketplace
 import { AppRoutes } from '~/config/routes'
 import { useCurrentChain } from '~/hooks/useChains'
 // import { fromWei } from 'web3-utils'
-import { Button, Tooltip } from '@mui/material'
-import InfoIcon from '@mui/icons-material/Info'
+import { Paper } from '@mui/material'
 
 const PAGE_SIZE = 5
 
@@ -47,9 +45,10 @@ const headCells = [
 
 interface Props {
   fetchMarketplaceData: (page: number, limit: number) => Promise<MarketplaceList> | undefined
+  title?: string
 }
 
-const MarketplaceTable = ({ fetchMarketplaceData }: Props) => {
+const MarketplaceTable = ({ fetchMarketplaceData, title }: Props) => {
   // const [hasMore, setHasMore] = useState(false)
   const [page, setPage] = useState(0)
   const [pageSize, setPageSize] = useState(15)
@@ -109,53 +108,8 @@ const MarketplaceTable = ({ fetchMarketplaceData }: Props) => {
     }
   })
   return (
-    <Paper sx={{ padding: 4, maxWidth: '1200px', m: '1rem auto' }}>
+    <Paper title={title}>
       {error ? <Typography>An error occurred while loading marketplace data...</Typography> : null}
-      {/* <ButtonGroup sx={{ width: '50px' }}>
-        <Button
-          color={showAll ? 'primary' : 'secondary'}
-          onClick={() => {
-            if (showAll) return
-            setShowAll((prevState) => !prevState)
-            console.log(showAll)
-            setCellLabels(
-              cellLabels.map((cell) =>
-                cell.id === 'volume'
-                  ? { ...cell, label: `Volume (All)` }
-                  : cell.id === 'sales'
-                  ? { ...cell, label: `Sales (All)` }
-                  : cell,
-              ),
-            )
-          }}
-        >
-          All
-        </Button>
-        <Button
-          color={showAll ? 'secondary' : 'primary'}
-          onClick={() => {
-            if (!showAll) return
-            setShowAll((prevState) => !prevState)
-            console.log(showAll)
-            setCellLabels(
-              cellLabels.map((cell) =>
-                cell.id === 'volume'
-                  ? { ...cell, label: `Volume (24 h)` }
-                  : cell.id === 'sales'
-                  ? { ...cell, label: `Sales (24 h)` }
-                  : cell,
-              ),
-            )
-          }}
-        >
-          24h
-        </Button>
-      </ButtonGroup> */}
-      <Tooltip title="List tokens in your balance page">
-        <Button size="small" href={'/wallet'} variant="contained" startIcon={<InfoIcon />}>
-          List
-        </Button>
-      </Tooltip>
       <div className={css.container}>
         <EnhancedTable
           rows={rows}

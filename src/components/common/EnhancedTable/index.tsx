@@ -124,7 +124,7 @@ export type onDemandFetchOption = {
   totalHolders: number
 }
 
-const pageSizes = [10, 15, 25, 100]
+const pageSizes = [5, 10, 15, 25, 100]
 
 function EnhancedTable({
   rows,
@@ -137,7 +137,7 @@ function EnhancedTable({
   const [orderBy, setOrderBy] = useState<string>(defaultSortField || '')
   const [page, setPage] = useState<number>(0)
   const [rowsPerPage, setRowsPerPage] = useState<number>(
-    onDemandPagination ? onDemandPagination.pageSize : pageSizes[1],
+    onDemandPagination ? onDemandPagination.pageSize : pageSizes[0],
   )
 
   const handleRequestSort = (property: string) => {
@@ -168,7 +168,7 @@ function EnhancedTable({
         <Table aria-labelledby="tableTitle" className={mobileVariant ? css.mobileColumn : undefined}>
           <EnhancedTableHead headCells={headCells} order={order} orderBy={orderBy} onRequestSort={handleRequestSort} />
           <TableBody>
-            {pagedRows.length > 0 ? (
+            {pagedRows.length > -1 ? (
               pagedRows.map((row, index) => (
                 <TableRow
                   tabIndex={-1}
@@ -195,9 +195,7 @@ function EnhancedTable({
               ))
             ) : (
               // Prevent no `tbody` rows hydration error
-              <TableRow>
-                <TableCell />
-              </TableRow>
+              <TableRow>{/* <TableCell /> */}</TableRow>
             )}
           </TableBody>
         </Table>

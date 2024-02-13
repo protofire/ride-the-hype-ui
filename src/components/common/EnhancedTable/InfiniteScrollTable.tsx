@@ -79,7 +79,6 @@ function InfiniteScrollTable({ rows, headCells, mobileVariant, infiniteScrollPro
   return (
     <Box sx={{ width: '100%' }}>
       <InfiniteScroll
-        // height={400}
         dataLength={infiniteScrollProps.pageSize * infiniteScrollProps.page}
         next={() => {
           infiniteScrollProps.setPage((page) => page + 1)
@@ -121,9 +120,7 @@ function InfiniteScrollTable({ rows, headCells, mobileVariant, infiniteScrollPro
                 ))
               ) : (
                 // Prevent no `tbody` rows hydration error
-                <TableRow>
-                  <TableCell />
-                </TableRow>
+                <TableRow>{/* <TableCell /> */}</TableRow>
               )}
             </TableBody>
           </Table>

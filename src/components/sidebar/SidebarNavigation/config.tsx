@@ -1,13 +1,13 @@
 import type { ReactElement } from 'react'
-import React from 'react'
+// import React from 'react'
 import { AppRoutes } from '~/config/routes'
 // import CreateIcon from '~/public/images/sidebar/create.svg'
 // import RecentIcon from '~/public/images/sidebar/recent.svg'
 // import PersonalIcon from '~/public/images/sidebar/personal.svg'
-import { SvgIcon } from '@mui/material'
+// import { SvgIcon } from '@mui/material'
 import type { ListItemProps } from '@mui/material/ListItem/ListItem'
 import { FEATURES } from '~/types'
-import NewReleasesIcon from '@mui/icons-material/NewReleases'
+// import NewReleasesIcon from '@mui/icons-material/NewReleases'
 
 export type NavItem = {
   label: string
@@ -42,7 +42,7 @@ export const navItems: NavItem[] = [
   },
   {
     label: 'Marketplace',
-    icon: <SvgIcon component={NewReleasesIcon} inheritViewBox />,
+    // icon: <SvgIcon component={NewReleasesIcon} inheritViewBox />,
     href: AppRoutes.marketplace.index,
   },
 ]

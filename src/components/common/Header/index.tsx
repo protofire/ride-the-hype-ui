@@ -7,7 +7,7 @@ import css from './styles.module.css'
 import ConnectWallet from '~/components/common/ConnectWallet'
 import { AppRoutes } from '~/config/routes'
 import Link from 'next/link'
-import Logo from '~/public/logo-no-text.svg'
+import Logo from '~/public/logo.svg'
 import Navigation from './Navigation'
 // import NetworkSelector from '~/components/common/NetworkSelector'
 

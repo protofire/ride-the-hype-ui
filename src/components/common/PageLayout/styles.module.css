@@ -7,12 +7,16 @@
 }
 
 .main {
-  background-color: var(--color-background-main);
-  /*padding-left: 230px;*/
+  background-image: url('~/public/images/assets/background.png');
+  background-size:100%;
   padding-top: var(--header-height);
   min-height: 100vh;
+  height: 100%;
+  position: relative;
   display: flex;
   flex-direction: column;
+  background-repeat: no-repeat;
+  background-size: 100% auto;
 }
 
 .mainAnimated {

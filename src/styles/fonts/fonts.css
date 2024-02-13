@@ -11,3 +11,17 @@
   font-weight: 400;
   src: url('./Inter-Regular.ttf') format('truetype');
 }
+
+@font-face {
+  font-family: 'KulimParkItalic';
+  font-display: swap;
+  font-weight: 400;
+  src: url('./KulimPark-SemiBoldItalic.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'KulimPark';
+  font-display: swap;
+  font-weight: 400;
+  src: url('./KulimPark-Regular.ttf') format('truetype');
+}

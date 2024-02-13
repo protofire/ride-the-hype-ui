@@ -60,7 +60,7 @@ declare module '@mui/material/Button' {
 const createCustomTheme = (mode?: PaletteMode): Theme => {
   // const isDarkMode = mode === 'dark'
   //TODO: temporary use only one mode
-  const isDarkMode = false
+  const isDarkMode = true
   const colors = isDarkMode ? darkPalette : palette
   const shadowColor = colors.primary.light
 
@@ -87,7 +87,12 @@ const createCustomTheme = (mode?: PaletteMode): Theme => {
         styleOverrides: {
           head: ({ theme }) => ({
             ...theme.typography.body1,
+            borderTop: `1px solid ${theme.palette.secondary.light}`, // Add this line to include a top border.
             color: theme.palette.primary.light,
+          }),
+          body: ({ theme }) => ({
+            backgroundColor: theme.palette.background.main,
+            color: theme.palette.text.secondary,
           }),
         },
       },
@@ -397,6 +402,7 @@ const createCustomTheme = (mode?: PaletteMode): Theme => {
           }),
           root: ({ theme }) => ({
             borderColor: theme.palette.border.main,
+            backgroundColor: theme.palette.background.main,
           }),
         },
       },

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
-import Paper from '@mui/material/Paper'
+// import Paper from '@mui/material/Paper'
 import Grid from '@mui/material/Grid'
 import Skeleton from '@mui/material/Skeleton'
 import Typography from '@mui/material/Typography'
@@ -15,6 +15,7 @@ import css from './styles.module.css'
 import EthHashInfo from '~/components/common/EthHashInfo'
 import Link from 'next/link'
 import { useCurrentChain } from '~/hooks/useChains'
+import ContentPaper from '../common/ContentPaper'
 
 const PAGE_SIZE = 12
 
@@ -50,7 +51,7 @@ export const TransactionList = () => {
   }
 
   return (
-    <Paper sx={{ padding: 4, maxWidth: '1200px', m: '1rem auto' }}>
+    <ContentPaper title="Explore All Inscriptions">
       <div className={css.refreshContainer}>
         <Button variant="text" onClick={refresh} size="small" endIcon={<RefreshIcon />}>
           Refresh
@@ -78,6 +79,7 @@ export const TransactionList = () => {
         next={() => setPage((page) => page + 1)}
         hasMore={hasMore}
         loader={<h4>Loading...</h4>}
+        height={'62vh'}
         endMessage={
           <p style={{ textAlign: 'center' }}>
             <b>You have seen it all</b>
@@ -91,7 +93,7 @@ export const TransactionList = () => {
                 <pre>{JSON.stringify(item.data, null, 2)}</pre>
 
                 <EthHashInfo address={item.hash} showCopyButton hasExplorer />
-                <Typography fontSize="0.6rem" mt="0.25rem">
+                <Typography color="secondary" fontSize="0.6rem" mt="0.25rem">
                   Created at {new Date(Number(item.createdAt) * 1000).toLocaleString()}
                 </Typography>
               </div>
@@ -100,6 +102,6 @@ export const TransactionList = () => {
         </div>
       </InfiniteScroll>
       <div />
-    </Paper>
+    </ContentPaper>
   )
 }

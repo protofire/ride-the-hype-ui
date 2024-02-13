@@ -13,7 +13,7 @@
 
 .infoItem{
   border-radius: 0.5rem;
-  background: var(--color-text-secondary);
+  background: var(--color-background-dark);
   padding: 1rem;
   margin: 2rem;
   /* height: '100%' */
@@ -22,7 +22,7 @@
 }
 
 .jsonInscriptionItem {
-  background: var(--color-text-secondary);
+  background: var(--color-background-dark);
   border-radius: 0.5rem;
   padding: 1rem;
   margin: 2rem;
@@ -52,15 +52,15 @@
 }
 
 .jsonItem {
-  background: var(--color-text-disabled);
+  background: var(--color-background-dark);
   border-radius: 0.5rem;
   padding: 1rem;
-  width: 250px;
+  width: 230px;
   height: 15rem;
 }
 
 .jsonItem pre {
-  background: var(--color-text-secondary);
+  background: #000;
   overflow: auto;
   margin: 0;
   border-radius: 0.5rem;

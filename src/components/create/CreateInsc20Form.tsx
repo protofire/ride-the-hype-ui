@@ -1,7 +1,6 @@
 import { FormProvider, useForm } from 'react-hook-form'
 import { useState } from 'react'
 import { toHex } from 'web3-utils'
-import Paper from '@mui/material/Paper'
 import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
 import Tooltip from '@mui/material/Tooltip'
@@ -18,6 +17,10 @@ import { getAssertedChainSigner } from '~/utils/wallets'
 import type { TransactionResponse } from '@ethersproject/abstract-provider'
 import EthHashInfo from '~/components/common/EthHashInfo'
 import CheckWallet from '../common/CheckWallet'
+import ContentPaper from '../common/ContentPaper'
+import TabsButton from '../common/TabsButton'
+import { AppRoutes } from '~/config/routes'
+import { useRouter } from 'next/navigation'
 
 export enum FormField {
   tick = 'tick',
@@ -36,7 +39,8 @@ export type FormData = {
 }
 
 // TODO: add a validation for already taken ticker
-export const CreateInsc20Form = () => {
+export const CreateInsc20Form = ({ title }: { title?: string }) => {
+  const router = useRouter()
   const chain = useCurrentChain()
   const onboard = useOnboard()
   const [tx, setTx] = useState<TransactionResponse | undefined>()
@@ -112,16 +116,37 @@ export const CreateInsc20Form = () => {
   }
 
   return (
-    <Paper sx={{ padding: 4, maxWidth: '900px', m: '1rem auto' }}>
-      <Grid container direction="row" justifyContent="space-between" spacing={3} mb={2}>
-        <Grid item lg={5} xs={12}>
-          <Typography variant="h4" fontWeight={700}>
-            Deploy {chain?.inscriptionPrefix}-20
-          </Typography>
+    <ContentPaper title={title}>
+      <Grid
+        sx={{ overflow: 'auto', height: '66vh' }}
+        container
+        direction="row"
+        justifyContent="space-between"
+        spacing={3}
+        mb={2}
+      >
+        <Grid item lg={3} xs={12}>
+          <TabsButton
+            //TODO: take from chain config
+            titles={[`${chain?.inscriptionPrefix.toUpperCase() ?? ''}-20`, 'CUSTOM']}
+            onClick={(selected) => {
+              switch (selected) {
+                case 0: {
+                  break
+                }
+                case 1: {
+                  router.push(AppRoutes.create.custom)
+                  break
+                }
+              }
+            }}
+          />
         </Grid>
 
-        <Grid item xs>
-          <Typography mb={3}>You can easily deploy a {chain?.inscriptionPrefix}-20 in a few seconds!</Typography>
+        <Grid item lg={7} xs={12}>
+          <Typography mb={3}>
+            You can easily deploy a {chain?.inscriptionPrefix.toUpperCase()}-20 in a few seconds!
+          </Typography>
 
           <FormProvider {...formMethods}>
             <form onSubmit={onSubmit}>
@@ -345,7 +370,20 @@ export const CreateInsc20Form = () => {
             </form>
           </FormProvider>
         </Grid>
+        <Grid item lg={2} xs={12}>
+          <Tooltip title="List tokens in your balance page">
+            <Button
+              sx={{ borderRadius: '36px' }}
+              variant="outlined"
+              size="small"
+              href={'/wallet'}
+              startIcon={<InfoIcon />}
+            >
+              List
+            </Button>
+          </Tooltip>
+        </Grid>
       </Grid>
-    </Paper>
+    </ContentPaper>
   )
 }

@@ -1,6 +1,5 @@
 import type { ChangeEvent } from 'react'
 import { useEffect, useState } from 'react'
-import Paper from '@mui/material/Paper'
 import Skeleton from '@mui/material/Skeleton'
 import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
@@ -25,6 +24,7 @@ import { Tooltip } from '@mui/material'
 import Image from 'next/image'
 import EthHashInfo from '~/components/common/EthHashInfo'
 import { useCurrentChain } from '~/hooks/useChains'
+import ContentPaper from '~/components/common/ContentPaper'
 
 const PAGE_SIZE = 100
 
@@ -117,7 +117,7 @@ type EnhancedInsc20 = Insc20 & {
   badges: string[]
 }
 
-const Insc20List = () => {
+const Insc20List = ({ title }: { title?: string }) => {
   const [counter, setCounter] = useState<number>(0)
   // const [tokens, setTokens] = useState([] as Insc20[])
   const [hasMore, setHasMore] = useState(false)
@@ -248,7 +248,7 @@ const Insc20List = () => {
                   {progressValue !== 100 ? (
                     <MintButton insc20={item} />
                   ) : (
-                    <Typography color="error">
+                    <Typography sx={{ color: `success.main` }}>
                       Fully minted at
                       {item.completedTx && <EthHashInfo address={item.completedTx} hasExplorer avatarSize={0} />}
                     </Typography>
@@ -261,7 +261,7 @@ const Insc20List = () => {
       })
 
   return (
-    <Paper sx={{ padding: 4, maxWidth: '1200px', m: '1rem auto' }}>
+    <ContentPaper title={title}>
       <div className={css.actionButtonsContainer}>
         <FormControl>
           <RadioGroup
@@ -287,7 +287,7 @@ const Insc20List = () => {
       <div className={css.container}>
         <EnhancedTable rows={rows} headCells={headCells} defaultSortField="holders" />
       </div>
-    </Paper>
+    </ContentPaper>
   )
 }
 

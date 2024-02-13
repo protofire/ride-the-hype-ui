@@ -1,5 +1,6 @@
 import * as process from 'process'
 
+export const PROJECT_NAME = 'Yieldscriptions'
 export const IS_PRODUCTION = process.env.NEXT_PUBLIC_IS_PRODUCTION === 'true'
 export const WC_PROJECT_ID = process.env.NEXT_PUBLIC_WC_PROJECT_ID || ''
 
@@ -11,9 +12,9 @@ export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 export const DEFAULT_INDEXER_API_BASE_URL = process.env.NEXT_PUBLIC_INDEXER_API_BASE_URL || ''
 
 export const SOCIALS = {
-  TWITTER: 'https://twitter.com/optiscriptions',
-  TELEGRAM: 'https://t.me/optiscriptions',
-  DOCS: 'https://docs.optiscriptions.io',
+  TWITTER: 'https://twitter.com/yieldscriptions',
+  TELEGRAM: 'https://t.me/yieldscriptions',
+  DOCS: 'https://docs.yieldscriptions.io',
 }
 
 // Magic numbers

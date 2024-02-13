@@ -1,17 +1,26 @@
 .container {
-  height: var(--header-height);
+  /* height: var(--header-height); */
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
   align-items: center;
   position: relative;
   border-radius: 0 !important;
-  background-color: var(--color-background-main);
-  border-bottom: 1px solid var(--color-border-main);
+  background-color: transparent;
+  padding-left: 8%;
+  padding-right: 8%;
+  background: black;
+  border-bottom: 1px solid var(--color-secondary-main);
+  background-image: url(~/public/images/assets/header.png);
+  background-repeat: no-repeat;
+  background-size: 100% auto;
+
+  background-color: #0F160C; 
 }
 
 .element {
   height: 100%;
+  margin-top:10px;
   /* border-right: 1px solid var(--color-border-main); */
   display: flex;
   flex-direction: column;

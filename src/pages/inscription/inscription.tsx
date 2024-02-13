@@ -4,8 +4,8 @@ import { useSearchParams } from 'next/navigation'
 import TransactionOverview from '~/components/TransactionList/TransactionOverview'
 import { IndexerApiService } from '~/services/indexer-api'
 import { useCallback } from 'react'
-import GeneralHeader from '~/components/GeneralHeader'
 import { useCurrentChain } from '~/hooks/useChains'
+import ContentPaper from '~/components/common/ContentPaper'
 
 const InscriptionPage: NextPage = () => {
   const searchParams = useSearchParams()
@@ -33,9 +33,10 @@ const InscriptionPage: NextPage = () => {
       <Head>
         <title>Inscription Overview</title>
       </Head>
-      <GeneralHeader navItems={[]} title="Inscription Overview" />
       <main>
-        <TransactionOverview hash={hash ?? ''} fetchTransaction={fetchTransaction} fetchToken={fetchToken} />
+        <ContentPaper title={'Inscription Overview'}>
+          <TransactionOverview hash={hash ?? ''} fetchTransaction={fetchTransaction} fetchToken={fetchToken} />
+        </ContentPaper>
       </main>
     </>
   )

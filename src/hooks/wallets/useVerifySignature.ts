@@ -10,6 +10,7 @@ import type { ChainInfo } from '~/types'
 import useOnboard from './useOnboard'
 import { setAuthStatus } from '~/store/authSlice'
 import { useAppDispatch } from '~/store'
+import { PROJECT_NAME } from '~/config/constants'
 
 export enum SignStatus {
   IDLE,
@@ -64,7 +65,7 @@ export const useVerifySignature = () => {
 }
 
 const signAuth = async (wallet: ConnectedWallet, chain: ChainInfo) => {
-  const AUTH_MESSAGE = `Optiscriptions is solely an interface and not a virtual assets services provider (e.g., crypto exchange). Transactions involve risk, and you are personally responsible for your actions on Optiscriptions. Acknowledge that the value of any virtual asset (e.g., token) may change, and you bear the risk of potential losses.`
+  const AUTH_MESSAGE = `${PROJECT_NAME} is solely an interface and not a virtual assets services provider (e.g., crypto exchange). Transactions involve risk, and you are personally responsible for your actions on ${PROJECT_NAME}. Acknowledge that the value of any virtual asset (e.g., token) may change, and you bear the risk of potential losses.`
   try {
     const address = wallet.address
     const chainId = wallet.chainId

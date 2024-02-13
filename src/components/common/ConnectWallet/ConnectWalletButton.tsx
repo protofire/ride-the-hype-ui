@@ -10,14 +10,7 @@ const ConnectWalletButton = ({ onConnect }: { onConnect?: () => void }): React.R
   }
 
   return (
-    <Button
-      onClick={handleConnect}
-      color="primary"
-      variant="contained"
-      // size="small"
-      disableElevation
-      fullWidth
-    >
+    <Button onClick={handleConnect} color="primary" variant="contained" size="small" disableElevation fullWidth>
       CONNECT
     </Button>
   )

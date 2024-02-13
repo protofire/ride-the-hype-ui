@@ -86,30 +86,30 @@ const chainsConfiguration: ChainInfo[] = [
     marketplace: '0x688e4229c7FA174eBC990d504522Ab04CBEef6eC',
   },
   {
-    chainId: '11155420',
-    chainName: 'OP Sepolia Testnet',
-    description: 'OP Sepolia Testnet',
-    shortName: 'opsep',
-    inscriptionPrefix: 'osc',
+    chainId: '168587773',
+    chainName: 'Blast Sepolia Testnet',
+    description: 'Blast Sepolia Testnet',
+    shortName: 'blastsepolia',
+    inscriptionPrefix: 'ysc',
     features: [FEATURES.INSC20, FEATURES.CUSTOM_INSC],
     nativeCurrency: {
-      name: 'Ether',
+      name: 'Sepolia Ether',
       symbol: 'ETH',
       decimals: 18,
       logoUri: 'https://assets.coingecko.com/coins/images/279/standard/ethereum.png?1696501628',
     },
     blockExplorerUriTemplate: {
-      address: 'https://sepolia-optimism.etherscan.io/address/{{address}}',
-      txHash: 'https://sepolia-optimism.etherscan.io/tx/{{txHash}}',
-      api: 'https://sepolia-optimism.etherscan.io/api?module={{module}}&action={{action}}&address={{address}}&apiKey={{apiKey}}',
+      address: 'https://testnet.blastscan.io/address/{{address}}',
+      txHash: 'https://testnet.blastscan.io/tx/{{txHash}}',
+      api: 'https://testnet.blastscan.io/api?module={{module}}&action={{action}}&address={{address}}&apiKey={{apiKey}}',
     },
     disabledWallets: ['trust', 'coinbase', 'ledger', 'trezor', 'keystone', 'walletConnect_v2', 'NONE'],
     ensRegistryAddress: null,
     publicRpcUri: {
-      value: 'https://sepolia.optimism.io',
+      value: '"https://sepolia.blast.io',
     },
     rpcUri: {
-      value: 'https://sepolia.optimism.io',
+      value: '"https://sepolia.blast.io',
     },
     theme: {
       textColor: '#ffffff',
@@ -118,7 +118,7 @@ const chainsConfiguration: ChainInfo[] = [
     apiUri: {
       value: 'https://api-test.stg.optiscriptions.io/',
     },
-    marketplace: '0xE2807e351E967C80be5044bab3A76834e724b64f',
+    marketplace: '',
   },
 ]
 

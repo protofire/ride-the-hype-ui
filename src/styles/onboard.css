@@ -1,7 +1,7 @@
 :root {
   --w3o-background-color: var(--color-background-paper);
   --w3o-foreground-color: var(--color-background-main);
-  --w3o-text-color: var(--color-text-primary);
+  --w3o-text-color: var(--color-text-secondary);
   --w3o-border-color: var(--color-border-main);
   --w3o-action-color: var(--color-primary-main);
   --w3o-border-radius: 6px;

@@ -1,44 +1,36 @@
-// const newColors = {
-//   lightSkyBlue: '#6ECBF5',
-//   mediumOrchid: '#C252E1',
-//   lavender: '#E0D9F6',
-//   royalBlue: '#586AE2',
-//   midnightBlue: '#2A2356',
-// }
-
 const darkPalette = {
   text: {
-    primary: '#44FCF9',
-    secondary: '#FF2D68',
-    disabled: '#E0D9F6',
-    light: '#ffffff',
+    primary: '#FCFC03',
+    secondary: '#BED1BE',
+    disabled: '#9BA885',
+    light: '#9BA885',
   },
   primary: {
-    dark: '#00C3C6',
-    main: '#44FCF9',
-    light: '#A2fDf9',
+    dark: '#BABA04',
+    main: '#FCFC03',
+    light: '#FCFDC7',
   },
   secondary: {
-    dark: '#C3004D',
-    main: '#FF2A6D',
-    light: '#FF5888',
-    background: '#9D1458',
+    dark: '#454e36',
+    main: '#75835D',
+    light: '#97a979',
+    background: '#75835D',
   },
   border: {
-    main: '#FF2D68',
-    light: '#FF95B5',
-    background: '#9D1458',
+    main: '#FCFC03',
+    light: '#FCFDC7',
+    background: '#FCFC03',
   },
   error: {
     dark: '#AC2C3B',
-    main: '#FF5F72',
+    main: '#ED4E1D',
     light: '#FFB4BD',
     background: '#2F2527',
   },
   success: {
     dark: '#028D4C',
-    main: '#00B460',
-    light: '#81C784',
+    main: '#98DD28',
+    light: '#A0E82C',
     background: '#1F2920',
   },
   info: {
@@ -54,10 +46,11 @@ const darkPalette = {
     background: '#2F2318',
   },
   background: {
-    default: '#0f0f19',
-    main: '#000014',
-    paper: '#292556',
-    light: '#637aae',
+    default: '#212C1A',
+    main: '#121312',
+    paper: '#404833',
+    light: '#75835D',
+    dark: '#121312',
   },
   backdrop: {
     main: '#636669',
