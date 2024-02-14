@@ -14,7 +14,7 @@ import type { MarketplaceList, MarketplaceOrderList } from '~/services/indexer-a
 import type { OrderParams } from '~/services/indexer-api/types'
 import InfoIcon from '@mui/icons-material/Info'
 
-const navTitles = ['Listings', 'My Orders']
+const navTitles: [string, string] = ['Listings', 'My Orders']
 
 const MarketplacePage: NextPage = () => {
   const currentChain = useCurrentChain()

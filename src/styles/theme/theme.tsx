@@ -329,6 +329,7 @@ const createCustomTheme = (mode?: PaletteMode): Theme => {
           root: ({ theme }) => ({
             '& .MuiTableCell-root': {
               borderBottom: `1px solid ${theme.palette.border.light}`,
+              color: theme.palette.primary.main,
             },
 
             [theme.breakpoints.down('sm')]: {

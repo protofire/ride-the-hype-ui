@@ -42,10 +42,11 @@ export const WalletInfo = ({ wallet, handleClose }: WalletInfoProps) => {
         <Box className={css.addressContainer}>
           <EthHashInfo
             address={wallet.address}
+            shortAddress={false}
             name={wallet.ens}
             hasExplorer
             showCopyButton
-            prefix={prefix}
+            prefix={''}
             avatarSize={0}
           />
         </Box>
@@ -53,12 +54,12 @@ export const WalletInfo = ({ wallet, handleClose }: WalletInfoProps) => {
 
       <ChainSwitcher fullWidth />
 
-      <Button variant="contained" size="small" onClick={handleSwitchWallet} fullWidth>
-        Switch wallet
-      </Button>
+      {/* <Button variant="contained" size="small" onClick={handleSwitchWallet} fullWidth>
+        Switch Wallet
+      </Button> */}
 
       <Button onClick={handleDisconnect} variant="contained" color="secondary" size="small" fullWidth disableElevation>
-        Disconnect
+        DISCONNECT
       </Button>
     </Box>
   )

@@ -59,7 +59,7 @@ const TokenInfoPage: NextPage = () => {
     [currentChain],
   )
 
-  const navTitles = ['Overview', 'Holders', 'Events']
+  const navTitles: [string, string, string] = ['Overview', 'Holders', 'Events']
 
   const navContent = [
     <TokenOverview key={0} ticker={ticker ?? ''} tokenData={tokenData} loading={loading} error={error} />,

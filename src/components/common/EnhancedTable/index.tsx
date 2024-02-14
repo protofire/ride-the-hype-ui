@@ -207,6 +207,7 @@ function EnhancedTable({
           component="div"
           count={rows.length}
           rowsPerPage={rowsPerPage}
+          sx={{ color: 'text.secondary' }}
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
@@ -216,6 +217,7 @@ function EnhancedTable({
       {onDemandPagination && (
         <TablePagination
           rowsPerPageOptions={pageSizes}
+          sx={{ color: 'text.secondary' }}
           component="div"
           count={onDemandPagination.totalHolders}
           rowsPerPage={onDemandPagination.pageSize}

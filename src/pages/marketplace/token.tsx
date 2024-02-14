@@ -16,14 +16,7 @@ import { IndexerApiService } from '~/services/indexer-api'
 import type { MarketplaceOrderList } from '~/services/indexer-api/modules/marketplace/types'
 import type { OrderParams } from '~/services/indexer-api/types'
 
-const TEMP_ETH_PRICE = 2263
-
-const navTitles = [
-  'Tokens',
-  // 'Inscriptions',
-  'Activity',
-  'My Orders',
-]
+const navTitles: [string, string, string] = ['Tokens', 'Activity', 'My Orders']
 
 const MarketplaceTokenPage: NextPage = () => {
   const searchParams = useSearchParams()

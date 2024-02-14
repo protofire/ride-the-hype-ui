@@ -44,7 +44,7 @@ export const TokenList = ({ title }: { title?: string }) => {
 
   return (
     <ContentPaper title={title}>
-      {loading ? (
+      {loading && !error ? (
         <Grid container direction="row" spacing={3} mb={2}>
           {[...Array(PAGE_SIZE)].map((element, index) => (
             <Grid item lg={3} xs={6} key={`${element}-${index}`}>
@@ -54,7 +54,7 @@ export const TokenList = ({ title }: { title?: string }) => {
         </Grid>
       ) : null}
 
-      {error ? <Typography>An error occurred during loading balances...</Typography> : null}
+      {error ? <Typography align="center">An error occurred during loading balances...</Typography> : null}
 
       {!loading && balances.insc20s.length === 0 ? (
         <>

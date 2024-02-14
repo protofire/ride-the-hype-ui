@@ -1,17 +1,31 @@
-.tabButton1{
-    background-image: url(~/public/images/assets/tab1.svg);
+.tabButton1, .tabButton2, .tabButton2B, .tabButton3 {
     background-repeat: no-repeat;
     border-radius: 0;
     text-transform: uppercase;
     background-position: center;
-    margin-left:4px;
+    color: var(--color-text-secondary);
+    opacity: 0.7
+}
+
+.tabButton1{
+    background-image: url(~/public/images/assets/tab1.svg);
+    margin-right: -5px;
+
 }
 
 .tabButton2{
-    background-image: url(~/public/images/assets/tab2.svg);
-    background-position: center;
-    background-repeat: no-repeat;
-    border-radius: 0;
-    text-transform: uppercase;
-    margin-left:-4px;
+    background-image: url(~/public/images/assets/tab2-a.svg);
+}
+
+.tabButton2B{
+    background-image: url(~/public/images/assets/tab2-b.svg);
+}
+
+.tabButton3{
+    background-image: url(~/public/images/assets/tab3.svg);
+}
+
+.selected{
+    opacity: 1;
+    color: var(--color-primary-main)
 }

@@ -35,7 +35,8 @@
 .header {
   position: absolute;
   text-transform: uppercase;
-  color: var(--color-text-secondary)
+  color: var(--color-text-secondary);
+  margin-left: 2px;
 }
 
 .deployedOn {

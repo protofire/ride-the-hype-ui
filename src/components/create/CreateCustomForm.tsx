@@ -76,6 +76,7 @@ export const CreateCustomForm = ({ title }: { title?: string }) => {
       <Grid container direction="row" justifyContent="space-between" spacing={3} mb={2}>
         <Grid item lg={3} xs={12}>
           <TabsButton
+            selectedIdx={1}
             titles={[`${chain?.inscriptionPrefix.toUpperCase() ?? ''}-20`, 'CUSTOM']}
             onClick={(selected) => {
               switch (selected) {
