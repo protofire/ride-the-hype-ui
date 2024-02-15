@@ -3,13 +3,13 @@ import { SidebarList, SidebarListItemButton, SidebarListItemText } from '~/compo
 import { ListItem } from '@mui/material'
 import { SOCIALS } from '~/config/constants'
 import SvgIcon from '@mui/material/SvgIcon'
-import TelegramIcon from '~/public/images/telegram.svg'
+// import TelegramIcon from '~/public/images/telegram.svg'
 import TwitterIcon from '~/public/images/x-twitter.svg'
 // import GitbookIcon from '~/public/images/gitbook-docs.svg'
 // import DebugToggle from '../DebugToggle'
 
 const socials = [
-  { label: 'Telegram', link: SOCIALS.TELEGRAM, icon: TelegramIcon },
+  // { label: 'Telegram', link: SOCIALS.TELEGRAM, icon: TelegramIcon },
   { label: 'Twitter', link: SOCIALS.TWITTER, icon: TwitterIcon },
   // { label: 'Docs', link: SOCIALS.DOCS, icon: GitbookIcon },
 ]

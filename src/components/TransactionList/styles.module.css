@@ -15,7 +15,7 @@
   border-radius: 0.5rem;
   background: var(--color-background-dark);
   padding: 1rem;
-  margin: 2rem;
+  /* margin: 2rem; */
   /* height: '100%' */
   height: 280px;
   overflow: auto;
@@ -24,8 +24,8 @@
 .jsonInscriptionItem {
   background: var(--color-background-dark);
   border-radius: 0.5rem;
-  padding: 1rem;
-  margin: 2rem;
+  /* padding: 1rem; */
+  margin-bottom: 2rem;
   color: #fff;
   width: 280px;
   height: 280px;

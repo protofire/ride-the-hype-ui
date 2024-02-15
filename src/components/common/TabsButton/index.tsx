@@ -21,6 +21,7 @@ const TabsButton = ({
     <div>
       {titles.map((title, index) => (
         <Button
+          disableRipple
           key={index}
           color={'primary'}
           onClick={() => {

@@ -72,7 +72,7 @@ const TransactionOverview = ({ fetchTransaction, fetchToken, hash }: Props) => {
   }, [fetchToken, fetchTransaction, txData])
 
   return (
-    <Grid component={Paper} container sx={{ padding: 1, maxWidth: '1200px', m: '1rem auto' }} direction="row">
+    <Grid component={Paper} container direction="row">
       <Grid item md={4} xs={12}>
         <Typography color="primary" margin={'1rem'} variant="h3">
           {`Inscription #${txData?.id} `}
