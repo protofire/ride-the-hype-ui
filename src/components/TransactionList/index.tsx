@@ -79,7 +79,7 @@ export const TransactionList = () => {
         next={() => setPage((page) => page + 1)}
         hasMore={hasMore}
         loader={<h4>Loading...</h4>}
-        height={'62vh'}
+        height={'56vh'}
         endMessage={
           <p style={{ textAlign: 'center' }}>
             <b>You have seen it all</b>
