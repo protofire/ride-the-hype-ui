@@ -45,7 +45,7 @@ const Navigation = () => {
         const isSelected = currentSubdirectory === getSubdirectory(item.href)
 
         return (
-          <Tooltip key={i} title="Coming Soon" disableHoverListener={item.href !== ''}>
+          <Tooltip key={i} title="Launching Soon" disableHoverListener={item.href !== ''}>
             <ListItem disablePadding>
               <NavListItemButton disabled={!item.href} selected={isSelected} href={{ pathname: item.href }}>
                 {item.icon && (

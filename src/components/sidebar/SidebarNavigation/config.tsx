@@ -43,7 +43,7 @@ export const navItems: NavItem[] = [
   {
     label: 'Marketplace',
     // icon: <SvgIcon component={NewReleasesIcon} inheritViewBox />,
-    href: AppRoutes.marketplace.index,
+    href: '',
   },
 ]
 
