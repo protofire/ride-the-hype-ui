@@ -3,7 +3,6 @@ import Paper from '@mui/material/Paper'
 import EthHashInfo from '~/components/common/EthHashInfo'
 import type { Insc20 } from '~/services/indexer-api/types'
 import { MintButton } from '~/components/insc-20/Insc20List/MintButton'
-import type { Badge } from '~/config/badgeConfig'
 import { BADGE_CONFIG, retrieveKnownBadges } from '~/config/badgeConfig'
 import Image from 'next/image'
 import { useCurrentChain } from '~/hooks/useChains'
@@ -91,12 +90,13 @@ const TokenOverview = ({ tokenData, ticker, loading, error }: Props) => {
             ))}
 
           {/* Auto badges */}
-          {tokenData?.badges &&
+          {/*tokenData?.badges &&
             tokenData?.badges.map((badge, i) => (
               <Tooltip key={i} title={BADGE_CONFIG[badge as Badge].description}>
                 <Image width={40} src={BADGE_CONFIG[badge as Badge].icon} alt={''} />
               </Tooltip>
-            ))}
+            ))
+            */}
         </Stack>
 
         <List disablePadding>

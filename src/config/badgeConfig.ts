@@ -32,6 +32,8 @@ export const KNOWN_BADGES: KnownBadges = {
 }
 
 export function retrieveKnownBadges(chainId: string, tick: string): Badge[] {
-  const chainConfig = KNOWN_BADGES[chainId]
-  return chainConfig && chainConfig[tick] ? chainConfig[tick] : []
+  //TODO: remove
+  return []
+  // const chainConfig = KNOWN_BADGES[chainId]
+  // return chainConfig && chainConfig[tick] ? chainConfig[tick] : []
 }

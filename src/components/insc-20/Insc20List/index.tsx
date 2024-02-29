@@ -17,7 +17,6 @@ import { Insc20Filter } from '~/types'
 
 import { MintButton } from './MintButton'
 import css from './styles.module.css'
-import type { Badge } from '~/config/badgeConfig'
 import { BADGE_CONFIG, retrieveKnownBadges } from '~/config/badgeConfig'
 import { Tooltip } from '@mui/material'
 
@@ -204,12 +203,14 @@ const Insc20List = ({ title }: { title?: string }) => {
                       </Tooltip>
                     ))}
                   {/* Auto badges */}
-                  {item?.badges &&
-                    item?.badges.map((badge, i) => (
-                      <Tooltip key={i} title={BADGE_CONFIG[badge as Badge].description}>
-                        <Image width={40} src={BADGE_CONFIG[badge as Badge].icon} alt={''} />
-                      </Tooltip>
-                    ))}
+                  {
+                    // item?.badges &&
+                    //   item?.badges.map((badge, i) => (
+                    //     <Tooltip key={i} title={BADGE_CONFIG[badge as Badge].description}>
+                    //       <Image width={40} src={BADGE_CONFIG[badge as Badge].icon} alt={''} />
+                    //     </Tooltip>
+                    //   ))
+                  }
                 </Stack>
               ),
             },
