@@ -371,7 +371,7 @@ export const CreateInsc20Form = ({ title }: { title?: string }) => {
           </FormProvider>
         </Grid>
         <Grid item lg={2} xs={12}>
-          <Tooltip title="List tokens in your balance page">
+          {/* <Tooltip title="List tokens in your balance page">
             <Button
               sx={{ borderRadius: '36px' }}
               variant="outlined"
@@ -381,7 +381,7 @@ export const CreateInsc20Form = ({ title }: { title?: string }) => {
             >
               List
             </Button>
-          </Tooltip>
+          </Tooltip> */}
         </Grid>
       </Grid>
     </ContentPaper>

@@ -31,10 +31,10 @@ const chainsConfiguration: ChainInfo[] = [
     disabledWallets: ['trust', 'coinbase', 'ledger', 'trezor', 'keystone', 'walletConnect_v2', 'NONE'],
     ensRegistryAddress: null,
     publicRpcUri: {
-      value: '"https://sepolia.blast.io',
+      value: 'https://sepolia.blast.io',
     },
     rpcUri: {
-      value: '"https://sepolia.blast.io',
+      value: 'https://sepolia.blast.io',
     },
     theme: {
       textColor: '#ffffff',
@@ -43,7 +43,7 @@ const chainsConfiguration: ChainInfo[] = [
     apiUri: {
       value: 'https://api.stg.yieldscriptions.io/.',
     },
-    marketplace: '0x2d11BA284754A766B4d8De5EB69E9D5ccBbA63a3',
+    marketplace: '',
   },
 ]
 

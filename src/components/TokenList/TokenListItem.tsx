@@ -33,9 +33,9 @@ export const TokenListItem = ({ item }: Props) => {
                   <Button className={css.button} onClick={() => setTransferModalOpen(true)} disabled={!isOk}>
                     Transfer
                   </Button>
-                  <Button className={css.button} onClick={() => setListModalOpen(true)} disabled={!isOk}>
+                  {/* <Button className={css.button} onClick={() => setListModalOpen(true)} disabled={!isOk}>
                     List
-                  </Button>
+                  </Button> */}
                 </ButtonGroup>
               )}
             </CheckWallet>

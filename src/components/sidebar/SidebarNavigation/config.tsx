@@ -35,11 +35,11 @@ export const navItems: NavItem[] = [
     href: AppRoutes.wallet.index,
     listItemComponentProps: { divider: true },
   },
-  {
-    label: 'Inscribe',
-    // icon: <SvgIcon component={CreateIcon} inheritViewBox />,
-    href: AppRoutes.create.index,
-  },
+  // {
+  //   label: 'Inscribe',
+  //   // icon: <SvgIcon component={CreateIcon} inheritViewBox />,
+  //   href: AppRoutes.create.index,
+  // },
   {
     label: 'Marketplace',
     // icon: <SvgIcon component={NewReleasesIcon} inheritViewBox />,
