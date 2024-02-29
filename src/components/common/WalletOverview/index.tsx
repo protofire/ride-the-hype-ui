@@ -8,7 +8,7 @@ import { selectChainById } from '~/store/chainsSlice'
 import css from './styles.module.css'
 import BlastIcon from '~/public/images/assets/blast.svg'
 
-export const UNKNOWN_CHAIN_NAME = 'Unknown'
+export const UNKNOWN_CHAIN_NAME = 'Unsupported Network'
 
 const WalletOverview = ({ wallet }: { wallet: ConnectedWallet }): ReactElement => {
   const walletChain = useAppSelector((state) => selectChainById(state, wallet.chainId))
@@ -23,7 +23,7 @@ const WalletOverview = ({ wallet }: { wallet: ConnectedWallet }): ReactElement =
 
       <Box className={css.walletDetails}>
         <Typography variant="caption" component="div" className={css.walletName}>
-          {wallet.label.toUpperCase()}
+          {wallet.label} - {walletChain?.chainName || UNKNOWN_CHAIN_NAME}
         </Typography>
 
         <Typography variant="caption" color="secondary" /*fontWeight="bold"*/ component="div">

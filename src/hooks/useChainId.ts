@@ -6,7 +6,7 @@ import { selectSession } from '~/store/sessionSlice'
 import useWallet from './wallets/useWallet'
 import useChains from './useChains'
 
-const defaultChainId = IS_PRODUCTION ? chains.blastsepolia : chains.blastsepolia
+const defaultChainId = IS_PRODUCTION ? chains.blastmainnet : chains.blastmainnet
 
 export const useUrlChainId = (): string | undefined => {
   const queryParams = useParams()

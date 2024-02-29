@@ -362,7 +362,8 @@ export const CreateInsc20Form = ({ title }: { title?: string }) => {
               ) : null}
               <CheckWallet>
                 {(isOk) => (
-                  <Button disabled={!isOk} type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
+                  //TODO: change once available
+                  <Button disabled={true} type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
                     Deploy
                   </Button>
                 )}
